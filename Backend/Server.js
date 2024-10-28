@@ -5,17 +5,20 @@ import fs from 'fs'
 import path from 'path'
 import dotenv  from 'dotenv'
 import RouteUser from './Routes/User/Login.js'
+dotenv.config();
 
+const chromeFile = path.join(process.cwd(),'chrome')
 const app = express();
 app.use(express.static(path.join(process.cwd(),'Public/Image')))
 app.use(express.json())
-
-dotenv.config();
-const chromeFile = path.join(process.cwd(),'chrome')
 app.use('/user',RouteUser)
+
+
 app.get('/',(req,res)=>{
     return res.sendFile(path.join(process.cwd(),'HTML/Index.html'))
 })
+
+
 app.listen(process.env.PORT,()=>{
     if(process.platform=='win32'){
         if(!fs.existsSync(chromeFile)){

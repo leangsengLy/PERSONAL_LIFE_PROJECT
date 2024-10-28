@@ -8,7 +8,6 @@ RouteUser.get('/list',ValidToken,(req,res)=>{
     db.query(`SELECT * FROM LZLOGIN`,(error,result)=>{
         if(result)return res.status(200).send(result.recordset)
         else return res.status(404).send(error)
-        
     })
 })
 RouteUser.get('/list/:id',ValidToken,(req,res)=>{
