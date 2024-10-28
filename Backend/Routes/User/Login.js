@@ -11,7 +11,7 @@ RouteUser.get('/list',ValidToken,(req,res)=>{
         
     })
 })
-RouteUser.get('/list/:id',(req,res)=>{
+RouteUser.get('/list/:id',ValidToken,(req,res)=>{
     const {id} = req.params;
     db.query(`SELECT * FROM LZLOGIN WHERE ID IN (${id})`,(error,result)=>{
         if(result) return res.status(200).send(result.recordset)
@@ -29,7 +29,7 @@ RouteUser.post('/create',(req,res)=>{
         })
     })
 })
-RouteUser.post('/update_login',async (req,res)=>{
+RouteUser.post('/update_login',ValidToken,async (req,res)=>{
     const {Id} = req.body;
     await db.query(`SELECT * FROM LZLOGIN WHERE ID = ${Id}`,(err,re)=>{
         if(re.recordset.length>0){
