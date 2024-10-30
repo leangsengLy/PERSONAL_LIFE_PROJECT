@@ -8,13 +8,17 @@ import 'remixicon/fonts/remixicon.css';
 import { store } from './Store/Manange_Store.js'
 import { Provider } from 'react-redux'
 import { NextUIProvider } from '@nextui-org/react'
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <NextUIProvider>
-            <App />
+               <App />
         </NextUIProvider>
       </Provider>
     </BrowserRouter>
