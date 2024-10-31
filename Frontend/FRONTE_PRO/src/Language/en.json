@@ -1,0 +1,13 @@
+{
+    "username":"Username",
+    "password":"Password",
+    "enter_username":"Enter Username",
+    "enter_password":"Enter Passwod",
+    "hint_password":"Hint Passwod",
+    "enter_hint_password":"Enter Hint Password",
+    "login":"Login",
+    "you_have_account_already":"You have account already?",
+     "create_an_account":"Create an account",
+      "not_register_yet":"Not registered yet"
+
+}

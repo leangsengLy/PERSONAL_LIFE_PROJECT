@@ -8,10 +8,9 @@ function LZRoutes() {
   return (
     <>
         <Routes>
-            <Route path='login' Component={Login}/>
-            <Route path='/' Component={Test}/>
-              <Route path='/blog' Component={Blog}/>
-              <Route path='/content' Component={Content}/>
+            <Route path='/' Component={Login}/>
+            <Route path='/blog' Component={Blog}/>
+            <Route path='/content' Component={Content}/>
         </Routes>
     </>
   )

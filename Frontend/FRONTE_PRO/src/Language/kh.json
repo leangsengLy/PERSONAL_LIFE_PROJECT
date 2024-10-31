@@ -1,0 +1,12 @@
+{
+    "username":"ឈ្មោះអ្នកប្រើប្រាស់",
+    "password":"លេខសំងាត់",
+    "enter_username":"បញ្ចូលឈ្មោះអ្នកប្រើប្រាស់",
+    "enter_password":"បញ្ចូលលេខសំងាត់",
+    "hint_password":"តម្រុយលេខសំងាត់",
+    "enter_hint_password":"បញ្ចូលតម្រុយលេខសំងាត់",
+    "login":"ចូលប្រើប្រាស់",
+    "you_have_account_already":"តើអ្នកមានគណនេយ្យប្រើប្រាស់ហើយ?",
+    "create_an_account":"បង្កើតគណនេយ្យប្រើប្រាស់",
+    "not_register_yet":"មិនទាន់មានគណនេយ្យ?"
+}
