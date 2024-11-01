@@ -8,7 +8,7 @@ const App = () => {
     return (
         <div className={`${isDark? "dark" : ""} text-foreground bg-background ${language.code}`}>
             <LZRoutes/>
-            <ToastContainer position="bottom-right" autoClose={2000}/>
+            <ToastContainer position="bottom-right" autoClose={5000}/>
         </div>
     );
 };
