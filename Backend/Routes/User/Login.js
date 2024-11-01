@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import generateToken from '../../Auth/jwtUtils/jwtUtils.js'
 import ValidToken from '../../Auth/ValidToken.js'
 const RouteUser = express.Router();
-RouteUser.get('/list',(req,res)=>{
+RouteUser.get('/list',ValidToken,(req,res)=>{
     db.query(`SELECT * FROM LZLOGIN`,(error,result)=>{
         if(result)return res.status(200).send(result.recordset)
         else return res.status(404).send(error)
