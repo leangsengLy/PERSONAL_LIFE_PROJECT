@@ -25,3 +25,13 @@ export const ShowSnackbar=({message,type})=>{
         )
     }
 }
+
+export const translateBy=({en,km})=>{
+    let langCode = localStorage.getItem("language");
+    let text=langCode=='en'?en:km;
+    return text;
+}
+
+export const isEmpty=(data)=>{
+    return  data!=='' || data!==undefined || data!==null || (Array.isArray(data)&& data.length>0) || (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length>0)
+}

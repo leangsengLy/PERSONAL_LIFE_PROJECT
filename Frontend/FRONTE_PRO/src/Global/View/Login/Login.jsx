@@ -1,14 +1,15 @@
 import Online_Delivery_Service from '../../../../public/Online_Delivery_Service.gif'
 import bright from '../../../../public/Icon/bright.svg'
 import night from '../../../../public/Icon/night.svg'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeTheme } from '../../../Store/ThemeBackground/Theme.js'
-import { Button, Checkbox, Input, Spinner, Tooltip } from '@nextui-org/react'
+import { Button, Checkbox, input, Input, Spinner, Tooltip } from '@nextui-org/react'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getLanguage } from '../../../Store/Language/Langauge.js'
-import { ShowSnackbar } from '../../../Util/globalUtils.js'
+import { isEmpty, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
+import { HttpRequest } from '../../API_HTTP/http.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
@@ -19,12 +20,17 @@ const Login = () => {
   const dispatch  = useDispatch();
   const isDark = useSelector(state=>state.Theme.isDark);
   const languages = useSelector(state=>state.Language.Languages);
+  const isFirstLoginUser = useRef(true)
+  const isFirstLoginPw = useRef(true)
+  
+  const [inputData,setInpuData]=useState({Username:"",Password:""});
   const onChangeTheme=()=>{
     dispatch(changeTheme(!isDark))
   }
   const toggleVisibility=()=>{
     SetInVisal(!isVisible)
   }
+  
   const onClickCreateAccount=()=>{
     SetIsCreateAccount(!isCreateAccount)
   }
@@ -37,11 +43,44 @@ const Login = () => {
     SetIsSelectLanguage(!isShowSelectLanguage)
   }
   const onSaveLogin=()=>{
-    ShowSnackbar({message:`${isShowSpin?`Error you account!`:`Login successfuly!`}`,type:`${isShowSpin?`error`:`success`}`})
-    SetInShowSpin(!isShowSpin)
+    if(inputData.Password=="" && inputData.Username=="" )ShowSnackbar({message:`Please input password and username!`,type:`error`})
+    else if(inputData.Username=="")ShowSnackbar({message:`Please input username!`,type:`error`})
+    else if(inputData.Password=="")ShowSnackbar({message:`Please input password!`,type:`error`})
+    else{
+     SetInShowSpin(true)
+     HttpRequest({
+      url:'http://localhost:8080/api/user/login',
+      method:"post",
+      data:{
+        PASSWORD:inputData.Password,
+        USERNAME:inputData.Username,
+      },
+      success:(result)=>{
+        SetInShowSpin(false)
+        ShowSnackbar({message:result.message,type:"success"})
+     },
+     error:(err)=>{
+      SetInShowSpin(false)
+      ShowSnackbar({message:err.message,type:"error"})
+     }
+    })
+    }
   }
+  const inputValue=(e)=>{
+    if(e.target.name=="Username" && e.target.value=="") isFirstLoginUser.current=false;
+    if(e.target.name=="Password" && e.target.value=="") isFirstLoginPw.current=false;
+    setInpuData(val=>({...val,[e.target.name]:e.target.value}))
+  }
+
   useEffect(()=>{
     dispatch(getLanguage('kh'))
+    HttpRequest({
+        url:"http://localhost:8080/api/user/list",
+        method:"get",
+        success:(data)=>{
+          console.log(data)
+        }
+    })
   },[])
   useEffect(()=>{
   },[langauge])
@@ -86,10 +125,10 @@ const Login = () => {
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>V-Are System</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='text' isRequired={true} value={inputData.Username } errorMessage="Username are required!" isInvalid={inputData.Username=="" && !isFirstLoginUser.current} name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside' size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input  labelPlacement='outside' isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Password=="" && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (

@@ -3,6 +3,7 @@ import express from 'express';
 import {exec} from 'child_process'
 import fs from 'fs'
 import path from 'path'
+import cors from 'cors'
 import dotenv  from 'dotenv'
 import RouteUser from './Routes/User/Login.js'
 dotenv.config();
@@ -11,7 +12,12 @@ const chromeFile = path.join(process.cwd(),'chrome')
 const app = express();
 app.use(express.static(path.join(process.cwd(),'Public/Image')))
 app.use(express.json())
-app.use('/user',RouteUser)
+app.use(cors({
+    origin:"http://localhost:8090",
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Ensure OPTIONS is included
+    allowedHeaders: ['Content-Type', 'Authorization'] // Adjust based on your needs
+}))
+app.use('/api/user',RouteUser)
 
 
 app.get('/',(req,res)=>{

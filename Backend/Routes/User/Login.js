@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import generateToken from '../../Auth/jwtUtils/jwtUtils.js'
 import ValidToken from '../../Auth/ValidToken.js'
 const RouteUser = express.Router();
-RouteUser.get('/list',ValidToken,(req,res)=>{
+RouteUser.get('/list',(req,res)=>{
     db.query(`SELECT * FROM LZLOGIN`,(error,result)=>{
         if(result)return res.status(200).send(result.recordset)
         else return res.status(404).send(error)
@@ -34,30 +34,33 @@ RouteUser.post('/update_login',ValidToken,async (req,res)=>{
         if(re.recordset.length>0){
             db.query(`UPDATE LZLOGIN SET HINT_PW = ${req.body.HINT_PW},USERNAME = ${req.body.USERNAME} , PASSWORD = ${req.body.PASSWORD} WHERE ID = ${Id} `,(error,result)=>{
                 if(result)return res.status(200).send(result.recordset)
-                else return res.status(404).send(error)
+                else return res.status(400).send(error)
             })
         }else {
-            return res.status(404).send({message:"User not found!"})
+            return res.status(400).send({message:"User not found!"})
         }
     });
 })
 
-RouteUser.post('/login',(req,res)=>{
+RouteUser.post('/login',async (req,res)=>{
     const {USERNAME,PASSWORD} = req.body;
+    console.log(USERNAME)
+    console.log(PASSWORD)
     db.query(`SELECT * FROM LZLOGIN WHERE USERNAME='${USERNAME}'`,(error,result)=>{
-        if(error) return res.status(404).send({message:"User not found!"});
+        if(error) return res.status(400).send({message:"User not found!"});
         else {
+            console.log(result)
             if(result.recordset.length>0){
                 bcrypt.compare(PASSWORD,result?.recordset[0].PASSWORD,(er,re)=>{
-                    if(!re) return res.status(404).send({message:"Password invalid!"})
+                    if(!re) return res.status(400).send({message:"Password invalid!"})
                     else {
                         const token = generateToken(result?.recordset[0]);
-                        return res.status(201).send({
+                        return res.status(200).send({
                             message:"Login succesfully!",
                             token:token
                         }) }
                 })
-            }
+            }else return res.status(400).send({message:"The username doesn't in our system!"})
         }
     });
 })
