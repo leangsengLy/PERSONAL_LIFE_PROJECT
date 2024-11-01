@@ -1,18 +1,19 @@
 import Online_Delivery_Service from '../../../../public/Online_Delivery_Service.gif'
-import cambo from '../../../../public/Image/Flag/Cambodia.png'
 import bright from '../../../../public/Icon/bright.svg'
 import night from '../../../../public/Icon/night.svg'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeTheme } from '../../../Store/ThemeBackground/Theme.js'
-import { Button, Checkbox, Input } from '@nextui-org/react'
+import { Button, Checkbox, Input, Spinner, Tooltip } from '@nextui-org/react'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getLanguage } from '../../../Store/Language/Langauge.js'
+import { ShowSnackbar } from '../../../Util/globalUtils.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
   const [isShowSelectLanguage,SetIsSelectLanguage]=useState(false)
+  const [isShowSpin,SetInShowSpin]=useState(false)
   const langauge = useSelector(state=>state.Language.language);
   const tr = useSelector(state=>state.Language.translate);
   const dispatch  = useDispatch();
@@ -35,11 +36,14 @@ const Login = () => {
   const OnclickFlag=()=>{
     SetIsSelectLanguage(!isShowSelectLanguage)
   }
+  const onSaveLogin=()=>{
+    ShowSnackbar({message:`${isShowSpin?`Error you account!`:`Login successfuly!`}`,type:`${isShowSpin?`error`:`success`}`})
+    SetInShowSpin(!isShowSpin)
+  }
   useEffect(()=>{
     dispatch(getLanguage('kh'))
   },[])
   useEffect(()=>{
-    console.log(tr)
   },[langauge])
   const OnclickCountry=(code)=>{
     dispatch(getLanguage(code))
@@ -47,9 +51,10 @@ const Login = () => {
   return (
    
     <div className='w-screen h-screen bg-box-wrapper select-none flex justify-center items-center relative'>
+      {/* <ToastContainer position="bottom-right" draggableDirection={true} autoClose={2000}/> */}
       <div className='absolute top-6 right-7 flex gap-x-3'>
                 <div className='w-[40px] h-[40px] cursor-pointer relative p-1 rounded-full border-primary' onClick={OnclickFlag}>
-                  <img src={langauge.Image} alt="" className='w-full object-cover image-language h-full rounded-full'/>
+                 <Tooltip content="Language" showArrow={true} placement='left'><img src={langauge.Image} alt="" className='w-full object-cover image-language h-full rounded-full'/></Tooltip>
                   <div style={{zIndex:`${isShowSelectLanguage?``:`-1`}`}} className={`min-w-[170px] h-auto grid px-5 gap-y-4 bg-popup shadow py-5 rounded-2xl absolute transition-all  ease-in-out duration-200 opacity-0  right-1 top-11 ${isShowSelectLanguage?`opacity-100 z-10  -translate-x-2 translate-y-1`:``} `}>
                         {
                           languages.map(val=>{
@@ -67,9 +72,11 @@ const Login = () => {
                         }
                   </div>
                 </div>
+                <Tooltip content="Light" showArrow={true} >
                 <div className='w-[40px] h-[40px]  cursor-pointer p-2 rounded-full border-primary' onClick={onChangeTheme}>
                   <img src={isDark?bright:night} alt="" className='w-full h-full rounded-full'/>
                 </div>
+                </Tooltip>
       </div>
         <div className='w-[1100px] flex max-[863px]:justify-center justify-between items-center mx-5'>
           <img src={Online_Delivery_Service} alt="" className='max-w-[500px] max-[863px]:hidden w-full h-auto' />
@@ -99,8 +106,10 @@ const Login = () => {
               <Checkbox ><span className='color-1' >Remember me</span></Checkbox>
             </div>
             <div>
-              <Button className='bg-primary w-full h-[50px] mt-3 text-white font-bold text-[17px]' >
-                {tr.login}
+              <Button className='bg-primary w-full h-[50px] mt-3 text-white font-bold text-[17px]' onClick={onSaveLogin}>
+                {
+                  !isShowSpin?(<>{tr.login}</>):(<><Spinner size='sm' color='warning'/></>)
+                }
               </Button>
             </div>
             <div className='text-center'>

@@ -28,7 +28,7 @@ RouteUser.post('/create',(req,res)=>{
         })
     })
 })
-RouteUser.post('/update_login',ValidToken,async (req,res)=>{
+RouteUser.post('/update_login',ValidToken,async (req,res)=>{    
     const {Id} = req.body;
     await db.query(`SELECT * FROM LZLOGIN WHERE ID = ${Id}`,(err,re)=>{
         if(re.recordset.length>0){
