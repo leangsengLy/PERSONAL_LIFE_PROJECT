@@ -37,7 +37,5 @@ export const isEmpty=(data)=>{
 }
 
 export const IsValidUserName=(text)=>{
-    console.log(text)
-    console.log(/[0-9 -_$%@]/.test(text));
     return /[0-9 -_$%@]/.test(text);
 }

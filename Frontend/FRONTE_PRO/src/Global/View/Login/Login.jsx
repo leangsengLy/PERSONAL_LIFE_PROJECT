@@ -10,6 +10,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getLanguage } from '../../../Store/Language/Langauge.js'
 import { isEmpty, IsValidUserName, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
 import { HttpRequest } from '../../API_HTTP/http.js'
+import { SoundAudio } from '../../../Util/Sound.js'
+import { SystemSpeakByText } from '../../../Util/SystenSayByText.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
@@ -26,10 +28,14 @@ const Login = () => {
   const isFirstCreateHint = useRef(true)
   const isFirstCreatePw = useRef(true)
   const isFirstCreateUser = useRef(true)
-  
+
+  const click = SoundAudio('click')
+  const noti = SoundAudio('noti')
+  const fail = SoundAudio('fail')
   const [inputData,setInpuData]=useState({Username:"",Password:""});
   const [inputDataCreate,setInpuDataCreate]=useState({Username:"",Password:"",HintPassword:""});
   const onChangeTheme=()=>{
+    click.play();
     dispatch(changeTheme(!isDark))
   }
   const toggleVisibility=()=>{
@@ -43,8 +49,17 @@ const Login = () => {
   
   const onClickCreateAccount=()=>{
     SetIsCreateAccount(!isCreateAccount)
-    if(!isCreateAccount) setInpuData(val=>({Password:'',Username:''}))
-    else setInpuDataCreate(val=>({Password:'',Username:'',HintPassword:''}))
+    console.log(isCreateAccount)
+    if(!isCreateAccount){
+      setInpuDataCreate(val=>{
+        return {...val,HintPassword:'',Password:'',Username:''}
+      })
+    }
+    else {
+      setInpuData(val=>{
+        return {...val,Password:'',Username:''}
+      })
+    }
   }
 const onSignUpUser=()=>{
   let message="";
@@ -68,7 +83,7 @@ const onSignUpUser=()=>{
     else{
       SetInShowSpin(true)
       HttpRequest({
-        url:'http://localhost:8080/api/user/create',
+        url:'/api/user/create',
         method:"post",
         data:{
           PASSWORD:inputDataCreate.Password,
@@ -77,6 +92,9 @@ const onSignUpUser=()=>{
         },
         success:(result)=>{
           SetInShowSpin(false)
+          setTimeout(()=>{
+            noti.play();
+          },600)
           ShowSnackbar({message:result.message,type:"success"})
           setTimeout(()=>{
             setInpuDataCreate(val=>({HintPassword:'',Password:'',Username:''}))
@@ -84,6 +102,9 @@ const onSignUpUser=()=>{
           },3000)
       },
       error:(err)=>{
+        setTimeout(()=>{
+          fail.play();
+        },600)
         SetInShowSpin(false)
         ShowSnackbar({message:err.message,type:"error"})
       }
@@ -101,31 +122,41 @@ const onSignUpUser=()=>{
     SetIsSelectLanguage(!isShowSelectLanguage)
   }
   const onSaveLogin=()=>{
+    
+    click.play();
     if(inputData.Password=="" && inputData.Username=="" )ShowSnackbar({message:`Please input password and username!`,type:`error`})
     else if(inputData.Username=="")ShowSnackbar({message:`Please input username!`,type:`error`})
     else if(inputData.Password=="")ShowSnackbar({message:`Please input password!`,type:`error`})
     else{
      SetInShowSpin(true)
      HttpRequest({
-      url:'http://localhost:8080/api/user/login',
+      url:'api/user/login',
       method:"post",
       data:{
         PASSWORD:inputData.Password,
         USERNAME:inputData.Username,
       },
       success:(result)=>{
+        noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
+        setTimeout(()=>{
+          SystemSpeakByText(result.message,true)
+        },600)
      },
      error:(err)=>{
+      fail.play();
       SetInShowSpin(false)
       ShowSnackbar({message:err.message,type:"error"})
+      setTimeout(()=>{
+        SystemSpeakByText(err.message,true)
+      },600)
+      
      }
     })
     }
   }
   const inputValue=(e)=>{
-
     if(e.target.name=="Username" && e.target.value=="") isFirstLoginUser.current=false;
     if(e.target.name=="Password" && e.target.value=="") isFirstLoginPw.current=false;
     setInpuData(val=>({...val,[e.target.name]:e.target.value}))
@@ -145,6 +176,7 @@ const onSignUpUser=()=>{
   useEffect(()=>{
   },[langauge])
   const OnclickCountry=(code)=>{
+    click.play();
     dispatch(getLanguage(code))
   }
   return (
@@ -222,10 +254,10 @@ const onSignUpUser=()=>{
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>{tr.create_an_account}</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' className='color-1' errorMessage={`${IsValidUserName(inputDataCreate.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputDataCreate.Username==""  && !isFirstCreateUser.current) || IsValidUserName(inputDataCreate.Username)}  name="Username" onChange={inputValueCreateAccount} labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='text' className='color-1' value={inputDataCreate.Username}  errorMessage={`${IsValidUserName(inputDataCreate.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputDataCreate.Username==""  && !isFirstCreateUser.current) || IsValidUserName(inputDataCreate.Username)}  name="Username" onChange={inputValueCreateAccount} labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside' size='lg' name="Password" isInvalid={(inputDataCreate.Password=="" || inputDataCreate.Password.length<=6) && !isFirstCreatePw.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.Password!==""?`Your passsword should have 7 charaters!`:`Please input Password`}`}  onChange={inputValueCreateAccount} placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input  labelPlacement='outside' value={inputDataCreate.Password} size='lg' name="Password" isInvalid={(inputDataCreate.Password=="" || inputDataCreate.Password.length<=6) && !isFirstCreatePw.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.Password!==""?`Your passsword should have 7 charaters!`:`Please input Password`}`}  onChange={inputValueCreateAccount} placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (
@@ -239,7 +271,7 @@ const onSignUpUser=()=>{
             />
             </div>
             <div>
-            <Input  labelPlacement='outside' size='lg' name="HintPassword" isInvalid={(inputDataCreate.HintPassword=="" || inputDataCreate.HintPassword.length<=6) && !isFirstCreateHint.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.HintPassword!==""?`Your hint passsword should have 7 charaters!`:`Please input Hint Password`}`} onChange={inputValueCreateAccount} placeholder={tr.enter_hint_password} label={tr.hint_password}
+            <Input  labelPlacement='outside' value={inputDataCreate.HintPassword} size='lg' name="HintPassword" isInvalid={(inputDataCreate.HintPassword=="" || inputDataCreate.HintPassword.length<=6) && !isFirstCreateHint.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.HintPassword!==""?`Your hint passsword should have 7 charaters!`:`Please input Hint Password`}`} onChange={inputValueCreateAccount} placeholder={tr.enter_hint_password} label={tr.hint_password}
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibilityCreate} aria-label="toggle password visibility">
                 {isVisibleHintPassword ? (
