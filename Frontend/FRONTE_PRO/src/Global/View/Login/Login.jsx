@@ -8,10 +8,11 @@ import { Button, Checkbox, input, Input, Spinner, Tooltip } from '@nextui-org/re
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getLanguage } from '../../../Store/Language/Langauge.js'
-import { isEmpty, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
+import { isEmpty, IsValidUserName, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
 import { HttpRequest } from '../../API_HTTP/http.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
+  const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
   const [isShowSelectLanguage,SetIsSelectLanguage]=useState(false)
   const [isShowSpin,SetInShowSpin]=useState(false)
@@ -22,18 +23,75 @@ const Login = () => {
   const languages = useSelector(state=>state.Language.Languages);
   const isFirstLoginUser = useRef(true)
   const isFirstLoginPw = useRef(true)
+  const isFirstCreateHint = useRef(true)
+  const isFirstCreatePw = useRef(true)
+  const isFirstCreateUser = useRef(true)
   
   const [inputData,setInpuData]=useState({Username:"",Password:""});
+  const [inputDataCreate,setInpuDataCreate]=useState({Username:"",Password:"",HintPassword:""});
   const onChangeTheme=()=>{
     dispatch(changeTheme(!isDark))
   }
   const toggleVisibility=()=>{
     SetInVisal(!isVisible)
+   
   }
+  const toggleVisibilityCreate=()=>{
+    SetisVisibleHintPassword(!isVisibleHintPassword)
+  }
+
   
   const onClickCreateAccount=()=>{
     SetIsCreateAccount(!isCreateAccount)
+    if(!isCreateAccount) setInpuData(val=>({Password:'',Username:''}))
+    else setInpuDataCreate(val=>({Password:'',Username:'',HintPassword:''}))
   }
+const onSignUpUser=()=>{
+  let message="";
+  if(inputDataCreate.Username=="") message+="Username "
+  if(inputDataCreate.Password=="") message+="Password ";
+  if(inputDataCreate.HintPassword=="") message+="Hint Password ";
+  if(inputDataCreate.Username=="" || inputDataCreate.Password=="" || inputDataCreate.HintPassword=="")
+      ShowSnackbar({message:`Please input ${message}!`,type:`error`})
+  else {
+    if(inputDataCreate.Password.length<=6){
+      message+="Password ";
+      isFirstCreateHint.current=false;
+    }
+    if(inputDataCreate.HintPassword.length<=6) {
+      message+="Hint Password ";
+      isFirstCreatePw.current=false;
+    }
+    if(inputDataCreate.HintPassword.length<=6 || inputDataCreate.Password.length<=6){
+      ShowSnackbar({message:`Your ${message} should have 7 charaters !`,type:`error`})
+    }
+    else{
+      SetInShowSpin(true)
+      HttpRequest({
+        url:'http://localhost:8080/api/user/create',
+        method:"post",
+        data:{
+          PASSWORD:inputDataCreate.Password,
+          USERNAME:inputDataCreate.Username,
+          HINT_PW:inputDataCreate.HintPassword,
+        },
+        success:(result)=>{
+          SetInShowSpin(false)
+          ShowSnackbar({message:result.message,type:"success"})
+          setTimeout(()=>{
+            setInpuDataCreate(val=>({HintPassword:'',Password:'',Username:''}))
+            SetIsCreateAccount(false);
+          },3000)
+      },
+      error:(err)=>{
+        SetInShowSpin(false)
+        ShowSnackbar({message:err.message,type:"error"})
+      }
+      })
+    }
+    
+  }
+}
   window.addEventListener('click',(e)=>{
     if(!e.target.className.includes('image-language')){
       SetIsSelectLanguage(false)
@@ -67,9 +125,18 @@ const Login = () => {
     }
   }
   const inputValue=(e)=>{
+
     if(e.target.name=="Username" && e.target.value=="") isFirstLoginUser.current=false;
     if(e.target.name=="Password" && e.target.value=="") isFirstLoginPw.current=false;
     setInpuData(val=>({...val,[e.target.name]:e.target.value}))
+
+  }
+  const inputValueCreateAccount=(e)=>{
+    console.log(e)
+    if(e.target.name=="Username" && e.target.value=="") isFirstCreateUser.current=false;
+    if(e.target.name=="Password" && e.target.value=="") isFirstCreatePw.current=false;
+    if(e.target.name=="HintPassword" && e.target.value=="") isFirstCreateHint.current=false;
+    setInpuDataCreate(val=>({...val,[e.target.name]:e.target.value}))
   }
 
   useEffect(()=>{
@@ -118,10 +185,10 @@ const Login = () => {
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>V-Are System</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' isRequired={true} value={inputData.Username } errorMessage="Username are required!" isInvalid={inputData.Username=="" && !isFirstLoginUser.current} name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='text' isRequired={true} value={inputData.Username } errorMessage={`${IsValidUserName(inputData.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputData.Username==""  && !isFirstLoginPw.current) || IsValidUserName(inputData.Username)}  name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside' isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Password=="" && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input  labelPlacement='outside' isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Username==""  && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (
@@ -155,10 +222,10 @@ const Login = () => {
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>{tr.create_an_account}</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' className='color-1' classNames={{ label: "color-1"}} labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='text' className='color-1' errorMessage={`${IsValidUserName(inputDataCreate.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputDataCreate.Username==""  && !isFirstCreateUser.current) || IsValidUserName(inputDataCreate.Username)}  name="Username" onChange={inputValueCreateAccount} labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside' size='lg' classNames={{ label: "color-1"}} placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input  labelPlacement='outside' size='lg' name="Password" isInvalid={(inputDataCreate.Password=="" || inputDataCreate.Password.length<=6) && !isFirstCreatePw.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.Password!==""?`Your passsword should have 7 charaters!`:`Please input Password`}`}  onChange={inputValueCreateAccount} placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (
@@ -172,25 +239,27 @@ const Login = () => {
             />
             </div>
             <div>
-            <Input  labelPlacement='outside' size='lg' classNames={{ label: "color-1"}} placeholder={tr.enter_hint_password} label={tr.hint_password}
+            <Input  labelPlacement='outside' size='lg' name="HintPassword" isInvalid={(inputDataCreate.HintPassword=="" || inputDataCreate.HintPassword.length<=6) && !isFirstCreateHint.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.HintPassword!==""?`Your hint passsword should have 7 charaters!`:`Please input Hint Password`}`} onChange={inputValueCreateAccount} placeholder={tr.enter_hint_password} label={tr.hint_password}
              endContent={
-              <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
-                {isVisible ? (
+              <button className="focus:outline-none" type="button" onClick={toggleVisibilityCreate} aria-label="toggle password visibility">
+                {isVisibleHintPassword ? (
                   <RemoveRedEyeIcon className="text-2xl text-default-400 pointer-events-none" />
                 ) : (
                   <VisibilityOffIcon className="text-2xl text-default-400 pointer-events-none" />
                 )}
               </button>
             }
-            type={isVisible ? "text" : "password"}
+            type={isVisibleHintPassword ? "text" : "password"}
             />
             </div>
             <div>
               <Checkbox ><span className='color-1' >Remember me</span></Checkbox>
             </div>
             <div>
-              <Button className='bg-primary w-full h-[50px] mt-3 text-white font-bold text-[17px]' >
-              Sign up
+              <Button className='bg-primary w-full h-[50px] mt-3 text-white font-bold text-[17px]' onClick={onSignUpUser}>
+                {
+                  !isShowSpin?(<>Sign Up</>):(<><Spinner size='sm' color='warning'/></>)
+                }
               </Button>
             </div>
             <div className='text-center'>

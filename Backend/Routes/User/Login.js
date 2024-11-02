@@ -22,7 +22,7 @@ RouteUser.post('/create',(req,res)=>{
     console.log(PASSWORD)
     bcrypt.hash(PASSWORD,10,(error,hash)=>{
         if(error)console.log("erorr convert password ",error);
-        db.query(`INSERT INTO LZLOGIN VALUES ('${USERNAME}','${hash}','${HINT_PW}','${new Date().toISOString()}')`,(error,result)=>{
+        db.query(`INSERT INTO LZLOGIN VALUES ('${USERNAME}','${hash}','${HINT_PW}','${new Date().toISOString()}','','')`,(error,result)=>{
             if(result)return res.status(200).send({message:'create user login successfuly!'})
             else return res.status(404).send(error)
         })
