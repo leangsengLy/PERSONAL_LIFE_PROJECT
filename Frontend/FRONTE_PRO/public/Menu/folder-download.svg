@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="FolderDownload">
+  <defs>
+    <linearGradient id="a" x1="16" x2="16" y1="28.88" y2="3.13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#222831" class="stopColor12c2e9 svgShape"></stop>
+      <stop offset="1" stop-color="#f96d00" class="stopColorc471ed svgShape"></stop>
+    </linearGradient>
+  </defs>
+  <path fill="url(#a)" d="M26.4 9H14.86l-1.09-3.66a2.75 2.75 0 0 0-2.41-2.22H5.6C4.16 3.12 3 4.7 3 6.64v18.72c0 1.94 1.17 3.52 2.61 3.52H26.4c1.44 0 2.61-1.58 2.61-3.52V12.49C29 10.55 27.84 9 26.4 9ZM13.26 19.12a.81.81 0 0 1 1.14 0l.79.79v-4.8a.81.81 0 0 1 1.62 0v4.8l.79-.79a.81.81 0 1 1 1.14 1.14l-2.17 2.17a.81.81 0 0 1-.57.23.79.79 0 0 1-.57-.23l-2.17-2.17a.81.81 0 0 1 0-1.14ZM7.1 11.43a1 1 0 0 1-.87-1.11 1 1 0 0 1 .87-1.1h3.48a1 1 0 0 1 .87 1.1 1 1 0 0 1-.87 1.11Zm14 11a2 2 0 0 1-2 2h-6.16a2 2 0 0 1-2-2v-1.8a.81.81 0 0 1 1.62 0v1.84a.42.42 0 0 0 .42.42h6.12a.42.42 0 0 0 .42-.42v-1.84a.81.81 0 1 1 1.62 0Z"></path>
+</svg>

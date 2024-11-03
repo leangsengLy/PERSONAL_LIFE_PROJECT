@@ -1,6 +1,5 @@
-import Online_Delivery_Service from '../../../../public/Online_Delivery_Service.gif'
-import bright from '../../../../public/Icon/bright.svg'
-import night from '../../../../public/Icon/night.svg'
+import Online_Delivery_Service from '../../../../public/Menu/Online_Delivery_Service.gif'
+
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeTheme } from '../../../Store/ThemeBackground/Theme.js'
@@ -12,17 +11,19 @@ import { isEmpty, IsValidUserName, ShowSnackbar,translateBy } from '../../../Uti
 import { HttpRequest } from '../../API_HTTP/http.js'
 import { SoundAudio } from '../../../Util/Sound.js'
 import { SystemSpeakByText } from '../../../Util/SystenSayByText.js'
+import CountryLanguage from '../../../Component/IconAciton/LZIconLanguage.jsx'
+import LZIconTheme from '../../../Component/IconAciton/LZIconTheme.jsx'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
-  const [isShowSelectLanguage,SetIsSelectLanguage]=useState(false)
+
   const [isShowSpin,SetInShowSpin]=useState(false)
-  const langauge = useSelector(state=>state.Language.language);
+
   const tr = useSelector(state=>state.Language.translate);
   const dispatch  = useDispatch();
-  const isDark = useSelector(state=>state.Theme.isDark);
-  const languages = useSelector(state=>state.Language.Languages);
+
+
   const isFirstLoginUser = useRef(true)
   const isFirstLoginPw = useRef(true)
   const isFirstCreateHint = useRef(true)
@@ -34,10 +35,7 @@ const Login = () => {
   const fail = SoundAudio('fail')
   const [inputData,setInpuData]=useState({Username:"",Password:""});
   const [inputDataCreate,setInpuDataCreate]=useState({Username:"",Password:"",HintPassword:""});
-  const onChangeTheme=()=>{
-    click.play();
-    dispatch(changeTheme(!isDark))
-  }
+ 
   const toggleVisibility=()=>{
     SetInVisal(!isVisible)
    
@@ -66,8 +64,10 @@ const onSignUpUser=()=>{
   if(inputDataCreate.Username=="") message+="Username "
   if(inputDataCreate.Password=="") message+="Password ";
   if(inputDataCreate.HintPassword=="") message+="Hint Password ";
-  if(inputDataCreate.Username=="" || inputDataCreate.Password=="" || inputDataCreate.HintPassword=="")
-      ShowSnackbar({message:`Please input ${message}!`,type:`error`})
+  if(inputDataCreate.Username=="" || inputDataCreate.Password=="" || inputDataCreate.HintPassword==""){
+    SystemSpeakByText(`Please input ${message}!`,true)
+    ShowSnackbar({message:`Please input ${message}!`,type:`error`})
+  }
   else {
     if(inputDataCreate.Password.length<=6){
       message+="Password ";
@@ -113,20 +113,22 @@ const onSignUpUser=()=>{
     
   }
 }
-  window.addEventListener('click',(e)=>{
-    if(!e.target.className.includes('image-language')){
-      SetIsSelectLanguage(false)
-    }
-  })
-  const OnclickFlag=()=>{
-    SetIsSelectLanguage(!isShowSelectLanguage)
-  }
+
+ 
   const onSaveLogin=()=>{
-    
     click.play();
-    if(inputData.Password=="" && inputData.Username=="" )ShowSnackbar({message:`Please input password and username!`,type:`error`})
-    else if(inputData.Username=="")ShowSnackbar({message:`Please input username!`,type:`error`})
-    else if(inputData.Password=="")ShowSnackbar({message:`Please input password!`,type:`error`})
+    if(inputData.Password=="" && inputData.Username=="" ){
+      ShowSnackbar({message:`Please input password and username!`,type:`error`})
+      SystemSpeakByText(`Please input password and username!`,true)
+    }
+    else if(inputData.Username==""){
+      ShowSnackbar({message:`Please input username!`,type:`error`})
+      SystemSpeakByText(`Please input username!`,true)
+    }
+    else if(inputData.Password==""){
+      SystemSpeakByText('Please input password!',true)
+      ShowSnackbar({message:`Please input password!`,type:`error`})
+    }
     else{
      SetInShowSpin(true)
      HttpRequest({
@@ -142,6 +144,7 @@ const onSignUpUser=()=>{
         ShowSnackbar({message:result.message,type:"success"})
         setTimeout(()=>{
           SystemSpeakByText(result.message,true)
+          window.location.href='/'
         },600)
      },
      error:(err)=>{
@@ -170,44 +173,16 @@ const onSignUpUser=()=>{
     setInpuDataCreate(val=>({...val,[e.target.name]:e.target.value}))
   }
 
-  useEffect(()=>{
-    dispatch(getLanguage('kh'))
-  },[])
-  useEffect(()=>{
-  },[langauge])
-  const OnclickCountry=(code)=>{
-    click.play();
-    dispatch(getLanguage(code))
-  }
+
+ 
+  
   return (
    
     <div className='w-screen h-screen bg-box-wrapper select-none flex justify-center items-center relative'>
       {/* <ToastContainer position="bottom-right" draggableDirection={true} autoClose={2000}/> */}
       <div className='absolute top-6 right-7 flex gap-x-3'>
-                <div className='w-[40px] h-[40px] cursor-pointer relative p-1 rounded-full border-primary' onClick={OnclickFlag}>
-                 <Tooltip content="Language" showArrow={true} placement='left'><img src={langauge.Image} alt="" className='w-full object-cover image-language h-full rounded-full'/></Tooltip>
-                  <div style={{zIndex:`${isShowSelectLanguage?``:`-1`}`}} className={`min-w-[170px] h-auto grid px-5 gap-y-4 bg-popup shadow py-5 rounded-2xl absolute transition-all  ease-in-out duration-200 opacity-0  right-1 top-11 ${isShowSelectLanguage?`opacity-100 z-10  -translate-x-2 translate-y-1`:``} `}>
-                        {
-                          languages.map((val,index)=>{
-                            return (
-                              < >
-                                <div key={index} className='flex items-center justify-start gap-x-3' onClick={()=>{OnclickCountry(val.code)}}>
-                                   <div className='w-[30px] h-[30px] rounded-full p-1 border border-slate-100'>
-                                      <img src={val.Image} alt="" className='w-full h-full rounded-full' />
-                                   </div>
-                                   <div>{val.EnglishName}</div>
-                                </div>
-                              </>
-                            )
-                          })
-                        }
-                  </div>
-                </div>
-                <Tooltip content="Light" showArrow={true} >
-                <div className='w-[40px] h-[40px]  cursor-pointer p-2 rounded-full border-primary' onClick={onChangeTheme}>
-                  <img src={isDark?bright:night} alt="" className='w-full h-full rounded-full'/>
-                </div>
-                </Tooltip>
+                <CountryLanguage/>
+                <LZIconTheme/>
       </div>
         <div className='w-[1100px] flex max-[863px]:justify-center justify-between items-center mx-5'>
           <img src={Online_Delivery_Service} alt="" className='max-w-[500px] max-[863px]:hidden w-full h-auto' />

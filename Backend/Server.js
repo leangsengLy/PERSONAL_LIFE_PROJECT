@@ -30,6 +30,10 @@ app.listen(process.env.PORT,()=>{
         if(!fs.existsSync(chromeFile)){
             exec(`start chrome http://localhost:${process.env.PORT}`);
             fs.writeFileSync(chromeFile,'opened chrome please my man')
+            setTimeout(() => {
+                fs.unlinkSync(path.join(process.cwd(),'chrome'));
+                // exec('taskkill /IM chrome.exe /F') close all the chome
+            }, 1000 * 10);
         }
     }
     console.log("==>Your server is running on port",process.env.PORT,"💕 👌 ❤️ 👌");

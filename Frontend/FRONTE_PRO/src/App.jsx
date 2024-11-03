@@ -6,7 +6,7 @@ const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
     return (
-        <div className={`${isDark? "dark" : ""} text-foreground bg-background ${language.code}`}>
+        <div className={`${isDark? "dark" : ""} ${language.code??'kh'}`}>
             <LZRoutes/>
             <ToastContainer position="bottom-right" autoClose={5000}/>
         </div>
