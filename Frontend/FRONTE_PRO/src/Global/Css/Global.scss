@@ -19,3 +19,12 @@
     border: 3px solid var(--main-primary);
     padding-top: 10px;
 }
+
+.lz-animation{
+    transition: all ease-out 0.1s;
+}
+.hover-text{
+    &:hover{
+        color:var(--color-3) !important;
+    }
+}

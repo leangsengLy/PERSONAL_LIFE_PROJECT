@@ -1,3 +1,4 @@
+// const flowbite = require("flowbite-react/tailwind");
 import { nextui } from "@nextui-org/react";
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -5,10 +6,14 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./index.html",
+    // flowbite.content(),
   ],
   theme: {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    // flowbite.plugin(),
+    nextui()
+  ],
 }

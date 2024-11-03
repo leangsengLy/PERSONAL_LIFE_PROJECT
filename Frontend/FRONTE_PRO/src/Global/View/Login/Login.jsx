@@ -11,19 +11,15 @@ import { isEmpty, IsValidUserName, ShowSnackbar,translateBy } from '../../../Uti
 import { HttpRequest } from '../../API_HTTP/http.js'
 import { SoundAudio } from '../../../Util/Sound.js'
 import { SystemSpeakByText } from '../../../Util/SystenSayByText.js'
-import CountryLanguage from '../../../Component/IconAciton/LZIconLanguage.jsx'
-import LZIconTheme from '../../../Component/IconAciton/LZIconTheme.jsx'
+import CountryLanguage from '../../../Component/CircleAction/LZIconLanguage.jsx'
+import LZIconTheme from '../../../Component/CircleAction/LZIconTheme.jsx'
+import { DecodeToken } from '../../../Util/DecodeToken.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
-
   const [isShowSpin,SetInShowSpin]=useState(false)
-
   const tr = useSelector(state=>state.Language.translate);
-  const dispatch  = useDispatch();
-
-
   const isFirstLoginUser = useRef(true)
   const isFirstLoginPw = useRef(true)
   const isFirstCreateHint = useRef(true)
@@ -139,12 +135,15 @@ const onSignUpUser=()=>{
         USERNAME:inputData.Username,
       },
       success:(result)=>{
+        DecodeToken(result.token);
         noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
         setTimeout(()=>{
           SystemSpeakByText(result.message,true)
-          window.location.href='/'
+          setTimeout(()=>{
+            window.location.href='/'
+          },3000)
         },600)
      },
      error:(err)=>{

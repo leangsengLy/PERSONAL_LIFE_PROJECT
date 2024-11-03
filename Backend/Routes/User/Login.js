@@ -44,8 +44,6 @@ RouteUser.post('/update_login',ValidToken,async (req,res)=>{
 
 RouteUser.post('/login',async (req,res)=>{
     const {USERNAME,PASSWORD} = req.body;
-    console.log(USERNAME)
-    console.log(PASSWORD)
     db.query(`SELECT * FROM LZLOGIN WHERE USERNAME='${USERNAME}'`,(error,result)=>{
         if(error) return res.status(400).send({message:"User not found!"});
         else {
@@ -57,7 +55,8 @@ RouteUser.post('/login',async (req,res)=>{
                         return res.status(200).send({
                             message:"Login succesfully!",
                             token:token
-                        }) }
+                        }) 
+                    }
                 })
             }else return res.status(400).send({message:"The username doesn't in our system!"})
         }

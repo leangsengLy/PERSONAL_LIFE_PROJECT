@@ -16,7 +16,7 @@ import '@fontsource/roboto/700.css';
 //Notification
 import 'react-toastify/dist/ReactToastify.css';
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode> //we comment on because it make the code run 2 time when use on function or other 
     <BrowserRouter>
       <Provider store={store}>
         <NextUIProvider>
@@ -24,5 +24,5 @@ createRoot(document.getElementById('root')).render(
         </NextUIProvider>
       </Provider>
     </BrowserRouter>
-  </StrictMode>
+  // </StrictMode>
 )
