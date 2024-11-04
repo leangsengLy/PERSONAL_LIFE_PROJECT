@@ -3,11 +3,34 @@ import LZIconTheme from '../CircleAction/LZIconTheme'
 import LZIconLanguage from '../CircleAction/LZIconLanguage'
 import LZCircleAction from '../CircleAction/LZCircleAction'
 import setting from './../../../public/Gif/Setting.gif'
+import { useDispatch } from 'react-redux'
+import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
+import { SoundAudio } from '../../Util/Sound'
+import { SystemSpeakByText } from '../../Util/SystenSayByText'
 function ActionTopRight() {
   const [isClickSetting,setIsClickSetting] = useState(false)
-
+  const dispatch = useDispatch()
+  const click = SoundAudio("click")
+  const onClose=()=>{
+    dispatch(setIsShow(false))
+  }
+  const onOk=()=>{
+    SystemSpeakByText("Yes! Here we go!")
+    dispatch(setIsShow(false))
+    setTimeout(()=>{
+      window.location.href="/logout"
+    },2500)
+  }
   const onClickLogout=()=>{
-    window.location.href="/logout"
+      click.play();
+      dispatch(setModalConfirm({
+            type:"comfirm",
+            message:"Are you sure? do you want to logout?",
+            onClose:onClose,
+            onOk:onOk
+      }))
+      dispatch(setIsShow(true))
+    // 
   }
 
   const DropDownSetting=<div style={{zIndex:`${isClickSetting?``:`-1`}`}} className={`min-w-[140px] flex flex-col p-[15px] gap-y-2 opacity-0  lz-animation  rounded-2xl  ${isClickSetting?`opacity-100 z-10  -translate-x-2 translate-y-1`:``}  absolute right-2 top-12 bg-popup`}>

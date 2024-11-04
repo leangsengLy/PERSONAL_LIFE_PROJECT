@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
     initialState:{
         confirm:{
             type:"",
+            title:"",
             message:"",
             onClose:()=>{},
             onOk:()=>{}
@@ -12,15 +13,27 @@ import { createSlice } from "@reduxjs/toolkit";
     },
     reducers:{
         setModalConfirm:(state,action)=>{
-            state.confirm.type=action.payload.type;
-            state.confirm.message=action.payload.message;
+            let titleConfirm="";
+            let MessageConfirm="";
+            if(action.payload.type.toLowerCase()=="delete"){
+                titleConfirm="Delete"
+                if(action.payload.message=="") MessageConfirm="Do you want to delete?"
+                else MessageConfirm=action.payload.message;
+            }
+            if(action.payload.type.toLowerCase()=="comfirm"){
+                titleConfirm="Comfirm"
+                if(action.payload.message=="") MessageConfirm="Do you want to continues?"
+                else MessageConfirm=action.payload.message;
+            }
+            state.confirm.title=titleConfirm;
+            state.confirm.message=MessageConfirm;
             state.confirm.onOk=action.payload.onOk;
             state.confirm.onClose=action.payload.onClose;
         },
-        show:(state,action)=>{
+        setIsShow:(state,action)=>{
             state.isOpen=action.payload
         }
     }
 })
-export const {setModalConfirm} = ConfirmStore.actions
+export const {setModalConfirm,setIsShow} = ConfirmStore.actions
 export default ConfirmStore.reducer
