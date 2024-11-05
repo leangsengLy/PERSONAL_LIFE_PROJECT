@@ -26,10 +26,9 @@ export const ShowSnackbar=({message,type})=>{
     }
 }
 
-export const setCockieOnWeb=(userInfo)=>{
-    let date = new Date();
-    let Time = date.getTime()
-    document.cookie=`Username=${userInfo.USERNAME} `
+export const setCockieOnWeb=(userInfo,token)=>{
+    sessionStorage.setItem('userInfo',JSON.stringify(userInfo))
+    sessionStorage.setItem('token',token)
 }
 export const translateBy=({en,km})=>{
     let langCode = localStorage.getItem("language");

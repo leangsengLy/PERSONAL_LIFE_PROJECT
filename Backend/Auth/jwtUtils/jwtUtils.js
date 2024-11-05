@@ -4,7 +4,7 @@ env.config();
 const generateToken = (payload)=>{
     const privateKey = process.env.PRIVATE_KEY;
     const Option_token={
-        expiresIn:'1000s'
+        expiresIn:'1m'
     }
     const token = jwt.sign(payload,privateKey,Option_token)
     return token;

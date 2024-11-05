@@ -21,6 +21,7 @@ const Login = () => {
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
   const [isShowSpin,SetInShowSpin]=useState(false)
   const tr = useSelector(state=>state.Language.translate);
+   
   const isFirstLoginUser = useRef(true)
   const isFirstLoginPw = useRef(true)
   const isFirstCreateHint = useRef(true)
@@ -136,17 +137,15 @@ const onSignUpUser=()=>{
         USERNAME:inputData.Username,
       },
       success:(result)=>{
-        setCockieOnWeb(DecodeToken(result.token))
+        const getToken = DecodeToken(result.token);
+        setCockieOnWeb(getToken,result.token)
         noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
+        navigate('/')
         setTimeout(()=>{
           SystemSpeakByText(result.message,true)
-          
-          setTimeout(()=>{
-            navigate('/')
-          },3000)
-        },600)
+        },400)
      },
      error:(err)=>{
       fail.play();
@@ -158,6 +157,12 @@ const onSignUpUser=()=>{
       
      }
     })
+    }
+  }
+  const KeyEnter=(e)=>{
+    if(e.key=="Enter"){
+      if(!isCreateAccount) onSaveLogin();
+      else onSignUpUser();
     }
   }
   const inputValue=(e)=>{
@@ -193,10 +198,10 @@ const onSignUpUser=()=>{
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>V-Are System</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' isRequired={true} value={inputData.Username } errorMessage={`${IsValidUserName(inputData.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputData.Username==""  && !isFirstLoginPw.current) || IsValidUserName(inputData.Username)}  name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='text' isRequired={true}  onKeyDown={KeyEnter} value={inputData.Username } errorMessage={`${IsValidUserName(inputData.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputData.Username==""  && !isFirstLoginPw.current) || IsValidUserName(inputData.Username)}  name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside' isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Username==""  && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input  labelPlacement='outside'  onKeyDown={KeyEnter} isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Username==""  && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (
@@ -230,10 +235,10 @@ const onSignUpUser=()=>{
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>{tr.create_an_account}</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' className='color-1' value={inputDataCreate.Username}  errorMessage={`${IsValidUserName(inputDataCreate.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputDataCreate.Username==""  && !isFirstCreateUser.current) || IsValidUserName(inputDataCreate.Username)}  name="Username" onChange={inputValueCreateAccount} labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='text' className='color-1' onKeyDown={KeyEnter} value={inputDataCreate.Username}  errorMessage={`${IsValidUserName(inputDataCreate.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputDataCreate.Username==""  && !isFirstCreateUser.current) || IsValidUserName(inputDataCreate.Username)}  name="Username" onChange={inputValueCreateAccount} labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside' value={inputDataCreate.Password} size='lg' name="Password" isInvalid={(inputDataCreate.Password=="" || inputDataCreate.Password.length<=6) && !isFirstCreatePw.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.Password!==""?`Your passsword should have 7 charaters!`:`Please input Password`}`}  onChange={inputValueCreateAccount} placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input  labelPlacement='outside' onKeyDown={KeyEnter} value={inputDataCreate.Password} size='lg' name="Password" isInvalid={(inputDataCreate.Password=="" || inputDataCreate.Password.length<=6) && !isFirstCreatePw.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.Password!==""?`Your passsword should have 7 charaters!`:`Please input Password`}`}  onChange={inputValueCreateAccount} placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (
@@ -247,7 +252,7 @@ const onSignUpUser=()=>{
             />
             </div>
             <div>
-            <Input  labelPlacement='outside' value={inputDataCreate.HintPassword} size='lg' name="HintPassword" isInvalid={(inputDataCreate.HintPassword=="" || inputDataCreate.HintPassword.length<=6) && !isFirstCreateHint.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.HintPassword!==""?`Your hint passsword should have 7 charaters!`:`Please input Hint Password`}`} onChange={inputValueCreateAccount} placeholder={tr.enter_hint_password} label={tr.hint_password}
+            <Input  labelPlacement='outside' onKeyDown={KeyEnter} value={inputDataCreate.HintPassword} size='lg' name="HintPassword" isInvalid={(inputDataCreate.HintPassword=="" || inputDataCreate.HintPassword.length<=6) && !isFirstCreateHint.current}  isRequired={true} errorMessage={`${inputDataCreate.HintPassword.length<=6 && inputDataCreate.HintPassword!==""?`Your hint passsword should have 7 charaters!`:`Please input Hint Password`}`} onChange={inputValueCreateAccount} placeholder={tr.enter_hint_password} label={tr.hint_password}
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibilityCreate} aria-label="toggle password visibility">
                 {isVisibleHintPassword ? (

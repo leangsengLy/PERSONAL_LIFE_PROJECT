@@ -22,6 +22,7 @@ const LZIconLanguage = () => {
         dispatch(getLanguage('kh'))
       },[])
     const OnclickCountry=(code)=>{
+      console.log(langauge)
         click.play();
         dispatch(getLanguage(code))
       }
@@ -34,10 +35,10 @@ const LZIconLanguage = () => {
                     return (
                         < >
                         <div key={index} className='flex items-center justify-start gap-x-3' onClick={()=>{OnclickCountry(val.code)}}>
-                            <div className='w-[30px] h-[30px] rounded-full p-1 border border-slate-100'>
+                            <div className={`w-[30px] h-[30px] rounded-full p-1 border ${langauge.code==val.code?`border-primary`:`border-slate`}`}>
                                 <img src={val.Image} alt="" className='w-full h-full rounded-full' />
                             </div>
-                            <div className='color-2'>{val.EnglishName}</div>
+                            <div className={`color-2 ${langauge.code==val.code?`color-primary`:``}`}>{val.EnglishName}</div>
                         </div>
                         </>
                     )

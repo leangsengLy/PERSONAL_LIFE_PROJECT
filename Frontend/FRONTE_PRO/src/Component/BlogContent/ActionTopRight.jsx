@@ -15,11 +15,9 @@ function ActionTopRight() {
     dispatch(setIsShow(false))
   }
   const onOk=()=>{
-    SystemSpeakByText("Yes! Here we go!")
     dispatch(setIsShow(false))
-    setTimeout(()=>{
-      window.location.href="/logout"
-    },2500)
+    sessionStorage.clear();
+    window.location.href="/logout"
   }
   const onClickLogout=()=>{
       click.play();
