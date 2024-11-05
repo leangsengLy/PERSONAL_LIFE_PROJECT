@@ -7,13 +7,14 @@ import { Button, Checkbox, input, Input, Spinner, Tooltip } from '@nextui-org/re
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getLanguage } from '../../../Store/Language/Langauge.js'
-import { isEmpty, IsValidUserName, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
+import { isEmpty, IsValidUserName, setCockieOnWeb, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
 import { HttpRequest } from '../../API_HTTP/http.js'
 import { SoundAudio } from '../../../Util/Sound.js'
 import { SystemSpeakByText } from '../../../Util/SystenSayByText.js'
 import CountryLanguage from '../../../Component/CircleAction/LZIconLanguage.jsx'
 import LZIconTheme from '../../../Component/CircleAction/LZIconTheme.jsx'
 import { DecodeToken } from '../../../Util/DecodeToken.js'
+import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
@@ -25,7 +26,7 @@ const Login = () => {
   const isFirstCreateHint = useRef(true)
   const isFirstCreatePw = useRef(true)
   const isFirstCreateUser = useRef(true)
-
+  const navigate = useNavigate()
   const click = SoundAudio('click')
   const noti = SoundAudio('noti')
   const fail = SoundAudio('fail')
@@ -135,14 +136,15 @@ const onSignUpUser=()=>{
         USERNAME:inputData.Username,
       },
       success:(result)=>{
-        DecodeToken(result.token);
+        setCockieOnWeb(DecodeToken(result.token))
         noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
         setTimeout(()=>{
           SystemSpeakByText(result.message,true)
+          
           setTimeout(()=>{
-            window.location.href='/'
+            navigate('/')
           },3000)
         },600)
      },

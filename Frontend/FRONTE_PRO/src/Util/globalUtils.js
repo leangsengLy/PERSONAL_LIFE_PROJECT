@@ -26,6 +26,11 @@ export const ShowSnackbar=({message,type})=>{
     }
 }
 
+export const setCockieOnWeb=(userInfo)=>{
+    let date = new Date();
+    let Time = date.getTime()
+    document.cookie=`Username=${userInfo.USERNAME} `
+}
 export const translateBy=({en,km})=>{
     let langCode = localStorage.getItem("language");
     let text=langCode=='en'?en:km;
