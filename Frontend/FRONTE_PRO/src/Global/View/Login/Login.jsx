@@ -33,7 +33,9 @@ const Login = () => {
   const fail = SoundAudio('fail')
   const [inputData,setInpuData]=useState({Username:"",Password:""});
   const [inputDataCreate,setInpuDataCreate]=useState({Username:"",Password:"",HintPassword:""});
- 
+  useEffect(()=>{
+    if(window.location.pathname=="/login" || window.location.pathname=="/logout") sessionStorage.clear();
+  },[])
   const toggleVisibility=()=>{
     SetInVisal(!isVisible)
    
