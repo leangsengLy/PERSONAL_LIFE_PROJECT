@@ -3,12 +3,13 @@ import LZRoutes from './Routes/LZRoutes.jsx';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import LZComfirm from './Global/View/ConfirmAction/LZComfirm.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ShowSnackbar } from './Util/globalUtils.js';
 const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
     const navigate = useNavigate();
+    const param = useParams()
     setInterval(()=>{
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         if(getUserInfo!==null){

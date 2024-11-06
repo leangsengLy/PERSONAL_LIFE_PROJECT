@@ -6,7 +6,6 @@ import setting from './../../../public/Gif/Setting.gif'
 import { useDispatch } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
 import { SoundAudio } from '../../Util/Sound'
-import { SystemSpeakByText } from '../../Util/SystenSayByText'
 function ActionTopRight() {
   const [isClickSetting,setIsClickSetting] = useState(false)
   const dispatch = useDispatch()
