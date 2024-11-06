@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" id="Money">
+  <defs>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="#222831" class="stopColor000092 svgShape"></stop>
+      <stop offset="1" stop-color="#c96112" class="stopColorff00f3 svgShape"></stop>
+    </linearGradient>
+    <linearGradient xlink:href="#a" id="b" x2="30" y1="15.5" y2="15.5" gradientUnits="userSpaceOnUse"></linearGradient>
+  </defs>
+  <path fill="url(#b)" d="M13 3c-1.1 0-2 .9-2 2v1H0v19c0 1.653 1.347 3 3 3h26c1.653 0 3-1.347 3-3V6H21V5c0-1.1-.9-2-2-2h-6zm0 1h6c.563 0 1 .437 1 1v1h-8V5c0-.563.437-1 1-1zM1 7h30v8.334c0 .563-.437 1-1 1h-7.785c-.287-3.312-3.1-5.834-6.49-5.834-3.365 0-6.12 2.565-6.452 5.834H2c-.563 0-1-.437-1-1V7zm14.725 4.5c3.06 0 5.517 2.351 5.517 5.39V17c0 3.04-2.468 5.502-5.517 5.502A5.476 5.476 0 0 1 10.24 17c0-3.043 2.434-5.5 5.485-5.5zm-.477 1v1.027a2.283 2.283 0 0 0-.937.4c-.65.459-.99 1.291-.748 2.087.275.954 1.21 1.503 2.128 1.486h.108a.5.5 0 0 0 .012 0c.492-.01 1.024.323 1.15.766a.5.5 0 0 0 .004.01c.103.334-.068.772-.371.984a.5.5 0 0 0-.014.01c-.517.385-1.43.28-1.803-.24a.9.9 0 0 1-.172-.518h-1c0 .401.13.787.36 1.105.32.446.783.72 1.283.838V21.5h1v-1.023c.328-.065.646-.191.924-.397.65-.458.99-1.29.748-2.086-.276-.954-1.21-1.503-2.129-1.486h-.107a.5.5 0 0 0-.01 0c-.493.01-1.027-.323-1.153-.766a.5.5 0 0 0-.003-.01c-.103-.334.068-.773.37-.984a.5.5 0 0 0 .014-.012c.517-.386 1.43-.28 1.803.24a.5.5 0 0 0 .002 0c.11.151.17.34.17.518h1a1.87 1.87 0 0 0-.36-1.103 2.172 2.172 0 0 0-1.269-.836V12.5h-1zM1 17.053c.296.173.634.281 1 .281h7.258c.174 3.425 2.99 6.168 6.467 6.168a6.518 6.518 0 0 0 6.5-6.168H30c.366 0 .704-.108 1-.281V25c0 1.117-.883 2-2 2H3c-1.117 0-2-.883-2-2v-7.947z" color="#000" font-family="sans-serif" font-weight="400" overflow="visible" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal"></path>
+</svg>
