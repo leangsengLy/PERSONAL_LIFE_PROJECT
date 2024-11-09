@@ -8,7 +8,7 @@ const LZComfirm = () => {
   const comfirm = useSelector(state=>state.Confirm.confirm);
   const isShowComfirm = useSelector(state=>state.Confirm.isOpen);
   if(isShowComfirm)setTimeout(()=>{
-    SystemSpeakByText(comfirm.message)
+    SystemSpeakByText(comfirm.message,true)
   },400)
   const closeModal=()=>{
     dispatch(setIsShow(false))

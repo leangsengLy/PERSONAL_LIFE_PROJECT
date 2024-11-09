@@ -14,10 +14,12 @@ function ActionTopRight({isLoginOrisHomePage}) {
   const click = SoundAudio("click")
   const onClose=()=>{
     dispatch(setIsShow(false))
+    window.speechSynthesis.cancel();
   }
   const onOk=()=>{
     dispatch(setIsShow(false))
     sessionStorage.clear();
+    window.speechSynthesis.cancel();
     window.location.href="/logout"
   }
   const onClickLogout=()=>{
