@@ -35,7 +35,7 @@ const App = () => {
     })
 
     return (
-        <div className={`${isDark? "dark" : ""} ${language.code??'kh'}`}>
+        <div className={`transition-all ease-linear ${isDark? "dark" : ""} ${language.code??'kh'}`}>
             <LZRoutes/>
             <LZComfirm/>
             <ToastContainer position="bottom-right" autoClose={5000}/>

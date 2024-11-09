@@ -184,12 +184,11 @@ const onSignUpUser=()=>{
  
   
   return (
-   
-    <div className='w-screen h-screen bg-box-wrapper select-none flex justify-center items-center relative'>
+    <div className='w-screen h-screen lz-animation bg-box-wrapper select-none flex justify-center items-center relative'>
       {/* <ToastContainer position="bottom-right" draggableDirection={true} autoClose={2000}/> */}
       <div className='absolute top-6 right-7 flex gap-x-3'>
-                <CountryLanguage/>
-                <LZIconTheme/>
+                <CountryLanguage isLoginOrisHomePage={true}/>
+                <LZIconTheme  isLoginOrisHomePage={true}/>
       </div>
         <div className='w-[1100px] flex max-[863px]:justify-center justify-between items-center mx-5'>
           <img src={Online_Delivery_Service} alt="" className='max-w-[500px] max-[863px]:hidden w-full h-auto' />

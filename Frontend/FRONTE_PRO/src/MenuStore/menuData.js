@@ -19,33 +19,38 @@ import horizontal from '../../public/Menu/Sub_Menu_Coffee/align-horizontal.svg'
 export const StoreMenu = [
     {
         Id:1,
+        code:'coffee',
         Name:"ហាងការហ្វេ",
         EnglishName:"Shop coffee",
         iconImage:store,
         SubMenu:[
-            {   Name:"ផលិតផល",
+            {   
+                Code:"Product",
+                Name:"ផលិតផល",
                 EnglishName:"Product",
                 iconImage:inventory,
+                icon :"ri-box-3-fill"
             },
-            {   Name:"ប្រាក់ចំណាយ",
-                EnglishName:"Net OutCome",
-                iconImage:moneySend,
-            },
-            {   Name:"ប្រាក់ចំណូល",
-                EnglishName:"Net Income",
-                iconImage:money,
-            },
-            {   Name:"បុគ្គលិក",
+            {   
+                Code:"Employee",
+                Name:"បុគ្គលិក",
                 EnglishName:"Employee",
                 iconImage:user,
+                icon :"ri-group-fill"
             },
-            {   Name:"ប្រាក់ខែ",
+            {   
+                Code:"Salary",
+                Name:"ប្រាក់ខែ",
                 EnglishName:"Salary",
                 iconImage:office,
+                icon :"ri-money-dollar-box-fill"
             },
-            {   Name:"ទិន្នន័យ",
+            {   
+                Name:"ទិន្នន័យ",
+                Code:"Data_a_month",
                 EnglishName:"Data a month",
                 iconImage:horizontal,
+                icon :"ri-line-chart-fill"
             },
             
           
@@ -53,6 +58,7 @@ export const StoreMenu = [
     },
     {
         Id:2,
+        code:'money',
         Name:"ហិរញ្ញវត្ថុ",
         EnglishName:"Money",
         iconImage:MoneyPie,
@@ -60,6 +66,7 @@ export const StoreMenu = [
     },
     {
         Id:3,
+        code:'chat',
         Name:"ផ្ញើរសារ",
         EnglishName:"Chat",
         iconImage:Chat,
@@ -68,6 +75,7 @@ export const StoreMenu = [
     {
         Id:4,
         Name:"ស្ថិតិ",
+        code:'graph',
         EnglishName:"Graph",
         iconImage:data,
         SubMenu:[]
@@ -75,6 +83,7 @@ export const StoreMenu = [
     {
         Id:5,
         Name:"QR Scan",
+        code:'qr_scan',
         EnglishName:"QR Scan",
         iconImage:QR,
         SubMenu:[]
@@ -82,6 +91,7 @@ export const StoreMenu = [
     {
         Id:6,
         Name:"ប្រព័ន្ទកែប្រែ",
+        code:'setting',
         EnglishName:"Setting",
         iconImage:Setting,
         SubMenu:[]
@@ -90,6 +100,7 @@ export const StoreMenu = [
     {
         Id:7,
         Name:"កាលវីភាគ",
+        code:'schedule',
         EnglishName:"Schedule",
         iconImage:calendar,
         SubMenu:[
@@ -114,6 +125,7 @@ export const StoreMenu = [
     {
         Id:8,
         Name:"គ្រួសារ",
+        code:'family',
         EnglishName:"Family",
         iconImage:family,
         SubMenu:[
@@ -138,12 +150,14 @@ export const StoreMenu = [
     
     {  Id:9,
         Name:"ស្ថិតិ",
+        code:'graph',
         EnglishName:"Graph",
         iconImage:chart,
         SubMenu:[]
     },
     {
         Id:10,
+        code:'media',
         Name:"Media",
         EnglishName:"Media",
         iconImage:media,

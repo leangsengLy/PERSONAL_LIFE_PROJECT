@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SoundAudio } from '../../Util/Sound';
 import { getLanguage } from '../../Store/Language/Langauge';
 
-const LZIconLanguage = () => {
+const LZIconLanguage = ({isLoginOrisHomePage}) => {
     const [isShowSelectLanguage,SetIsSelectLanguage]=useState(false)
     const languages = useSelector(state=>state.Language.Languages);
     const langauge = useSelector(state=>state.Language.language);
@@ -27,7 +27,7 @@ const LZIconLanguage = () => {
         dispatch(getLanguage(code))
       }
   return (
-    <div className='w-[40px] h-[40px] cursor-pointer relative p-1 rounded-full border-primary' onClick={OnclickFlag}>
+    <div className={` ${isLoginOrisHomePage?`w-[40px] h-[40px]`:`w-[30px] h-[30px]`} cursor-pointer relative p-1 rounded-full border-primary`} onClick={OnclickFlag}>
             <Tooltip content="Language" showArrow={true} placement='left'><img src={langauge.Image} alt="" className='w-full object-cover image-language h-full rounded-full'/></Tooltip>
             <div style={{zIndex:`${isShowSelectLanguage?``:`-1`}`}} className={`min-w-[170px] h-auto grid px-5 gap-y-4 bg-popup shadow py-5 rounded-2xl absolute transition-all  ease-in-out duration-200 opacity-0  right-1 top-11 ${isShowSelectLanguage?`opacity-100 z-10  -translate-x-2 translate-y-1`:``} `}>
                 {

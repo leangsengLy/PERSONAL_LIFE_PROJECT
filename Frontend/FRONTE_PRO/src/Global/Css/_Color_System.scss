@@ -1,16 +1,16 @@
 :root{
     --main-primary:#C96112;
-
     --white-dark:#ffffff;
     --slate:#a7a7a72e;
     --popup:#f7f7f7;
-
+    --color:#686868;
     --color-1:#6f6f6f;
     --color-2:#797979;
     --color-3:#414141;
     --color-input:#313131;
     --bg-input:#d1d1d1;
     --bd-slate:#cbcbcb;
+    --bg-navleft:#f2f2f2;
 }
 .dark{
     --main-primary:#C96112;
@@ -21,10 +21,11 @@
     --color-1:#616161;
     --color-2:#797979;
     --color-3:#989898;
-
+    --color:#d0d0d0;
     --color-input:#313131;
     --bg-input:#3d3d3d;
     --bd-slate:#ffffff4a;
+    --bg-navleft:#1e242c;
 }
 .bg-popup{
     background: var(--popup) !important;
@@ -38,16 +39,27 @@
 .border-primary{
     border:1px solid var(--main-primary) !important;
 }
+.lz-animation{
+    transition-property: all !important;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition-duration: 250ms !important;
+    transition-timing-function: linear !important;
+}
+.bg-navleft{
+    background:var(--bg-navleft) !important;;
+}
 .bg-box-wrapper{
     background: var(--white-dark) !important;
 }
 .bg-input{
-    background: var(--bg-input);
+    background: var(--bg-input) !important;;
 }
 .bg-slate{
     background: var(--slate) !important;
 }
-
+.color-default{
+    color: var(--color) !important;
+}
 .color-1{
     color:var(--color-1) !important;
 }

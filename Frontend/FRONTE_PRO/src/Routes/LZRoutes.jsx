@@ -1,9 +1,10 @@
 import React from 'react'
 import { Route,Routes } from 'react-router-dom'
 import Login from '../Global/View/Login/Login'
-import Content from '../Component/Content'
 import PageNotFound from '../Component/PageNotFound'
 import HomeMenu from '../Component/HomeMenu.jsx'
+import WebSectionContent from '../Component/WebSectionContent.jsx'
+import SubMenuContent from '../Component/SubMenuContent/SubMenuContent.jsx'
 function LZRoutes() {
   return (
     <>
@@ -11,7 +12,9 @@ function LZRoutes() {
             <Route path='/' Component={HomeMenu}/>
             <Route path='/login' Component={Login}/>
             <Route path='/logout' Component={Login}/>
-            <Route path='/content' Component={Content}/>
+            <Route path='/web/:type' Component={WebSectionContent}>
+              <Route path=':subType' Component={SubMenuContent}/>
+            </Route>
             <Route path='*' Component={PageNotFound}/>
         </Routes>
     </>
