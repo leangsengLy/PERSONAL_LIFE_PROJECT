@@ -21,11 +21,11 @@ function WebSectionContent() {
             SetSubMenuCode(data[0].SubMenu[0].Code)
           }
         }
-        console.log(Menus)
     },[])
     const ClickHome=()=>{
       navigate('/')
     }
+ 
     const onSubMenu=(Code)=>{
       navigate(`${Code}`)
       SetSubMenuCode(Code)
@@ -38,13 +38,14 @@ function WebSectionContent() {
     }
   return (
     <div className={`wrapper-all-section lz-animation bg-box-wrapper w-screen h-screen color-default grid ${collapse?`grid-cols-[80px_1fr]`:`grid-cols-[240px_1fr]`}`}>
-            <div className={`left  bg-navleft lz-animation px-4 py-6 flex flex-col gap-y-[10px] ${collapse?`overflow-hidden`:``}`}>
+            <div className={`left relative bg-navleft lz-animation px-4 py-6 flex flex-col gap-y-[10px] ${collapse?`overflow-hidden`:``}`}>
                   <div className={`flex gap-x-2 items-center   mb-2 font-bold  `}>
+                    <div onClick={onSwitchCollapse} className='w-[9px] h-[45px] animate-pulse absolute top-1/2 right-[10px] cursor-pointer -translate-y-1/2 -translate-x-1/2  rounded-full bg-primary'></div>
                     <div className=' flex gap-x-2'>
                         <img src={img} alt="" className='max-w-[40px] max-h-[40px]' />
                     </div>
                     {
-                      !duration?(<><div className='flex w-[80%] justify-between items-center whitespace-nowrap'><h4>V/are System</h4> <img onClick={onSwitchCollapse} className='w-[25px] cursor-pointer' src={collapse?'':collapseLeft} alt="" /></div></>):(<></>)
+                      !duration?(<><div className='flex w-[80%] justify-between items-center whitespace-nowrap'><h4>V/are System</h4></div></>):(<></>)
                     }
                     
                 </div>  
@@ -82,13 +83,13 @@ function WebSectionContent() {
                }
                 </div>
             </div>
-            <div className='lz-animation'>
+            <div className='lz-animation grid grid-rows-[50px_1fr]' >
               <div className='w-full h-[50px] lz-animation relative bg-navleft flex items-center pl-3'>
-                <img onClick={onSwitchCollapse} className='w-[25px] cursor-pointer' src={!collapse?'':collapseRight} alt="" />
                 <ActionTopRight isLoginOrisHomePage={false}/>
               </div>
-              {duration?`123123`:`333`}
+              <div className='py-3 px-5 blog-submenu'>
                 <Outlet/>
+              </div>
             </div>
     </div>
   )

@@ -1,5 +1,7 @@
 @import url('./_Color_System.scss');
-
+//import style dataTable
+@import 'datatables.net-dt';
+@import url('./_DataTable.scss');
 .lzscroll{
     overflow-y: auto;
 }

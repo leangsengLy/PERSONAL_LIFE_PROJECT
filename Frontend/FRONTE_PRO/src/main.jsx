@@ -9,6 +9,10 @@ import { store } from './Store/Manange_Store.js'
 import { Provider } from 'react-redux'
 import { NextUIProvider } from '@nextui-org/react'
 import * as lz_module from '../../../LZ_MODULE/Global.js'
+import 'primeicons/primeicons.css';
+import 'datatables.net-select-dt';
+import 'datatables.net-responsive-dt';
+
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

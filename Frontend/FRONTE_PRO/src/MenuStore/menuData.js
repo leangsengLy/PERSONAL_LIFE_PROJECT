@@ -94,7 +94,20 @@ export const StoreMenu = [
         code:'setting',
         EnglishName:"Setting",
         iconImage:Setting,
-        SubMenu:[]
+        SubMenu:[
+            {   
+                Code:"country",
+                Name:"ប្រទេស",
+                EnglishName:"Country",
+                icon :"ri-global-fill"
+            },
+            {   
+                Code:"userLogin",
+                Name:"អ្នកប្រើប្រាស់",
+                EnglishName:"UserAccount",
+                icon :"ri-admin-fill"
+            },
+        ]
     },
     
     {

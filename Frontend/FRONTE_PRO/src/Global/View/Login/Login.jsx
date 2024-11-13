@@ -64,7 +64,7 @@ const onSignUpUser=()=>{
   if(inputDataCreate.Password=="") message+="Password ";
   if(inputDataCreate.HintPassword=="") message+="Hint Password ";
   if(inputDataCreate.Username=="" || inputDataCreate.Password=="" || inputDataCreate.HintPassword==""){
-    SystemSpeakByText(`Please input ${message}!`,true)
+    SystemSpeakByText(`Please input ${message}!`,false)
     ShowSnackbar({message:`Please input ${message}!`,type:`error`})
   }
   else {
@@ -118,14 +118,14 @@ const onSignUpUser=()=>{
     click.play();
     if(inputData.Password=="" && inputData.Username=="" ){
       ShowSnackbar({message:`Please input password and username!`,type:`error`})
-      SystemSpeakByText(`Please input password and username!`,true)
+      SystemSpeakByText(`Please input password and username!`,false)
     }
     else if(inputData.Username==""){
       ShowSnackbar({message:`Please input username!`,type:`error`})
-      SystemSpeakByText(`Please input username!`,true)
+      SystemSpeakByText(`Please input username!`,false)
     }
     else if(inputData.Password==""){
-      SystemSpeakByText('Please input password!',true)
+      SystemSpeakByText('Please input password!',false)
       ShowSnackbar({message:`Please input password!`,type:`error`})
     }
     else{
@@ -145,7 +145,7 @@ const onSignUpUser=()=>{
         ShowSnackbar({message:result.message,type:"success"})
         navigate('/')
         setTimeout(()=>{
-          SystemSpeakByText(result.message,true)
+          SystemSpeakByText(result.message,false)
         },400)
      },
      error:(err)=>{
@@ -153,7 +153,7 @@ const onSignUpUser=()=>{
       SetInShowSpin(false)
       ShowSnackbar({message:err.message,type:"error"})
       setTimeout(()=>{
-        SystemSpeakByText(err.message,true)
+        SystemSpeakByText(err.message,false)
       },600)
       
      }

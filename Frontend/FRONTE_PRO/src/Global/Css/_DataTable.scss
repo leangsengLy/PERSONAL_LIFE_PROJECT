@@ -1,0 +1,45 @@
+div.dt-container .dt-search input{
+    border-radius: 10px  !important; 
+    height: 40px !important;
+}
+
+div.dt-container select.dt-input{
+    border-radius: 10px !important;
+    height: 40px !important;
+    padding: 6px 10px !important;
+}
+.blog-submenu div.dt-container .dt-paging .dt-paging-button.disabled, .blog-submenu div.dt-container .dt-paging .dt-paging-button.disabled:hover, .blog-submenu div.dt-container .dt-paging .dt-paging-button.disabled:active{
+    background-color: var(--bg-navleft) !important;
+    border-radius: 10px !important;
+    margin: 0px 5px;
+    color: var(--main-primary) !important;
+    cursor: pointer !important;
+}
+
+.blog-submenu div.dt-container .dt-paging .dt-paging-button.current, .blog-submenu div.dt-container .dt-paging .dt-paging-button.current:hover{
+    border-radius: 10px !important;
+    border: 1px solid var(--main-primary);
+}
+.blog-submenu table.dataTable > tbody > tr {
+    background-color: transparent;
+    height: 52px !important;
+}
+.blog-submenu div.dt-container .dt-search input{
+    padding: 6px 10px !important;
+}
+.blog-submenu table.dataTable > tbody > tr.selected td{
+    box-shadow: unset !important;
+    background-color: var(--bg-navleft) !important;
+}
+
+.blog-submenu table.dataTable.display > tbody > tr:nth-child(odd).selected > .sorting_1, .blog-submenu table.dataTable.order-column.stripe > tbody > tr:nth-child(odd).selected > .sorting_1{
+    box-shadow: unset !important;
+}
+.blog-submenu table.dataTable.hover > tbody > tr.selected:hover > *, .blog-submenu table.dataTable.display > tbody > tr.selected:hover > *{
+    box-shadow: unset !important;
+}
+div.dt-container div.dt-layout-full {
+    width: 100% !important;
+    height: calc(100vh - 270px) !important;
+    overflow-y: auto !important;
+}
