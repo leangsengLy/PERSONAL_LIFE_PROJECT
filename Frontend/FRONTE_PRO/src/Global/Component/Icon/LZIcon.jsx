@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/react'
 import React from 'react'
 
-function LZIcon({typeIcon,onClickIcon}) {
+function LZIcon({typeIcon,onClickIcon,isRounded}) {
     let icon = "";
     let color = "";
     if(typeIcon=="add") {
@@ -20,8 +20,12 @@ function LZIcon({typeIcon,onClickIcon}) {
         icon=<i className=" pi pi-eye text-white"></i>;
         color="warning"
     }
+    else if(typeIcon=="cancel") {
+        icon=<i className=" pi pi-times text-[#616161]"></i>;
+        color="default"
+    }
   return (
-    <Button isIconOnly={true}  color={color} onClick={onClickIcon}>{icon}</Button>
+    <Button isIconOnly={true}  color={color} className={`${isRounded?`rounded-full transition-all ease-linear`:``}`}   onClick={onClickIcon} variant={isRounded?`light`:``}>{icon}</Button>
   )
 }
 

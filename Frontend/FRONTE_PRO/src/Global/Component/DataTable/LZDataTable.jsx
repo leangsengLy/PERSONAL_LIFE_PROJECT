@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
+import 'datatables.net-responsive-dt';
+import 'datatables.net-select-dt';
 import $ from 'jquery';
 DataTable.use(DT);
 function LzDataTable({columns,data}) {
@@ -10,19 +12,20 @@ function LzDataTable({columns,data}) {
     })
   return (
     <div>
-      
         <DataTable 
         columns={columns} 
         options={{
             responsive: true,
-            select: true,
             language:{
                 lengthMenu: "_MENU_ " ,
                 search: "", 
                 // info: `Total Record ${data.length}`,             
-            }
+            },
         }} 
-        data={data} className="display"
+        data={data}
+        highlightOnHover
+        fixedHeader
+        className="display"
         >
         </DataTable>
     </div>

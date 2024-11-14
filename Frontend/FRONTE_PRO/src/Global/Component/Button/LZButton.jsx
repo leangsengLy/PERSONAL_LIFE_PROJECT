@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/react'
 import React from 'react'
 
-function LZButton({isDisabled,typeButton,label,size,Variant,isLoading,isIcon=false}) {
+function LZButton({isDisabled,typeButton,click,label,size,Variant,isLoading,isIcon=false}) {
     let color="primary";
     let VarianBtn = "solid";
     let icon ="";
@@ -14,18 +14,21 @@ function LZButton({isDisabled,typeButton,label,size,Variant,isLoading,isIcon=fal
         color='danger';
         icon ="ri-delete-bin-line";
     }
-    else if(typeButton=="update")color='success';
+    else if(typeButton=="save"){
+        color='success';
+        icon ="ri-save-fill !text-white";
+    }
     else if(typeButton=="cancel"){
         color='default';
-        icon ="ri-close-line";
+        icon ="ri-close-line !text-[#505050]";
     }
-    else if(typeButton=="reset")color='warning';
+    else if(typeButton=="reset") color='warning';
 
     if(Variant=="ghost") VarianBtn="ghost";
     else if(Variant=="light") VarianBtn="light";
   return (
     <div>
-        <Button isDisabled={isDisabled} color={color} Variants={VarianBtn} size={sizeBtn} isLoading={isLoading}>{isIcon?(<><i className={icon}></i></>):(<></>)}{label??"No Label"} </Button>
+        <Button isDisabled={isDisabled} color={color} className={`${typeButton!=="cancel"?`text-white`:`text-[#989898]`}`} onClick={click} Variants={VarianBtn} size={sizeBtn} isLoading={isLoading}>{isIcon?(<><i className={icon}></i></>):(<></>)}{label??"No Label"} </Button>
     </div>
   )
 }

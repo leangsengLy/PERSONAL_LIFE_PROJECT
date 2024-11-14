@@ -10,8 +10,14 @@ import { Provider } from 'react-redux'
 import { NextUIProvider } from '@nextui-org/react'
 import * as lz_module from '../../../LZ_MODULE/Global.js'
 import 'primeicons/primeicons.css';
-import 'datatables.net-select-dt';
-import 'datatables.net-responsive-dt';
+// import 'datatables.net-select-dt';
+// import 'datatables.net-responsive-dt';
+
+// import 'datatables.net';
+// // import 'datatables.net-dt/css/jquery.dataTables.css';
+// import 'datatables.net-responsive';
+// import 'datatables.net-responsive-dt/css/responsive.dataTables.css';
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';

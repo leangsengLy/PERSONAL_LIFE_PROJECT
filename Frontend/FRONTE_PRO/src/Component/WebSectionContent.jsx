@@ -25,7 +25,20 @@ function WebSectionContent() {
     const ClickHome=()=>{
       navigate('/')
     }
- 
+    window.addEventListener('resize',(e)=>{
+      if(e.currentTarget.innerWidth<675){
+        SetCollapse(true)
+        setTimeout(()=>{
+          setDuration(true)
+        },200)
+      }else{
+        SetCollapse(false)
+        setTimeout(()=>{
+          setDuration(false)
+        },200)
+      }
+      
+    })
     const onSubMenu=(Code)=>{
       navigate(`${Code}`)
       SetSubMenuCode(Code)
@@ -87,7 +100,7 @@ function WebSectionContent() {
               <div className='w-full h-[50px] lz-animation relative bg-navleft flex items-center pl-3'>
                 <ActionTopRight isLoginOrisHomePage={false}/>
               </div>
-              <div className='py-3 px-5 blog-submenu'>
+              <div className='py-3 px-5 blog-submenu lzscroll'>
                 <Outlet/>
               </div>
             </div>
