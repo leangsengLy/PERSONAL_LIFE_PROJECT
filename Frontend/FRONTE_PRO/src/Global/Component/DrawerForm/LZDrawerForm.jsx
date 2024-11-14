@@ -1,5 +1,5 @@
 import { Drawer } from '@mui/material'
-import { Button, Input } from '@nextui-org/react'
+import { Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import React, { useState } from 'react'
 import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
@@ -22,6 +22,16 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
     const checkValidatioForm = ()=>{
         // SaveData()
     }
+    const SelectRadio = (value)=>{
+        console.log(value)
+    }
+    const CheckboxData = (type,text)=>{
+        if(type=="Gender"){
+            let newData = data.filter(val=>val.type=="checkbox");
+            console.log(newData)
+        }
+        
+    }
   return (
     <Drawer anchor={ui.placement??'right'}  open={propDrawer.open??true} onClose={fn.onClose}>
         <div className={`${ui.width??`w-[340px]`} px-4 py-3`}>
@@ -32,7 +42,43 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                 <div className='flex flex-col gap-y-5'>
                     {data.map((val)=>{
                         return (<>
-                            <Input type={val.type} isRequired={val.isRequired} errorMessage={val.isRequired?`Error input data!`:``} isInvalid={val.isRequired?true:``} onChange={EventInputForm} labelPlacement="inside" className='!rounded-full' name={val.label} placeholder={`Enter ${val.label}`} label={val.label} />
+                            {val.type=="text"?(<>
+                                <Input 
+                                    type={val.type}
+                                    isRequired={val.isRequired}
+                                    errorMessage={val.isRequired?`Error input data!`:``} 
+                                    isInvalid={val.isRequired?true:``} 
+                                    onChange={EventInputForm} 
+                                    labelPlacement="inside" 
+                                    className='!rounded-full' 
+                                    name={val.name}  
+                                    label={val.label} 
+                                    />
+                            </>):(<></>)}
+                            {
+                                val.type=="checkbox"?(<>
+                                    <div className='flex gap-x-4 flex-wrap'>
+                                        <RadioGroup color='warning' onChange={SelectRadio} name={val.name} defaultValue={0}>
+                                            {
+                                                val.child.map((v)=>{
+                                                    return (<>
+                                                        <Radio value={v.value}>{v.text}</Radio>
+                                                    </>)
+                                                })
+                                            }
+                                         </RadioGroup>
+                                    </div>
+                                    
+                                </>):(<></>)
+                            }    
+                            {val.type=="textArea"?(<>
+                                <Textarea 
+                                label={val.label} 
+                                isRequired={val.isRequired??false}
+                                isInvalid={val.isRequired?true:``} 
+                                errorMessage={val.isRequired?`Error input data!`:``} 
+                                />
+                            </>):(<></>)}
                         </>)
                     })}
                 </div>

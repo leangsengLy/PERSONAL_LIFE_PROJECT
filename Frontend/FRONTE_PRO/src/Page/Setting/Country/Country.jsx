@@ -92,22 +92,45 @@ function Country() {
     const dataInForm = [
         {
             label:"Code",
+            name:"Code",
             type:"text",
             isRequired:true
         },
         {
             label:"Name",
+            name:"Name",
             type:"text",
             isRequired:true
         },
         {
             label:"EnglishName",
+            name:"EnglishName",
             type:"text",
+            isRequired:true
         },
         {
             label:"Description",
-            type:"text",
+            name:"Description",
+            type:"textArea",
+            isRequired:true
         },
+        {
+            type:"checkbox",
+            label:"Gender",
+            name:"Gender",
+            child:[
+                {
+                    text:"Female",
+                    isSelectDafault:true,
+                    value:0
+                },
+                {
+                    text:"Male",
+                    value:1
+                }
+            ]
+        }
+        
 
     ]
     const CanceModal=(title)=>{
