@@ -30,3 +30,19 @@
         color:var(--color-3) !important;
     }
 }
+
+.lz-2line{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Number of lines to display */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;       /* Set a max width */
+}
+
+.lz-line{
+    max-width: 149px;           /* Set a fixed width */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

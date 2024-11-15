@@ -12,7 +12,7 @@ const ValidToken =(req,res,next)=>{
             }
         })
     }else{
-        return res.status(401).json({message:"We don't your token so we not allow to access!"})
+        return res.status(401).json({message:"You don't have token so we not allow to access!"})
     }
 }
 export default ValidToken;

@@ -6,6 +6,7 @@ import path from 'path'
 import cors from 'cors'
 import dotenv  from 'dotenv'
 import RouteUser from './Routes/User/Login.js'
+import RoutedCountry from './Routes/Country/Country.js';
 dotenv.config();
 
 const chromeFile = path.join(process.cwd(),'chrome')
@@ -18,7 +19,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'] // Adjust based on your needs
 }))
 app.use('/api/user',RouteUser)
-
+app.use('/api/country',RoutedCountry)
 
 app.get('/',(req,res)=>{
     return res.sendFile(path.join(process.cwd(),'HTML/Index.html'))

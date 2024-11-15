@@ -76,8 +76,6 @@ function Country() {
     const [isShowModal,setIsShowModal]=useState(false)
     useEffect(()=>{
         window.addEventListener("click",(e)=>{
-            e.preventDefault();
-            e.stopPropagation();
             if(e.target.className.includes("edit")) console.log("edit")
             else if(e.target.className.includes("view")) console.log("view")
             else if(e.target.className.includes("delete")) console.log("delete")
@@ -93,43 +91,47 @@ function Country() {
         {
             label:"Code",
             name:"Code",
+            isRequired:true,
             type:"text",
-            isRequired:true
         },
         {
             label:"Name",
             name:"Name",
+            isRequired:true,
             type:"text",
-            isRequired:true
         },
         {
             label:"EnglishName",
             name:"EnglishName",
             type:"text",
-            isRequired:true
         },
         {
-            label:"Description",
-            name:"Description",
-            type:"textArea",
-            isRequired:true
+            label:"Country Image",
+            name:"CountryImage",
+            type:"file",
         },
-        {
-            type:"checkbox",
-            label:"Gender",
-            name:"Gender",
-            child:[
-                {
-                    text:"Female",
-                    isSelectDafault:true,
-                    value:0
-                },
-                {
-                    text:"Male",
-                    value:1
-                }
-            ]
-        }
+        // {
+        //     label:"Description",
+        //     name:"Description",
+        //     type:"textArea",
+        // },
+        // {
+        //     type:"checkbox",
+        //     label:"Gender",
+        //     name:"Gender",
+        //     isRequired:true,
+        //     child:[
+        //         {
+        //             text:"Female",
+        //             isSelectDafault:true,
+        //             value:0
+        //         },
+        //         {
+        //             text:"Male",
+        //             value:1
+        //         }
+        //     ]
+        // }
         
 
     ]
@@ -138,7 +140,6 @@ function Country() {
         setIsShowModal(false)
     }
     const SaveData=(title)=>{
-        console.log(title)
         setIsShowModal(false)
     }
   return (

@@ -15,15 +15,17 @@ const LZComfirm = () => {
   }
   return (
     <div>
-        <Modal isOpen={isShowComfirm} backdrop='blur' onClose={closeModal} classNames={{
+        <Modal isOpen={isShowComfirm} backdrop='blur'  onClose={closeModal} classNames={{
           closeButton:'!color-3 mt-3 mr-3 text-[17px] ',
-          base:'!bg-popup',
+          base:'!bg-popup ',
+          wrapper:"!z-[1770]",
           header:'pb-0',
-          footer:"pt-1"
+          footer:"pt-1",
+          backdrop:"!z-[1400]"
           }}>
             <ModalContent>
                 <ModalHeader>
-                <h1 className='justify-center'>{comfirm.title} </h1> 
+                <h1 className='justify-center'><i className={`${comfirm.Icon} mr-2`}></i> {comfirm.title} </h1> 
                 </ModalHeader>
                 <ModalBody>
                   {comfirm.message}
