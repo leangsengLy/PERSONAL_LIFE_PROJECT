@@ -11,7 +11,8 @@ dotenv.config();
 
 const chromeFile = path.join(process.cwd(),'chrome')
 const app = express();
-app.use(express.static(path.join(process.cwd(),'Public/Image')))
+app.use(express.static(path.join(process.cwd(),'Public/Image'))) //using for specific folder that allow to show on chrome like image....
+app.use(express.static(path.join(process.cwd(),'uploads'))) //using for specific folder that allow to show on chrome like image....
 app.use(express.json())
 app.use(cors({
     origin:"http://localhost:8090",
