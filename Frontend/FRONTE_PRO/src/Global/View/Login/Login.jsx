@@ -15,6 +15,7 @@ import CountryLanguage from '../../../Component/CircleAction/LZIconLanguage.jsx'
 import LZIconTheme from '../../../Component/CircleAction/LZIconTheme.jsx'
 import { DecodeToken } from '../../../Util/DecodeToken.js'
 import { useNavigate } from 'react-router-dom'
+import { setInforUser } from '../../../Store/UserLogin/UserLogin.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
@@ -26,6 +27,7 @@ const Login = () => {
   const isFirstCreateHint = useRef(true)
   const isFirstCreatePw = useRef(true)
   const isFirstCreateUser = useRef(true)
+  const dispatch = useDispatch();
   const navigate = useNavigate()
   const click = SoundAudio('click')
   const noti = SoundAudio('noti')
@@ -140,6 +142,7 @@ const onSignUpUser=()=>{
       success:(result)=>{
         const getToken = DecodeToken(result.token);
         setCockieOnWeb(getToken,result.token)
+        dispatch(setInforUser(getToken))
         noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})

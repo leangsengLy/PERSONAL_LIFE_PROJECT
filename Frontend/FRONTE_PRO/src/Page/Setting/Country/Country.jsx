@@ -3,8 +3,13 @@ import LzDataTable from '../../../Global/Component/DataTable/LzDataTable'
 import LZButton from '../../../Global/Component/Button/LZButton'
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Drawer } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm';
+import { HttpRequest } from '../../../Global/API_HTTP/http';
+import moment from 'moment/moment';
+import { ShowSnackbar } from '../../../Util/globalUtils';
+import { SystemSpeakByText } from '../../../Util/SystenSayByText';
+import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
 function Country() {
     const columnData=[
         {
@@ -37,9 +42,12 @@ function Country() {
         },
         {
             title:"CreateDate",
-            data:"CreateDate",
-            width: "100px" ,
+            data:"DateCreated",
+            width: "200px" ,
             sortable:false,
+            render:(data)=>{
+                return moment(data).format("MMMM DD,YYYY");
+            }
            
         },
         {
@@ -52,7 +60,7 @@ function Country() {
         {
             title:"UpdateDate",
             data:"UpdateDate",
-            width: "100px" ,
+            width: "200px" ,
             sortable:false,
         },
         {
@@ -73,14 +81,44 @@ function Country() {
        
     ]
     const dataList = useSelector((state)=>state.Country.dataList)
+    const dispatch = useDispatch();
     const [isShowModal,setIsShowModal]=useState(false)
-    useEffect(()=>{
+    const [DataCountry,setDataCountry]=useState([])
+    const [data,SetData] = useState([])
+    dispatch(setModalConfirm({
+        type:"delete",
+        message:"Do you want to delete this country",
+        onClose:()=>{
+            console.log("Code")
+            dispatch(setIsShow(false))
+        },
+        onOk:()=>{
+            console.log("Ok")
+            dispatch(setIsShow(false))
+        }
+    }))
+    useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
             else if(e.target.className.includes("view")) console.log("view")
-            else if(e.target.className.includes("delete")) console.log("delete")
+            else if(e.target.className.includes("delete")){
+                console.log("delete")
+                dispatch(setIsShow(true))
+            }
         })
     },[])
+    useEffect(()=>{
+        HttpRequest({
+            url:"/api/country/list",
+            method:'get',
+            success:(result)=>{
+                SetData(result.data)
+            },
+            error:(error)=>{
+                console.log(error)
+            }
+        })
+    },[DataCountry])
     const CloseModal=()=>{
         setIsShowModal(false)
     }
@@ -110,37 +148,24 @@ function Country() {
             name:"CountryImage",
             type:"file",
         },
-        // {
-        //     label:"Description",
-        //     name:"Description",
-        //     type:"textArea",
-        // },
-        // {
-        //     type:"checkbox",
-        //     label:"Gender",
-        //     name:"Gender",
-        //     isRequired:true,
-        //     child:[
-        //         {
-        //             text:"Female",
-        //             isSelectDafault:true,
-        //             value:0
-        //         },
-        //         {
-        //             text:"Male",
-        //             value:1
-        //         }
-        //     ]
-        // }
-        
-
     ]
     const CanceModal=(title)=>{
-        console.log(title)
         setIsShowModal(false)
     }
-    const SaveData=(title)=>{
-        setIsShowModal(false)
+    const SaveData=async (data)=>{
+       await HttpRequest({
+            url:"/api/country/create",
+            method:"Post",
+            data:data,
+            success:(result)=>{
+                setDataCountry(result.data)
+                setIsShowModal(false)
+            },
+            error:(error)=>{
+                SystemSpeakByText(error.message,false)
+                ShowSnackbar({message:error.message,type:"error"})
+            }
+        })
     }
   return (
     <div >
@@ -148,7 +173,7 @@ function Country() {
         <div className='flex justify-end'>
             <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
         </div>
-        <LzDataTable data={dataList} columns={columnData}/>
+        <LzDataTable data={data} columns={columnData}/>
         <LZDrawerForm ui={{}} data={dataInForm} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onCancel:CanceModal}}/>
     </div>
   )

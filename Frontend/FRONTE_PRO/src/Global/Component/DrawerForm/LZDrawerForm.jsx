@@ -19,21 +19,8 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
     const [SourseImage,setSourseImage] = useState(null)
     const SaveData=()=>{
         console.log(GetData)
-        fn.onSave("click save")
     }
-    dispatch(setModalConfirm({
-        onClose:()=>{
-            dispatch(setIsShow(false))
-        },
-        onOk:()=>{
-            setImage(null);
-            setSourseImage(null);
-            dispatch(setIsShow(false))
-            console.log(Image)
-        },
-        message:"Do you want delele this Image!",
-        type:"delete"
-    }))
+    
     let NameCheckBox = "";
     const EventInputForm=(e)=>{
         setGetData(val=>{
@@ -44,7 +31,7 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
         NameCheckBox =name;
     }
     const checkValidatioForm = ()=>{
-        console.log(GetData)
+        fn.onSave(GetData)
     }
     const SelectRadio = (value)=>{
         setTimeout(()=>{
@@ -61,6 +48,20 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
     const onUploadFile=()=>{
         UploadFile.current.click();
     }
+    dispatch(setModalConfirm({
+        onClose:()=>{
+            dispatch(setIsShow(false))
+        },
+        onOk:()=>{
+            setImage(null);
+            setSourseImage(null);
+            dispatch(setIsShow(false))
+            console.log(Image)
+        },
+        message:"Do you want delele this Image!",
+        type:"delete"
+    }))
+    
     const clickCancelImage=()=>{
         dispatch(setIsShow(true))
     }
@@ -69,7 +70,7 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
     })
    
   return (
-    <Drawer  anchor={ui.placement??'right'}  open={propDrawer.open??true}>
+    <Drawer  anchor={ui.placement??'right'}  open={propDrawer.open??false}>
         <div className={`${ui.width??`w-[370px]`} px-4 py-3`}>
                 <div className='flex justify-between items-center mb-3'>
                     <h1 className='text-[16px] font-bold'>{propDrawer.label??'No label'}</h1>

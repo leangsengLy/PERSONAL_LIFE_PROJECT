@@ -5,6 +5,7 @@ import sql from 'mssql';
 import path from 'path';
 import multer from 'multer';
 import moment from 'moment';
+//Store file in folder
 const storage = multer.diskStorage({
     destination:'./uploads/',
     filename:(req,file,cb)=>{
@@ -13,7 +14,6 @@ const storage = multer.diskStorage({
 })
 const uploadFile = multer({storage:storage})
 RoutedCountry.get('/list',(req,res)=>{
-    // res.setHeader('Content-Type', 'application/json; charset=utf-8');
     db.query(`SELECT * FROM LZCOUNTRY`,(error,result)=>{
         return res.send(result.recordset)
     })
@@ -32,7 +32,7 @@ RoutedCountry.post('/create',uploadFile.single("FileCountry"),async (req,res)=>{
     if((Code==null || Code==undefined) && (Name==null|| Name==undefined)) return res.send({message:"Some information we are required please input!"});
     const stringCheck = `SELECT * FROM LZCOUNTRY WHERE Code = @Code`;
     const checkCode = await db.request().input('Code',sql.VarChar,Code).query(stringCheck) //this line we using for assign value by paramater on "Code"
-    if(checkCode.recordset.length>0) return res.send({message:"Code Already existed!"})
+    if(checkCode.recordset.length>0) return res.status(400).send({message:"Code Already existed!"})
     db.query(`INSERT INTO LZCOUNTRY VALUES('${Code}',N'${Name}','${EnglishName}','${req?.file?.filename??null}','${moment().format('YYYY/MM/DD')}','Lyzee',null,null)`,(error,result)=>{
         if(result){
             return res.status(200).send({
