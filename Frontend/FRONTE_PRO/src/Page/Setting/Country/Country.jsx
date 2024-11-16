@@ -17,15 +17,12 @@ function Country() {
             data:"Code",
             width: "100px" ,
             className:"min-width",
-            selector:row=>row.Code,
-            sortable:true,
         },
         {
             title:"Name",
             data:"Name",
             width: "100px" ,
             className:"all ",
-            selector:row=>row.Name
         },
         {
             title:"EnglishName",
@@ -36,15 +33,12 @@ function Country() {
             title:"CreateBy",
             data:"CreateBy",
             width: "100px" ,
-            sortable:false,
-            selector:row=>row.CreateBy
 
         },
         {
             title:"CreateDate",
             data:"DateCreated",
             width: "200px" ,
-            sortable:false,
             render:(data)=>{
                 return moment(data).format("MMMM DD,YYYY");
             }
@@ -54,23 +48,19 @@ function Country() {
             title:"UpdateBy",
             data:"UpdateBy",
             width: "100px" ,
-            sortable:false,
           
         },
         {
             title:"UpdateDate",
             data:"UpdateDate",
             width: "200px" ,
-            sortable:false,
         },
         {
             title:"Action",
             data:null,
-            sortable:false,
             width: "0px" ,
             className:"all",
             render:(data)=>{
-                console.log(data)
                 return `<div class="flex gap-x-2">
                     <button  class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-blue-500 "><i class="ri-eye-fill view text-white" Id='${data.Id}'></i></button>
                     <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-green-500 "><i class="ri-pencil-fill edit text-white" Id='${data.Id}'></i></button>
@@ -126,6 +116,7 @@ function Country() {
             url:"/api/country/list",
             method:'get',
             success:(result)=>{
+                console.log(result.data)
                 SetData(result.data)
             },
             error:(error)=>{

@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 })
 const uploadFile = multer({storage:storage})
 RoutedCountry.get('/list',(req,res)=>{
-    db.query(`SELECT * FROM LZCOUNTRY`,(error,result)=>{
+    db.query(`SELECT * FROM LZCOUNTRY ORDER BY ID DESC`,(error,result)=>{
         return res.status(200).send(result.recordset)
     })
 })  
