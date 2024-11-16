@@ -69,14 +69,14 @@ function Country() {
             sortable:false,
             width: "0px" ,
             className:"all",
-            render:(data)=>(
-                `<div class="flex gap-x-2">
-                    <button  class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-blue-500 "><i class="ri-eye-fill view text-white"></i></button>
-                    <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-green-500 "><i class="ri-pencil-fill edit text-white"></i></button>
-                    <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-red-500 "><i class="ri-delete-bin-line delete text-white"></i></button>
+            render:(data)=>{
+                console.log(data)
+                return `<div class="flex gap-x-2">
+                    <button  class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-blue-500 "><i class="ri-eye-fill view text-white" Id='${data.Id}'></i></button>
+                    <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-green-500 "><i class="ri-pencil-fill edit text-white" Id='${data.Id}'></i></button>
+                    <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-red-500 "><i class="ri-delete-bin-line delete text-white" Id='${data.Id}'></i></button>
                 </div>`
-            ),
-            
+            }
         },
        
     ]
@@ -85,24 +85,38 @@ function Country() {
     const [isShowModal,setIsShowModal]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
     const [data,SetData] = useState([])
-    dispatch(setModalConfirm({
-        type:"delete",
-        message:"Do you want to delete this country",
-        onClose:()=>{
-            console.log("Code")
-            dispatch(setIsShow(false))
-        },
-        onOk:()=>{
-            console.log("Ok")
-            dispatch(setIsShow(false))
-        }
-    }))
+    const DeleteCountry= async()=>{
+            await HttpRequest({
+                url:"/api/country/delete",
+                method:"get",
+                success:(result)=>{
+                    
+                },
+                error:(result)=>{
+
+                }
+            })
+    }
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
             else if(e.target.className.includes("view")) console.log("view")
             else if(e.target.className.includes("delete")){
-                console.log("delete")
+                console.log(e.target)
+                let Id = e.target.attributes
+                dispatch(setModalConfirm({
+                    type:"delete",
+                    message:"Do you want to delete this country?",
+                    onClose:()=>{
+                        console.log("Code")
+                        dispatch(setIsShow(false))
+                    },
+                    onOk:()=>{
+                        console.log("Ok")
+                        DeleteCountry()
+                        dispatch(setIsShow(false))
+                    }
+                }))
                 dispatch(setIsShow(true))
             }
         })
