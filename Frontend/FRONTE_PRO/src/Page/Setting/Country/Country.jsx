@@ -17,20 +17,24 @@ function Country() {
             data:"Code",
             width: "100px" ,
             className:"min-width",
+           
         },
         {
             title:"Name",
             data:"Name",
             width: "100px" ,
+            sortable:false,
             className:"all ",
         },
         {
             title:"EnglishName",
             data:"EnglishName",
             className:"all ",
+            sortable:false,
         },
         {
             title:"CreateBy",
+            sortable:false,
             data:"CreateBy",
             width: "100px" ,
 
@@ -38,6 +42,7 @@ function Country() {
         {
             title:"CreateDate",
             data:"DateCreated",
+            sortable:false,
             width: "200px" ,
             render:(data)=>{
                 return moment(data).format("MMMM DD,YYYY");
@@ -47,18 +52,21 @@ function Country() {
         {
             title:"UpdateBy",
             data:"UpdateBy",
+            sortable:false,
             width: "100px" ,
           
         },
         {
             title:"UpdateDate",
             data:"UpdateDate",
+            sortable:false,
             width: "200px" ,
         },
         {
             title:"Action",
             data:null,
             width: "0px" ,
+            sortable:false,
             className:"all",
             render:(data)=>{
                 return `<div class="flex gap-x-2">

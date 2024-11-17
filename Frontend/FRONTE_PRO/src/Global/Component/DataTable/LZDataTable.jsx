@@ -20,13 +20,9 @@ function LzDataTable({columns,data}) {
             language:{
                 lengthMenu: "_MENU_ " ,
                 search: "", 
-                // info: `Total Record ${data.length}`,             
             },
         }} 
         data={data}
-        highlightOnHover
-        defaultSortFieldId={null}
-        fixedHeader
         className="display"
         >
         </DataTable>

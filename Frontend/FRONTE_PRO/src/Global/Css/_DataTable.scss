@@ -1,6 +1,6 @@
-@import 'datatables.net-dt';
-@import 'datatables.net-responsive-dt';
-@import 'datatables.net-select-dt';
+// @import 'datatables.net-dt';
+// @import 'datatables.net-responsive-dt';
+// @import 'datatables.net-select-dt';
 div.dt-container .dt-search input{
     border-radius: 10px  !important; 
     height: 40px !important;
@@ -43,6 +43,9 @@ div.dt-container select.dt-input{
 }
 .blog-submenu table.dataTable.hover > tbody > tr.selected:hover > *, .blog-submenu table.dataTable.display > tbody > tr.selected:hover > *{
     box-shadow: unset !important;
+}
+.blog-submenu div.dt-container.dt-empty-footer tbody > tr:last-child > *{
+    white-space: nowrap !important;
 }
 // div.dt-container div.dt-layout-full {
 //     width: 100% !important;
