@@ -10,7 +10,16 @@ import moment from 'moment/moment';
 import { ShowSnackbar } from '../../../Util/globalUtils';
 import { SystemSpeakByText } from '../../../Util/SystenSayByText';
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
+import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
+import LZIcon from '../../../Global/Component/Icon/LZIcon';
 function Country() {
+    const EditCountry=()=>{
+        console.log("Edit")
+        setIsShowModal(true)
+    }
+    const DeleteCountry=()=>{
+        console.log("delete")
+    }
     const columnData=[
         {
             title:"Code",
@@ -23,18 +32,15 @@ function Country() {
             title:"Name",
             data:"Name",
             width: "100px" ,
-            sortable:false,
             className:"all ",
         },
         {
             title:"EnglishName",
             data:"EnglishName",
             className:"all ",
-            sortable:false,
         },
         {
             title:"CreateBy",
-            sortable:false,
             data:"CreateBy",
             width: "100px" ,
 
@@ -42,59 +48,52 @@ function Country() {
         {
             title:"CreateDate",
             data:"DateCreated",
-            sortable:false,
-            width: "200px" ,
-            render:(data)=>{
-                return moment(data).format("MMMM DD,YYYY");
-            }
-           
+            isDateTime:true,
+            width: "250px" ,
         },
         {
             title:"UpdateBy",
             data:"UpdateBy",
-            sortable:false,
             width: "100px" ,
           
         },
         {
             title:"UpdateDate",
             data:"UpdateDate",
-            sortable:false,
-            width: "200px" ,
+            isDateTime:true,
+            width: "250px" ,
         },
         {
             title:"Action",
             data:null,
-            width: "0px" ,
-            sortable:false,
+            width: "100px" ,
             className:"all",
-            render:(data)=>{
-                return `<div class="flex gap-x-2">
-                    <button  class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-blue-500 "><i class="ri-eye-fill view text-white" Id='${data.Id}'></i></button>
-                    <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-green-500 "><i class="ri-pencil-fill edit text-white" Id='${data.Id}'></i></button>
-                    <button class="w-[26px] h-[26px] rounded-md flex justify-center items-center bg-red-500 "><i class="ri-delete-bin-line delete text-white" Id='${data.Id}'></i></button>
-                </div>`
-            }
+            isDraw:true,
+            renderTag:<div className='text-red-400 flex gap-x-2'>
+                    <LZIcon  typeIcon="edit" onClickIcon={EditCountry}/>
+                    <LZIcon  typeIcon="delete" onClickIcon={DeleteCountry}/>
+            </div>
         },
        
     ]
+   
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const [isShowModal,setIsShowModal]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
     const [data,SetData] = useState([])
-    const DeleteCountry= async()=>{
-            await HttpRequest({
-                url:"/api/country/delete",
-                method:"get",
-                success:(result)=>{
+    // const DeleteCountry= async()=>{
+    //         await HttpRequest({
+    //             url:"/api/country/delete",
+    //             method:"get",
+    //             success:(result)=>{
                     
-                },
-                error:(result)=>{
+    //             },
+    //             error:(result)=>{
 
-                }
-            })
-    }
+    //             }
+    //         })
+    // }
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
@@ -183,10 +182,11 @@ function Country() {
   return (
     <div >
         <h1 className='text-[17px] font-bold'>Country</h1>
-        <div className='flex justify-end'>
+        <div className='flex justify-end mb-5'>
             <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
         </div>
-        <LzDataTable data={data} columns={columnData}/>
+        {/* <LzDataTable data={data} columns={columnData}/> */}
+        <LZTableDefault column={columnData} data={data}/>
         <LZDrawerForm ui={{}} data={dataInForm} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onCancel:CanceModal}}/>
     </div>
   )

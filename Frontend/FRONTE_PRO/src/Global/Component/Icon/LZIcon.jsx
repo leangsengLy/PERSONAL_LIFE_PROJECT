@@ -25,7 +25,7 @@ function LZIcon({typeIcon,onClickIcon,isRounded}) {
         color="default"
     }
   return (
-    <Button isIconOnly={true}  color={color} className={`${isRounded?`rounded-full transition-all ease-linear`:``}`}   onClick={onClickIcon} variant={isRounded?`light`:``}>{icon}</Button>
+    <Button isIconOnly={true}  color={color} className={`${isRounded?`rounded-full transition-all ease-linear`:``}`} size="sm"  onClick={onClickIcon}  variant={isRounded?`light`:`solid`}>{icon}</Button>
   )
 }
 
