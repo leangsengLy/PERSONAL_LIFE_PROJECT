@@ -3,11 +3,8 @@ import {Outlet, useNavigate, useParams } from 'react-router-dom'
 import {StoreMenu} from '../MenuStore/menuData.js'
 import img from './../../public/Gif/Gears.gif'
 import ActionTopRight from './BlogContent/ActionTopRight.jsx'
-import collapseRight from '../../public/Icon/Collapse/collapse-right.svg';
-import collapseLeft from '../../public/Icon/Collapse/collapse-left.svg';
 function WebSectionContent() {
     const param = useParams()
-    console.log(StoreMenu)
     const navigate = useNavigate();
     const [Menus,SetMenus]=useState([])
     const [collapse,SetCollapse]=useState(false)
@@ -21,10 +18,18 @@ function WebSectionContent() {
             SetSubMenuCode(data[0].SubMenu[0].Code)
           }
         }
+        
     },[])
+    useEffect(()=>{
+      if(SubMenuCode!==''){
+        navigate(`/web/${param.type}/${SubMenuCode}`)
+      }
+    },[SubMenuCode])
+    
     const ClickHome=()=>{
       navigate('/')
     }
+    
     window.addEventListener('resize',(e)=>{
       if(e.currentTarget.innerWidth<675){
         SetCollapse(true)

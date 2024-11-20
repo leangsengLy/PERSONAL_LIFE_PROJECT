@@ -13,12 +13,38 @@ import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
 import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
 import LZIcon from '../../../Global/Component/Icon/LZIcon';
 function Country() {
-    const EditCountry=()=>{
-        console.log("Edit")
+    const dataList = useSelector((state)=>state.Country.dataList)
+    const dispatch = useDispatch();
+    const [isShowModal,setIsShowModal]=useState(false)
+    const [DataCountry,setDataCountry]=useState([])
+    const [data,SetData] = useState([])
+    const EditCountry=(data)=>{
+        console.log(data)
         setIsShowModal(true)
     }
-    const DeleteCountry=()=>{
-        console.log("delete")
+    const DeleteCountry=(data)=>{
+        dispatch(setIsShow(true))
+        dispatch(setModalConfirm({
+            type:"delete",
+            message:"Do you want to delete this country?",
+            onClose:()=>{
+                dispatch(setIsShow(false))
+            },
+            onOk:async()=>{
+                dispatch(setIsShow(false))
+                await HttpRequest({
+                    url:`/api/country/delete/${data.Id}`,
+                    method:"get",
+                    success:(result)=>{
+                        getList();
+                    },
+                    error:(err)=>{
+                        console.log(err)
+                    }
+                })
+            }
+        }))
+        
     }
     const columnData=[
         {
@@ -69,31 +95,24 @@ function Country() {
             width: "100px" ,
             className:"all",
             isDraw:true,
-            renderTag:<div className='text-red-400 flex gap-x-2'>
-                    <LZIcon  typeIcon="edit" onClickIcon={EditCountry}/>
-                    <LZIcon  typeIcon="delete" onClickIcon={DeleteCountry}/>
-            </div>
+            
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='text-red-400 flex gap-x-2'>
+                            <LZIcon  typeIcon="edit" onClickIcon={()=>{EditCountry(data)}}/>
+                            <LZIcon  typeIcon="delete" onClickIcon={()=>{DeleteCountry(data)}}/>
+                        </div>
+                    </>
+                )
+                console.log(data)
+            }
         },
        
     ]
    
-    const dataList = useSelector((state)=>state.Country.dataList)
-    const dispatch = useDispatch();
-    const [isShowModal,setIsShowModal]=useState(false)
-    const [DataCountry,setDataCountry]=useState([])
-    const [data,SetData] = useState([])
-    // const DeleteCountry= async()=>{
-    //         await HttpRequest({
-    //             url:"/api/country/delete",
-    //             method:"get",
-    //             success:(result)=>{
-                    
-    //             },
-    //             error:(result)=>{
-
-    //             }
-    //         })
-    // }
+  
+ 
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
@@ -105,7 +124,6 @@ function Country() {
                     type:"delete",
                     message:"Do you want to delete this country?",
                     onClose:()=>{
-                        console.log("Code")
                         dispatch(setIsShow(false))
                     },
                     onOk:()=>{
@@ -119,6 +137,10 @@ function Country() {
         })
     },[])
     useEffect(()=>{
+        getList();
+    },[DataCountry])
+
+    const getList=()=>{
         HttpRequest({
             url:"/api/country/list",
             method:'get',
@@ -130,7 +152,7 @@ function Country() {
                 console.log(error)
             }
         })
-    },[DataCountry])
+    }
     const CloseModal=()=>{
         setIsShowModal(false)
     }
@@ -170,7 +192,7 @@ function Country() {
             method:"Post",
             data:data,
             success:(result)=>{
-                setDataCountry(result.data)
+                getList();
                 setIsShowModal(false)
             },
             error:(error)=>{

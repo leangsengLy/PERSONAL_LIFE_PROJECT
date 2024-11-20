@@ -8,10 +8,10 @@ import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm'
 import { image } from 'framer-motion/client'
 
 function LZDrawerForm({ui,fn,propDrawer,data}) {
-    console.log(ui)
-    console.log(fn)
-    console.log(data)
-    console.log(propDrawer)
+    // console.log(ui)
+    // console.log(fn)
+    // console.log(data)
+    // console.log(propDrawer)
     const dispatch = useDispatch()
     const UploadFile = useRef(null);
     const [GetData,setGetData]=useState([]);

@@ -1,15 +1,17 @@
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import moment from 'moment/moment'
 import React from 'react'
+import { useParams } from 'react-router-dom'
 
 function LZTableDefault({column,data}) {
-    const onclickRow=(key)=>{
+    const param = useParams();
+    console.log(param)
+    const handleRowClick=(key)=>{
         console.log(key)
     }
   return (
     <div>
         <Table removeWrapper={false} 
-            onCellAction={onclickRow}
             classNames={{wrapper:['bg-navleft'],th:['bg-box-wrapper']}}
             className='w-full'
         >
@@ -20,13 +22,14 @@ function LZTableDefault({column,data}) {
                     ))
                 }
             </TableHeader>
-            <TableBody>
+            <TableBody emptyContent={`Empty data of ${param.subType}`}>
                     {
                         data.map((val,index)=>(
-                        <TableRow key={val.Id}>
+                        <TableRow key={val.Id} onClick={() => handleRowClick(val)}>
                             {column.map(v=>(
                                 <TableCell>{v.isDraw?(<>
-                                {v.renderTag}
+                                {typeof v.renderTag == 'function'? v.renderTag(val):v.renderTag}
+                                    {v.renderTag}
                                 </>):(<>
                                     {
                                         v.isDateTime?(<>
