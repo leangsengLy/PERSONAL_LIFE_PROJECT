@@ -207,7 +207,6 @@ function Country() {
         <div className='flex justify-end mb-5'>
             <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
         </div>
-        {/* <LzDataTable data={data} columns={columnData}/> */}
         <LZTableDefault column={columnData} data={data}/>
         <LZDrawerForm ui={{}} data={dataInForm} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onCancel:CanceModal}}/>
     </div>

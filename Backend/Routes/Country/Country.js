@@ -28,7 +28,7 @@ RoutedCountry.get('/delete/:Id',async (req,res)=>{
 })
 RoutedCountry.post('/create',uploadFile.single("FileCountry"),async (req,res)=>{
     const {Code,Name,EnglishName} = req.body;
-    if((Code==null || Code==undefined) && (Name==null|| Name==undefined)) return res.status(400).send({message:"Some information we are required please input!"});
+    if((Code==null  || Code=='' || Code==undefined) && (Name==null|| Name==''|| Name==undefined)) return res.status(400).send({message:"Some information we are required please input!"});
     const stringCheck = `SELECT * FROM LZCOUNTRY WHERE Code = @Code`;
     const checkCode = await db.request().input('Code',sql.VarChar,Code).query(stringCheck) //this line we using for assign value by paramater on "Code"
     if(checkCode.recordset.length>0) return res.status(400).send({message:"Code Already existed!"})

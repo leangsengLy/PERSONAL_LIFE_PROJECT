@@ -3,7 +3,7 @@ import { Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm'
 import { image } from 'framer-motion/client'
 
@@ -17,21 +17,59 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
     const [GetData,setGetData]=useState([]);
     const [Image,setImage] = useState(null)
     const [SourseImage,setSourseImage] = useState(null)
-    const SaveData=()=>{
-        console.log(GetData)
-    }
-    
+    const [IsFirstInput,SetIsFirstInput] = useState({})
+    const [HasReqired,setHasRequired] = useState([]);
+    useEffect(()=>{
+        setHasRequired(data.filter(v=>v.isRequired))
+        let dataObject = data.filter(v=>v.isRequired).map((val)=>({[val.name]:false})).reduce((acc, item) => {
+            return { ...acc, ...item };
+        }, {});
+        SetIsFirstInput(dataObject)
+        if(propDrawer.open){
+            setGetData([]);
+            setImage(null);
+            setSourseImage(null);
+        }
+    },[propDrawer.open])
     let NameCheckBox = "";
     const EventInputForm=(e)=>{
         setGetData(val=>{
             return {...val,[e.target.name]:e.target.value}
         })
+        SetIsFirstInput(val=>{
+            return {...val,[e.target.name]:true}
+        })
+        console.log(IsFirstInput)
     }
     const selectTheRadio = (name)=>{
         NameCheckBox =name;
     }
     const checkValidatioForm = ()=>{
-        fn.onSave(GetData)
+        if(HasReqired.length>0){
+            if(GetData.length==0){
+                Object.keys(IsFirstInput).map((val)=>{
+                    SetIsFirstInput(v=>{
+                        return {...v,[val]:true}
+                    })
+                })  
+            }else{
+                HasReqired.map((val)=>{
+                    if(!Object.keys(GetData).includes(val.name)){
+                        SetIsFirstInput(v=>{
+                            return {...v,[val.name]:true}
+                        })
+                    }else{
+                        SetIsFirstInput(v=>{
+                            return {...v,[val.name]:false}
+                        })
+                        fn.onSave(GetData)
+                    }
+                })
+            }
+        }else{
+            fn.onSave(GetData)
+        }
+       
     }
     const SelectRadio = (value)=>{
         setTimeout(()=>{
@@ -39,6 +77,7 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                 return {...val,[NameCheckBox]:value}
             })
         },20)
+        
     }
    
     const HandleUploadFileChange=(e)=>{
@@ -83,8 +122,8 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                                 <Input 
                                     type={val.type}
                                     isRequired={val.isRequired}
-                                    errorMessage={val.isRequired?`Error input data!`:``} 
-                                    isInvalid={val.isRequired?true:``} 
+                                    errorMessage={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
+                                    isInvalid={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
                                     onChange={EventInputForm} 
                                     labelPlacement="inside" 
                                     className='!rounded-full' 
@@ -94,7 +133,15 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                             </>):(<></>)}
                             {
                                 val.type=="checkbox"?(<>
-                                    <RadioGroup orientation="horizontal" isRequired={val.isRequired} errorMessage={val.isRequired?`Please choose one only`:``} isInvalid={val.isRequired} label="Gender" color='warning' onChange={()=>{selectTheRadio(val.name)}} onValueChange={SelectRadio} name={val.name} defaultValue={0}>
+                                    <RadioGroup orientation="horizontal" 
+                                    isRequired={val.isRequired} 
+                                    errorMessage={val.isRequired?`Please choose one only`:``} 
+                                    isInvalid={val.isRequired} label="Gender" 
+                                    color='warning' 
+                                    onChange={()=>{selectTheRadio(val.name)}} 
+                                    onValueChange={SelectRadio} 
+                                    name={val.name} 
+                                    defaultValue={0}>
                                         {
                                             val.child.map((v)=>{
                                                 return (<>
