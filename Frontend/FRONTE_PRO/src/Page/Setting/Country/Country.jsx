@@ -16,10 +16,13 @@ function Country() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const [isShowModal,setIsShowModal]=useState(false)
+    const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
+    const [DrawData,setDrawData]=useState({})
     const [data,SetData] = useState([])
     const EditCountry=(data)=>{
-        console.log(data)
+        setIsCreate(false)
+        setDrawData(data)
         setIsShowModal(true)
     }
     const DeleteCountry=(data)=>{
@@ -156,7 +159,25 @@ function Country() {
     const CloseModal=()=>{
         setIsShowModal(false)
     }
+    const UpdateData=(data)=>{
+        HttpRequest({
+            url:'/api/country/update',
+            data:data,
+            method:"post",
+            success:(success)=>{
+                setIsShowModal(false)
+                getList();
+                SystemSpeakByText(success.message,false)
+                ShowSnackbar({message:success.message,type:'success'})
+            },
+            error:(error)=>{
+                SystemSpeakByText(success.message,false)
+                ShowSnackbar({message:error.message,type:'error'})
+            }
+        })
+    }
     const OnclickAdd=()=>{
+        setIsCreate(true)   
         setIsShowModal(true)
     }
     const dataInForm = [
@@ -208,7 +229,7 @@ function Country() {
             <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
         </div>
         <LZTableDefault column={columnData} data={data}/>
-        <LZDrawerForm ui={{}} data={dataInForm} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onCancel:CanceModal}}/>
+        <LZDrawerForm ui={{}} data={dataInForm} reDrawData={DrawData} isCreate={isCreate} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}/>
     </div>
   )
 }

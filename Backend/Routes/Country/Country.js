@@ -42,10 +42,23 @@ RoutedCountry.post('/create',uploadFile.single("FileCountry"),async (req,res)=>{
         }
     })
 })
-RoutedCountry.post('/update',(req,res)=>{
-    db.query(`SELECT * FROM LZCOUNTRY`,(error,result)=>{
-        return res.send({message:result.recordset})
-    })
+RoutedCountry.post('/update',async(req,res)=>{
+    const {Id,Code,Name,EnglishName,ImagePath} = req.body;
+    const SamIntConvert = Id?.toString().trim();
+    const stringQuery = `SELECT * FROM LZCOUNTRY WHERE Id = @Id`;
+    const check =await db.request().input('Id',sql.VarChar,SamIntConvert).query(stringQuery);
+    console.log(check)
+    if(check.recordset.length>0){
+        const StringUpdate = `UPDATE LZCOUNTRY SET Code=@Code,Name=@Name,EnglishName=@EnglishName,ImagePath='Fixed',UpdateBy='LyLeangseng',UpdateDate='${moment().format('YYYY/MM/DD')}' WHERE Id=@Id`;
+        const update = await db.request()
+        .input('Name',sql.NVarChar,Name)
+        .input('EnglishName',sql.VarChar,EnglishName)
+        .input('Id',sql.VarChar,SamIntConvert)
+        .input('Code',sql.VarChar,Code).query(StringUpdate);
+        if(update.rowsAffected[0]!==0){
+            return res.status(200).send({message:"Update data succesfully!"})
+        }
+    }
 })
 
 

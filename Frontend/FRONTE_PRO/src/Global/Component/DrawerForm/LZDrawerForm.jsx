@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm'
 import { image } from 'framer-motion/client'
 
-function LZDrawerForm({ui,fn,propDrawer,data}) {
+function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     // console.log(ui)
     // console.log(fn)
     // console.log(data)
     // console.log(propDrawer)
+    
     const dispatch = useDispatch()
     const UploadFile = useRef(null);
     const [GetData,setGetData]=useState([]);
@@ -25,11 +26,12 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
             return { ...acc, ...item };
         }, {});
         SetIsFirstInput(dataObject)
+        if(isCreate)setGetData([]);
+        else setGetData(reDrawData);
         if(propDrawer.open){
-            setGetData([]);
             setImage(null);
             setSourseImage(null);
-        }
+        }else setGetData([]);
     },[propDrawer.open])
     let NameCheckBox = "";
     const EventInputForm=(e)=>{
@@ -58,16 +60,20 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                         SetIsFirstInput(v=>{
                             return {...v,[val.name]:true}
                         })
+                        return '';
                     }else{
                         SetIsFirstInput(v=>{
                             return {...v,[val.name]:false}
                         })
-                        fn.onSave(GetData)
                     }
                 })
+                if(isCreate)fn.onSave(GetData)
+                else fn.onSaveEdit(GetData)
+                
             }
         }else{
-            fn.onSave(GetData)
+            if(isCreate)fn.onSave(GetData)
+            else fn.onSaveEdit(GetData)
         }
        
     }
@@ -104,6 +110,12 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
     const clickCancelImage=()=>{
         dispatch(setIsShow(true))
     }
+    const CloseModal=()=>{
+        fn.onCancel("close")
+        setTimeout(()=>{
+            setGetData([])
+        },100)
+    }
     useEffect(()=>{
         console.log(Image)
     })
@@ -122,6 +134,7 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                                 <Input 
                                     type={val.type}
                                     isRequired={val.isRequired}
+                                    value={GetData[val.name]}
                                     errorMessage={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
                                     isInvalid={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
                                     onChange={EventInputForm} 
@@ -204,7 +217,7 @@ function LZDrawerForm({ui,fn,propDrawer,data}) {
                 </div>
                 <div className='flex justify-end gap-x-2 mt-4'>
                     <LZButton label="Save" click={()=>{checkValidatioForm()}} typeButton="save"/>
-                    <LZButton label="Cancel" click={()=>{fn.onCancel("close")}} typeButton="cancel"/>
+                    <LZButton label="Cancel" click={CloseModal} typeButton="cancel"/>
                 </div>
         </div>
     </Drawer>
