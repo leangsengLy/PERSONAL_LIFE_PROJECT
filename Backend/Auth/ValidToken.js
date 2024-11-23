@@ -6,7 +6,10 @@ const ValidToken =(req,res,next)=>{
     if(authHeader){
         const token = authHeader.split(" ")[1];
         jwt.verify(token,process.env.PRIVATE_KEY,(error,payload)=>{
-            if(payload) next();
+            if(payload) {
+                console.log(payload)
+                next();
+            }
             else {
                 return res.status(401).json({message:"Your are faking the token in my system now. you still not allow to access! 😄😂🥱😭"})
             }

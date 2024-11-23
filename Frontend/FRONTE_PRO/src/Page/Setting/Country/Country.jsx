@@ -26,6 +26,7 @@ function Country() {
         setIsShowModal(true)
     }
     const DeleteCountry=(data)=>{
+        console.log(data)
         dispatch(setIsShow(true))
         dispatch(setModalConfirm({
             type:"delete",
@@ -42,7 +43,8 @@ function Country() {
                         getList();
                     },
                     error:(err)=>{
-                        console.log(err)
+                        SystemSpeakByText(err.message,false);
+                        ShowSnackbar({message:err.message,type:'error'})
                     }
                 })
             }
@@ -171,7 +173,7 @@ function Country() {
                 ShowSnackbar({message:success.message,type:'success'})
             },
             error:(error)=>{
-                SystemSpeakByText(success.message,false)
+                SystemSpeakByText(error.message,false)
                 ShowSnackbar({message:error.message,type:'error'})
             }
         })

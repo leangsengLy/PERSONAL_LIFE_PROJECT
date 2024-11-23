@@ -5,6 +5,7 @@ import sql from 'mssql';
 import path from 'path';
 import multer from 'multer';
 import moment from 'moment';
+import ValidToken from '../../Auth/ValidToken.js';
 //Store file in folder
 const storage = multer.diskStorage({
     destination:'./uploads/',
@@ -18,7 +19,7 @@ RoutedCountry.get('/list',(req,res)=>{
         return res.status(200).send(result.recordset)
     })
 })  
-RoutedCountry.get('/delete/:Id',async (req,res)=>{
+RoutedCountry.get('/delete/:Id',ValidToken,async (req,res)=>{
     const {Id}= req.params;
     if(Id=="" || Id==null || Id==undefined) return res.status(400).send({message:"don't have Id to find!"})
     const stringQuery = `DELETE FROM LZCOUNTRY WHERE Id=@Id`;
@@ -26,7 +27,7 @@ RoutedCountry.get('/delete/:Id',async (req,res)=>{
     if(deleteRow.rowsAffected[0]==0) return res.status(404).send({message:"Data not found!"})
     else return res.status(200).send({message:"Delete country successfully!"})
 })
-RoutedCountry.post('/create',uploadFile.single("FileCountry"),async (req,res)=>{
+RoutedCountry.post('/create',ValidToken,uploadFile.single("FileCountry"),async (req,res)=>{
     const {Code,Name,EnglishName} = req.body;
     if((Code==null  || Code=='' || Code==undefined) && (Name==null|| Name==''|| Name==undefined)) return res.status(400).send({message:"Some information we are required please input!"});
     const stringCheck = `SELECT * FROM LZCOUNTRY WHERE Code = @Code`;
@@ -42,12 +43,11 @@ RoutedCountry.post('/create',uploadFile.single("FileCountry"),async (req,res)=>{
         }
     })
 })
-RoutedCountry.post('/update',async(req,res)=>{
+RoutedCountry.post('/update',ValidToken,async(req,res)=>{
     const {Id,Code,Name,EnglishName,ImagePath} = req.body;
     const SamIntConvert = Id?.toString().trim();
     const stringQuery = `SELECT * FROM LZCOUNTRY WHERE Id = @Id`;
     const check =await db.request().input('Id',sql.VarChar,SamIntConvert).query(stringQuery);
-    console.log(check)
     if(check.recordset.length>0){
         const StringUpdate = `UPDATE LZCOUNTRY SET Code=@Code,Name=@Name,EnglishName=@EnglishName,ImagePath='Fixed',UpdateBy='LyLeangseng',UpdateDate='${moment().format('YYYY/MM/DD')}' WHERE Id=@Id`;
         const update = await db.request()

@@ -5,12 +5,12 @@ export const HttpRequest = async ({url,method='get',data,success,error})=>{
         await axios.get(URI).then(response=>{
             if(success)  success(response)
         }).catch(err=>{
-            if(success)error(error.response.data)
+            if(success)error(err.response.data)
         })
     }
     else if(method.toLowerCase()=="post"){
         await axios.post(URI,{...data}).then(response=>{
-            if(success)success(response.data)
+            if(success) success(response.data)
         }).catch(err=>{
             if(error)error(err.response.data)
         })
