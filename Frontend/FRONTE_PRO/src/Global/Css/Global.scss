@@ -6,19 +6,41 @@
     overflow-y: auto;
 }
 .lzscroll::-webkit-scrollbar {
-    width: 11px;               /* width of the entire scrollbar */
+    width: 5px;               /* width of the entire scrollbar */
   }
 .lzscroll::-webkit-scrollbar-track {
-    background: var(--main-primary);        /* color of the tracking area */
+    // background: var(--main-primary);  
+    background: rgba(155, 155, 155, 0.13);          /* color of the tracking area */
     border-radius: 10px;
 }
 
 .lzscroll::-webkit-scrollbar-thumb {
-    background-color: var(--popup); 
+    // background-color: var(--popup); 
+    background-color: rgba(255, 255, 255, 0.486); 
     width: 10px;  /* color of the scroll thumb */
     border-radius: 20px;       /* roundness of the scroll thumb */
     padding: 3px;
     border: 3px solid var(--main-primary);
+    padding-top: 10px;
+}
+
+//Scroll in table
+.lzscroll-table{
+    overflow-y: auto;
+    cursor: pointer;
+}
+.lzscroll-table::-webkit-scrollbar {
+    height:5px !important;            /* width of the entire scrollbar */
+  }
+.lzscroll-table::-webkit-scrollbar-track {
+    background: rgba(155, 155, 155, 0.13);        /* color of the tracking area */
+    border-radius: 10px;
+}
+
+.lzscroll-table::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.486); 
+    border-radius: 10px;  
+    padding: 3px;
     padding-top: 10px;
 }
 
@@ -45,4 +67,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+table tr td{
+white-space: nowrap !important;
 }

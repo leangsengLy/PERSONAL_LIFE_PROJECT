@@ -5,9 +5,10 @@ const ValidToken =(req,res,next)=>{
     const authHeader  = req.headers.authorization;
     if(authHeader){
         const token = authHeader.split(" ")[1];
+        const userAccess = jwt.decode(token)
         jwt.verify(token,process.env.PRIVATE_KEY,(error,payload)=>{
             if(payload) {
-                console.log(payload)
+                req.userAccess = userAccess;
                 next();
             }
             else {

@@ -40,6 +40,9 @@ function Country() {
                     url:`/api/country/delete/${data.Id}`,
                     method:"get",
                     success:(result)=>{
+                        console.log(result)
+                        SystemSpeakByText(result.data.message,false);
+                        ShowSnackbar({message:result.data.message,type:'success'})
                         getList();
                     },
                     error:(err)=>{
@@ -100,7 +103,6 @@ function Country() {
             width: "100px" ,
             className:"all",
             isDraw:true,
-            
             renderTag:(data)=>{
                 return (
                     <>

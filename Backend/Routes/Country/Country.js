@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     }
 })
 const uploadFile = multer({storage:storage})
-RoutedCountry.get('/list',(req,res)=>{
+RoutedCountry.get('/list',ValidToken,(req,res)=>{
     db.query(`SELECT * FROM LZCOUNTRY ORDER BY ID DESC`,(error,result)=>{
         return res.status(200).send(result.recordset)
     })
@@ -44,15 +44,18 @@ RoutedCountry.post('/create',ValidToken,uploadFile.single("FileCountry"),async (
     })
 })
 RoutedCountry.post('/update',ValidToken,async(req,res)=>{
+    console.log(req.userAccess)
+    
     const {Id,Code,Name,EnglishName,ImagePath} = req.body;
     const SamIntConvert = Id?.toString().trim();
     const stringQuery = `SELECT * FROM LZCOUNTRY WHERE Id = @Id`;
     const check =await db.request().input('Id',sql.VarChar,SamIntConvert).query(stringQuery);
     if(check.recordset.length>0){
-        const StringUpdate = `UPDATE LZCOUNTRY SET Code=@Code,Name=@Name,EnglishName=@EnglishName,ImagePath='Fixed',UpdateBy='LyLeangseng',UpdateDate='${moment().format('YYYY/MM/DD')}' WHERE Id=@Id`;
+        const StringUpdate = `UPDATE LZCOUNTRY SET Code=@Code,Name=@Name,EnglishName=@EnglishName,ImagePath='Fixed',UpdateBy=@UpdateBy,UpdateDate='${moment().format('YYYY/MM/DD')}' WHERE Id=@Id`;
         const update = await db.request()
         .input('Name',sql.NVarChar,Name)
         .input('EnglishName',sql.VarChar,EnglishName)
+        .input('UpdateBy',sql.VarChar,req.userAccess.USERNAME)
         .input('Id',sql.VarChar,SamIntConvert)
         .input('Code',sql.VarChar,Code).query(StringUpdate);
         if(update.rowsAffected[0]!==0){

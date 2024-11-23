@@ -12,7 +12,7 @@ function LZTableDefault({column,data}) {
   return (
     <div>
         <Table removeWrapper={false} 
-            classNames={{wrapper:['bg-navleft'],th:['bg-box-wrapper']}}
+            classNames={{wrapper:['bg-navleft lzscroll-table'],th:['bg-box-wrapper']}}
             className='w-full'
         >
             <TableHeader columns={column}>
