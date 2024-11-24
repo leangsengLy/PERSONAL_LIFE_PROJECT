@@ -1,12 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import LzDataTable from '../../../Global/Component/DataTable/LzDataTable'
+import React, { useEffect, useState } from 'react'
 import LZButton from '../../../Global/Component/Button/LZButton'
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { Drawer } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm';
 import { HttpRequest } from '../../../Global/API_HTTP/http';
-import moment from 'moment/moment';
 import { ShowSnackbar } from '../../../Util/globalUtils';
 import { SystemSpeakByText } from '../../../Util/SystenSayByText';
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
@@ -26,7 +23,6 @@ function Country() {
         setIsShowModal(true)
     }
     const DeleteCountry=(data)=>{
-        console.log(data)
         dispatch(setIsShow(true))
         dispatch(setModalConfirm({
             type:"delete",
@@ -58,8 +54,21 @@ function Country() {
         {
             title:"Code",
             data:"Code",
+            isDraw:true,
             width: "100px" ,
             className:"min-width",
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className=' flex gap-x-2 items-center'>
+                            <div className='w-[34px] h-[34px] rounded-full bd-primary p-[3px]'>
+                                <img src={data.ImagePath} onError={ErrorImage} className='w-full h-full rounded-full ' alt="" />
+                            </div>
+                            <p>{data.Code}</p>
+                        </div>
+                    </>
+                )
+            }
            
         },
         {
@@ -119,7 +128,9 @@ function Country() {
     ]
    
   
- 
+    const ErrorImage=(e)=>{
+        e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
+    }
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
@@ -167,6 +178,7 @@ function Country() {
         HttpRequest({
             url:'/api/country/update',
             data:data,
+            type:'file',
             method:"post",
             success:(success)=>{
                 setIsShowModal(false)
@@ -204,7 +216,7 @@ function Country() {
         },
         {
             label:"Country Image",
-            name:"CountryImage",
+            name:"File",
             type:"file",
         },
     ]
@@ -215,6 +227,7 @@ function Country() {
        await HttpRequest({
             url:"/api/country/create",
             method:"Post",
+            type:'file',
             data:data,
             success:(result)=>{
                 getList();

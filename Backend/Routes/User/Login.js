@@ -44,11 +44,14 @@ RouteUser.post('/update_login',ValidToken,async (req,res)=>{
 
 RouteUser.post('/login',async (req,res)=>{
     const {USERNAME,PASSWORD} = req.body;
+    console.log(req.body)
     db.query(`SELECT * FROM LZLOGIN WHERE USERNAME='${USERNAME}'`,(error,result)=>{
         if(error) return res.status(400).send({message:"User not found!"});
         else {
             if(result.recordset.length>0){
                 bcrypt.compare(PASSWORD,result?.recordset[0].PASSWORD,(er,re)=>{
+                    console.log(PASSWORD)
+                    console.log(re)
                     if(!re) return res.status(400).send({message:"Password invalid!"})
                     else {
                         const token = generateToken(result?.recordset[0]);

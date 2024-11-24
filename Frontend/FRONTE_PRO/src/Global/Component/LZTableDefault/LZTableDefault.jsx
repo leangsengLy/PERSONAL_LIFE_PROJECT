@@ -1,7 +1,10 @@
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import moment from 'moment/moment'
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import LZPagination from './LZPagination';
+import LZSearch from './LZSearch';
+import LZSelectRecord from './LZSelectRecord';
 
 function LZTableDefault({column,data}) {
     const param = useParams();
@@ -9,8 +12,21 @@ function LZTableDefault({column,data}) {
     const handleRowClick=(key)=>{
         console.log(key)
     }
+    const onSearching=(text)=>{
+        console.log(text)
+    }
+    const onSelectRecord=(record)=>{
+        console.log(record)
+    }
+    const onSelectPage=(page)=>{
+        console.log(page)
+    }
   return (
     <div>
+        <div className='flex justify-between items-center mb-4'>
+            <LZSearch onSearching={onSearching}/>
+            <LZSelectRecord SelectRecord ={onSelectRecord}/>
+        </div>
         <Table removeWrapper={false} 
             classNames={{wrapper:['bg-navleft lzscroll-table'],th:['bg-box-wrapper']}}
             className='w-full'
@@ -49,6 +65,7 @@ function LZTableDefault({column,data}) {
                     
             </TableBody>
         </Table>
+        <LZPagination SelectPage={onSelectPage}/>
     </div>
   )
 }

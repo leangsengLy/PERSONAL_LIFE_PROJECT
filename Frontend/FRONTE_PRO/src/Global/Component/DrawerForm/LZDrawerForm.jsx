@@ -87,6 +87,9 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     }
    
     const HandleUploadFileChange=(e)=>{
+        setGetData(val=>{
+            return {...val,File:e.target.files[0]}
+        })
         setSourseImage(e.target.files[0])
         setImage(URL.createObjectURL(e.target.files[0]))
     }
