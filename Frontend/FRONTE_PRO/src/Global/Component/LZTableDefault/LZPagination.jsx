@@ -1,10 +1,14 @@
 import { Pagination } from '@nextui-org/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function LZPagination({SelectPage,totalRecord=0}) {
+  const [Page,SetPage] = useState(1)
     const ChangePagination=(page)=>{
-        SelectPage(page)
+      SetPage(page)
     }
+    useEffect(()=>{
+      SelectPage(Page)
+    },[Page])
   return (
     <div className='mt-5 flex justify-between items-center'>
         <p>Total Record: {totalRecord}</p>

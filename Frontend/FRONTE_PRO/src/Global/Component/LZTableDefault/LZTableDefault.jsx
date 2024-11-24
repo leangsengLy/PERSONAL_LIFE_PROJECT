@@ -34,8 +34,10 @@ function LZTableDefault({column,data,OnChangeFilter}) {
         })
     }
     useEffect(()=>{
-        OnChangeFilter(FilterData)
-    },[FilterData.Search])
+        setTimeout(()=>{
+            console.log(FilterData)
+        },100)
+    },[FilterData.Search,FilterData.Page,FilterData.Record])
   return (
     <div>
         <div className='flex justify-between items-center mb-4'>

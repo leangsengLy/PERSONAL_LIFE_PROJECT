@@ -11,8 +11,10 @@ function LZSelectRecord({SelectRecord}) {
     ]
     const SelectRecordItem=(re)=>{
         SetRecord(re.currentKey)
-        SelectRecord(Record)
     }
+    useEffect(()=>{
+        SelectRecord(Record)
+    },[Record])
   return (
         <div className='min-w-[150px] flex items-center gap-x-3'>
                 <p>Record:</p>

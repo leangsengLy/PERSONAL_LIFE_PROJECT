@@ -1,5 +1,5 @@
 import { Input } from '@nextui-org/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LZToolTip from '../ToolTip/LZToolTip'
 
 function LZSearch({onSearching}) {
@@ -9,15 +9,18 @@ function LZSearch({onSearching}) {
     const onInputSearch=(e)=>{
         SetisHasSearch(e.target.value.length>0)
         SetSearch(e.target.value)
-        clearTimeout(SetTimeOut)
-        setsetTimeOut(setTimeout(()=>{
-            onSearching(search)
-          },600))
+       
     }
     const ClearSearch=()=>{
         SetSearch('')
         SetisHasSearch(false)
     }
+    useEffect(()=>{
+      clearTimeout(SetTimeOut)
+      setsetTimeOut(setTimeout(()=>{
+          onSearching(search)
+        },600))
+    },[search])
     const ClearButton = <i className="ri-close-circle-line cursor-pointer" onClick={ClearSearch}></i>;
   return (
     <div>
