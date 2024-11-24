@@ -1,26 +1,41 @@
 import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import moment from 'moment/moment'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import LZPagination from './LZPagination';
 import LZSearch from './LZSearch';
 import LZSelectRecord from './LZSelectRecord';
 
-function LZTableDefault({column,data}) {
+function LZTableDefault({column,data,OnChangeFilter}) {
     const param = useParams();
+    const [FilterData,SetFilterdata] = useState({
+        Record:0,
+        Search:'',
+        Page:0,
+    })
     console.log(param)
     const handleRowClick=(key)=>{
         console.log(key)
+       
     }
     const onSearching=(text)=>{
-        console.log(text)
+        SetFilterdata(val=>{
+            return {...val,Search:text}
+        })
     }
     const onSelectRecord=(record)=>{
-        console.log(record)
+        SetFilterdata(val=>{
+            return {...val,Record:record}
+        })
     }
     const onSelectPage=(page)=>{
-        console.log(page)
+        SetFilterdata(val=>{
+            return {...val,Page:page}
+        })
     }
+    useEffect(()=>{
+        OnChangeFilter(FilterData)
+    },[FilterData.Search])
   return (
     <div>
         <div className='flex justify-between items-center mb-4'>
@@ -65,7 +80,7 @@ function LZTableDefault({column,data}) {
                     
             </TableBody>
         </Table>
-        <LZPagination SelectPage={onSelectPage}/>
+        <LZPagination SelectPage={onSelectPage} totalRecord={data.length}/>
     </div>
   )
 }

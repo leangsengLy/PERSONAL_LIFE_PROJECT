@@ -131,6 +131,9 @@ function Country() {
     const ErrorImage=(e)=>{
         e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
     }
+    const FilterData=(filter)=>{
+        console.log(filter)
+    }
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
@@ -245,7 +248,7 @@ function Country() {
         <div className='flex justify-end mb-5'>
             <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
         </div>
-        <LZTableDefault column={columnData} data={data}/>
+        <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData}/>
         <LZDrawerForm ui={{}} data={dataInForm} reDrawData={DrawData} isCreate={isCreate} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}/>
     </div>
   )
