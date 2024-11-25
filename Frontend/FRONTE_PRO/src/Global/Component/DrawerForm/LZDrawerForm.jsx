@@ -5,7 +5,6 @@ import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm'
-import { image } from 'framer-motion/client'
 
 function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     // console.log(ui)
@@ -26,12 +25,17 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
             return { ...acc, ...item };
         }, {});
         SetIsFirstInput(dataObject)
-        if(isCreate)setGetData([]);
-        else setGetData(reDrawData);
-        if(propDrawer.open){
+        if(isCreate){
+            setGetData([]);
             setImage(null);
             setSourseImage(null);
-        }else setGetData([]);
+        }
+        else {
+            setGetData(reDrawData);
+            setSourseImage(reDrawData);
+            setImage(reDrawData);
+        }
+      
     },[propDrawer.open])
     let NameCheckBox = "";
     const EventInputForm=(e)=>{
@@ -189,11 +193,11 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                             Image!==null?(<>
                                                     <div className='mt-4 relative w-full border flex justify-start gap-x-2 items-center border-slate-200 rounded-xl p-2'>
                                                         <div className='min-w-[100px] w-[100px] min-h-[60px] h-[60px] rounded-xl overflow-hidden '>
-                                                            <img src={Image} alt="" className='w-full rounded-xl h-full object-cover' />
+                                                            <img src={isCreate?Image:Image.ImagePath} alt="" className='w-full rounded-xl h-full object-cover' />
                                                         </div>
                                                         <div className='!pr-9'>
-                                                                <p className='lz-line text-[14px]'>{SourseImage?.name}</p>
-                                                                <p className='text-[13px]'>{SourseImage?.size}</p>
+                                                                <p className='lz-line text-[14px]'>{isCreate?SourseImage?.name:SourseImage?.OrginalName??''}</p>
+                                                                <p className='text-[13px]'>{SourseImage?.SizeImage}</p>
                                                         </div>
                                                         <div className='absolute right-3'>
                                                             <LZIcon isRounded={true} onClickIcon={clickCancelImage} typeIcon="cancel"/>
