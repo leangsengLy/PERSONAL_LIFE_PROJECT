@@ -3,6 +3,7 @@ import {Outlet, useNavigate, useParams } from 'react-router-dom'
 import {StoreMenu} from '../MenuStore/menuData.js'
 import img from './../../public/Gif/Gears.gif'
 import ActionTopRight from './BlogContent/ActionTopRight.jsx'
+import LZMainWrapper from '../Global/Component/Container/LZMainWrapper.jsx'
 function WebSectionContent() {
     const param = useParams()
     const navigate = useNavigate();
@@ -105,9 +106,9 @@ function WebSectionContent() {
               <div className='w-full h-[50px] lz-animation relative bg-navleft flex items-center pl-3'>
                 <ActionTopRight isLoginOrisHomePage={false}/>
               </div>
-              <div className='py-3 px-5 blog-submenu lzscroll'>
-                <Outlet/>
-              </div>
+              {/* <div className='py-3 px-5 blog-submenu lzscroll'> */}
+                <LZMainWrapper contentTag={(<><Outlet/></>)}/>
+              {/* </div> */}
             </div>
     </div>
   )

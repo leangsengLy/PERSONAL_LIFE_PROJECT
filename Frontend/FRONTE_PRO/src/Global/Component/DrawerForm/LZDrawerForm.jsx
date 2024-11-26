@@ -14,6 +14,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     
     const dispatch = useDispatch()
     const UploadFile = useRef(null);
+    const [isCreateNew,isSetCreateNew] = useState(false);
     const [GetData,setGetData]=useState([]);
     const [Image,setImage] = useState(null)
     const [SourseImage,setSourseImage] = useState(null)
@@ -25,6 +26,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
             return { ...acc, ...item };
         }, {});
         SetIsFirstInput(dataObject)
+        isSetCreateNew(isCreate)
         if(isCreate){
             setGetData([]);
             setImage(null);
@@ -98,6 +100,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         setImage(URL.createObjectURL(e.target.files[0]))
     }
     const onUploadFile=()=>{
+        isSetCreateNew(true)
         UploadFile.current.click();
     }
     dispatch(setModalConfirm({
@@ -131,7 +134,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     <Drawer  anchor={ui.placement??'right'}  open={propDrawer.open??false}>
         <div className={`${ui.width??`w-[370px]`} px-4 py-3`}>
                 <div className='flex justify-between items-center mb-3'>
-                    <h1 className='text-[16px] font-bold'>{propDrawer.label??'No label'}</h1>
+                    <h1 className='text-[16px] font-bold'>{propDrawer.label??'No label'}{isCreate?`2`:`3`} </h1>
                     <LZIcon typeIcon="cancel" onClickIcon={fn.onClose} isRounded={true}/>
                 </div>
                 <div className='flex flex-col gap-y-3'>
@@ -193,11 +196,11 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                             Image!==null?(<>
                                                     <div className='mt-4 relative w-full border flex justify-start gap-x-2 items-center border-slate-200 rounded-xl p-2'>
                                                         <div className='min-w-[100px] w-[100px] min-h-[60px] h-[60px] rounded-xl overflow-hidden '>
-                                                            <img src={isCreate?Image:Image.ImagePath} alt="" className='w-full rounded-xl h-full object-cover' />
+                                                            <img src={isCreateNew?Image:Image.ImagePath} alt="" className='w-full rounded-xl h-full object-cover' />
                                                         </div>
                                                         <div className='!pr-9'>
-                                                                <p className='lz-line text-[14px]'>{isCreate?SourseImage?.name:SourseImage?.OrginalName??''}</p>
-                                                                <p className='text-[13px]'>{SourseImage?.SizeImage}</p>
+                                                                <p className='lz-line text-[14px]'>{isCreateNew?SourseImage?.name:SourseImage?.OrginalName??''}</p>
+                                                                <p className='text-[13px]'>{isCreateNew?SourseImage?.size:SourseImage?.SizeImage}</p>
                                                         </div>
                                                         <div className='absolute right-3'>
                                                             <LZIcon isRounded={true} onClickIcon={clickCancelImage} typeIcon="cancel"/>

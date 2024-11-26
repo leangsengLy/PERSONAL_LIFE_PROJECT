@@ -1,17 +1,24 @@
 import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import moment from 'moment/moment'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import LZPagination from './LZPagination';
 import LZSearch from './LZSearch';
 import LZSelectRecord from './LZSelectRecord';
+import '../../Css/LZTableDefault/index.css'
 
-function LZTableDefault({column,data,OnChangeFilter}) {
+function LZTableDefault({column,data,OnChangeFilter,ChipperContent}) {
     const param = useParams();
+    const blogFilterTop = useRef();
+    const TableDefault = useRef();
     const [FilterData,SetFilterdata] = useState({
         Record:0,
         Search:'',
         Page:0,
+    })
+    useEffect(()=>{
+        console.log(blogFilterTop.current.getBoundingClientRect().top+12)
+        console.log(TableDefault.current.offsetHeight)
     })
     console.log(param)
     const handleRowClick=(key)=>{
@@ -40,13 +47,21 @@ function LZTableDefault({column,data,OnChangeFilter}) {
     },[FilterData.Search,FilterData.Page,FilterData.Record])
   return (
     <div>
-        <div className='flex justify-between items-center mb-4'>
-            <LZSearch onSearching={onSearching}/>
-            <LZSelectRecord SelectRecord ={onSelectRecord}/>
+        <div className='grid gap-y-3 mb-4 test-offset'>
+            <div ref={blogFilterTop} className='w-full flex justify-between items-center'>
+                <LZSearch onSearching={onSearching}/>
+                <LZSelectRecord SelectRecord ={onSelectRecord}/>
+            </div>
+            <div>
+                {ChipperContent}
+            </div>
         </div>
+        <div className='h-full flex flex-col justify-between '>
         <Table removeWrapper={false} 
+            ref={TableDefault}
             classNames={{wrapper:['bg-navleft lzscroll-table'],th:['bg-box-wrapper']}}
-            className='w-full'
+            className='w-full style-height-default'
+            style={{height:"calc(100vh - 34vh)"}}
         >
             <TableHeader columns={column}>
                 {
@@ -83,6 +98,7 @@ function LZTableDefault({column,data,OnChangeFilter}) {
             </TableBody>
         </Table>
         <LZPagination SelectPage={onSelectPage} totalRecord={data.length}/>
+        </div>
     </div>
   )
 }

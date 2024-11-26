@@ -9,6 +9,7 @@ import { SystemSpeakByText } from '../../../Util/SystenSayByText';
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
 import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
 import LZIcon from '../../../Global/Component/Icon/LZIcon';
+import LZMainWrapper from '../../../Global/Component/Container/LZMainWrapper';
 function Country() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
@@ -243,13 +244,14 @@ function Country() {
         })
     }
   return (
-    <div >
+    <div className='h-full'>
         <h1 className='text-[17px] font-bold'>Country</h1>
-        <div className='flex justify-end mb-5'>
-            <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
-        </div>
-        <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData}/>
-        <LZDrawerForm ui={{}} data={dataInForm} reDrawData={DrawData} isCreate={isCreate} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}/>
+            <div className='flex justify-end mb-5'>
+                <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
+            </div>
+            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData}/>
+            <LZDrawerForm ui={{}} data={dataInForm} reDrawData={DrawData} isCreate={isCreate} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}/>
+        
     </div>
   )
 }
