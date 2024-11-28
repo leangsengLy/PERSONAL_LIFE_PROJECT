@@ -10,9 +10,12 @@ import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
 import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
 import LZIcon from '../../../Global/Component/Icon/LZIcon';
 import LZMainWrapper from '../../../Global/Component/Container/LZMainWrapper';
+import {useNavigate} from 'react-router-dom';
+
 function Country() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
@@ -22,6 +25,9 @@ function Country() {
         setIsCreate(false)
         setDrawData(data)
         setIsShowModal(true)
+    }
+    const ViewDetail=(data)=>{
+        navigate(`/web/setting/country/province`)
     }
     const DeleteCountry=(data)=>{
         dispatch(setIsShow(true))
@@ -117,6 +123,7 @@ function Country() {
                 return (
                     <>
                         <div className='text-red-400 flex gap-x-2'>
+                            <LZIcon  typeIcon="view" onClickIcon={()=>{ViewDetail(data)}}/>
                             <LZIcon  typeIcon="edit" onClickIcon={()=>{EditCountry(data)}}/>
                             <LZIcon  typeIcon="delete" onClickIcon={()=>{DeleteCountry(data)}}/>
                         </div>
