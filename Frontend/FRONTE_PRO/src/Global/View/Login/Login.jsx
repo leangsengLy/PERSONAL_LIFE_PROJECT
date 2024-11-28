@@ -15,8 +15,10 @@ import CountryLanguage from '../../../Component/CircleAction/LZIconLanguage.jsx'
 import LZIconTheme from '../../../Component/CircleAction/LZIconTheme.jsx'
 import { DecodeToken } from '../../../Util/DecodeToken.js'
 import { setInforUser } from '../../../Store/UserLogin/UserLogin.js'
+import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
+  const navigate= useNavigate();
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
   const [isShowSpin,SetInShowSpin]=useState(false)
