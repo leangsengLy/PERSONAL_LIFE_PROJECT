@@ -14,7 +14,6 @@ import { SystemSpeakByText } from '../../../Util/SystenSayByText.js'
 import CountryLanguage from '../../../Component/CircleAction/LZIconLanguage.jsx'
 import LZIconTheme from '../../../Component/CircleAction/LZIconTheme.jsx'
 import { DecodeToken } from '../../../Util/DecodeToken.js'
-import { useNavigate } from 'react-router-dom'
 import { setInforUser } from '../../../Store/UserLogin/UserLogin.js'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
@@ -28,7 +27,6 @@ const Login = () => {
   const isFirstCreatePw = useRef(true)
   const isFirstCreateUser = useRef(true)
   const dispatch = useDispatch();
-  const navigate = useNavigate()
   const click = SoundAudio('click')
   const noti = SoundAudio('noti')
   const fail = SoundAudio('fail')
