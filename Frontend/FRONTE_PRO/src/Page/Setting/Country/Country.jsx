@@ -257,7 +257,14 @@ function Country() {
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
             </div>
             <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData}/>
-            <LZDrawerForm ui={{}} data={dataInForm} reDrawData={DrawData} isCreate={isCreate} propDrawer={{open:isShowModal,label:"Add Country"}} fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}/>
+            <LZDrawerForm 
+                ui={{}} 
+                data={dataInForm} 
+                reDrawData={DrawData} 
+                isCreate={isCreate} 
+                propDrawer={{open:isShowModal,label:"Add Country"}} 
+                fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}
+            />
         
     </div>
   )
