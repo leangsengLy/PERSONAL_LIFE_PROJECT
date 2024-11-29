@@ -7,7 +7,7 @@ import LZSearch from './LZSearch';
 import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
 
-function LZTableDefault({column,data,OnChangeFilter,ChipperContent}) {
+function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent}) {
     const param = useParams();
     const blogFilterTop = useRef();
     const TableDefault = useRef();
@@ -19,6 +19,7 @@ function LZTableDefault({column,data,OnChangeFilter,ChipperContent}) {
     useEffect(()=>{
         console.log(blogFilterTop.current.getBoundingClientRect().top+12)
         console.log(TableDefault.current.offsetHeight)
+        console.log(data)
     })
     console.log(param)
     const handleRowClick=(key)=>{
@@ -59,9 +60,12 @@ function LZTableDefault({column,data,OnChangeFilter,ChipperContent}) {
         <div className='h-full flex flex-col justify-between '>
         <Table removeWrapper={false} 
             ref={TableDefault}
-            classNames={{wrapper:['bg-navleft lzscroll-table'],th:['bg-box-wrapper']}}
+            classNames={{
+                wrapper:['bg-navleft lzscroll-table'],
+                th:['bg-box-wrapper'],
+            }}
             className='w-full style-height-default'
-            style={{height:"calc(100vh - 34vh)"}}
+            // style={{height:"calc(100vh - 34vh)"}}
         >
             <TableHeader columns={column}>
                 {

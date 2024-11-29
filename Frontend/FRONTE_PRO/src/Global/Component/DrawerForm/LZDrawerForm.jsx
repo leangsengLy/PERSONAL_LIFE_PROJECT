@@ -73,13 +73,29 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                         })
                     }
                 })
-                if(isCreate)fn.onSave(GetData)
-                else fn.onSaveEdit(GetData)
+                if(isCreate){
+                    if(fn.onSave){
+                        fn.onSave(GetData)
+                    }
+                }
+                else {
+                    if(fn.onSaveEdit){
+                        fn.onSaveEdit(GetData)
+                    }
+                }
                 
             }
         }else{
-            if(isCreate)fn.onSave(GetData)
-            else fn.onSaveEdit(GetData)
+            if(isCreate){
+                if(fn.onSave){
+                    fn.onSave(GetData)
+                }
+            }
+            else {
+                if(fn.onSaveEdit){
+                    fn.onSaveEdit(GetData)
+                }
+            }
         }
        
     }
@@ -103,24 +119,25 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         isSetCreateNew(true)
         UploadFile.current.click();
     }
-    dispatch(setModalConfirm({
-        onClose:()=>{
-            dispatch(setIsShow(false))
-        },
-        onOk:()=>{
-            setImage(null);
-            setSourseImage(null);
-            dispatch(setIsShow(false))
-            console.log(Image)
-        },
-        message:"Do you want delele this Image!",
-        type:"delete"
-    }))
-    
+  
     const clickCancelImage=()=>{
+        dispatch(setModalConfirm({
+            onClose:()=>{
+                dispatch(setIsShow(false))
+            },
+            onOk:()=>{
+                setImage(null);
+                setSourseImage(null);
+                dispatch(setIsShow(false))
+                console.log(Image)
+            },
+            message:"Do you want delele this Image!",
+            type:"delete"
+        }))
         dispatch(setIsShow(true))
     }
     const CloseModal=()=>{
+        if(fn.onCancel)
         fn.onCancel("close")
         setTimeout(()=>{
             setGetData([])
@@ -129,13 +146,17 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     useEffect(()=>{
         console.log(Image)
     })
-   
+    const onCloseModalByIcon=()=>{
+        if(fn.onClose){
+            fn.onClose();
+        }
+    }
   return (
-    <Drawer  anchor={ui.placement??'right'}  open={propDrawer.open??false}>
+    <Drawer  anchor={ui?.placement??'right'}  open={propDrawer.open??false}>
         <div className={`${ui.width??`w-[370px]`} px-4 py-3`}>
                 <div className='flex justify-between items-center mb-3'>
-                    <h1 className='text-[16px] font-bold'>{propDrawer.label??'No label'}{isCreate?`2`:`3`} </h1>
-                    <LZIcon typeIcon="cancel" onClickIcon={fn.onClose} isRounded={true}/>
+                    <h1 className='text-[16px] font-bold'>{propDrawer.label??'No label'} </h1>
+                    <LZIcon typeIcon="cancel" onClickIcon={onCloseModalByIcon} isRounded={true}/>
                 </div>
                 <div className='flex flex-col gap-y-3'>
                     {data.map((val)=>{

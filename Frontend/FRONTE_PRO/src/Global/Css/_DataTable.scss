@@ -38,6 +38,9 @@ div.dt-container select.dt-input{
     height: calc(100vh - 50px) !important;
     overflow-y: auto !important;
 }
+.blog-submenu tbody tr{
+    height: 30px !important;
+}
 .blog-submenu table.dataTable.display > tbody > tr:nth-child(odd).selected > .sorting_1, .blog-submenu table.dataTable.order-column.stripe > tbody > tr:nth-child(odd).selected > .sorting_1{
     box-shadow: unset !important;
 }

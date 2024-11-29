@@ -12,7 +12,7 @@ function TitleHeaderFeature({title='no title',onBack,isBack}) {
                <i className="ri-arrow-left-line cursor-pointer text-[20px]" onClick={onBackPage}></i>
             </>):(<></>)
         }
-        <h5>{title}</h5>
+        <b>{title}</b>
     </div>
   )
 }
