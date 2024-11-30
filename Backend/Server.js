@@ -7,6 +7,8 @@ import cors from 'cors'
 import dotenv  from 'dotenv'
 import RouteUser from './Routes/User/Login.js'
 import RoutedCountry from './Routes/Country/Country.js';
+import RouteProvince from './Routes/Country/Province/Province.js'
+import RouteDistict from './Routes/Country/District/Distict.js';
 dotenv.config();
 
 const chromeFile = path.join(process.cwd(),'chrome')
@@ -21,6 +23,8 @@ app.use(cors({
 }))
 app.use('/api/user',RouteUser)
 app.use('/api/country',RoutedCountry)
+app.use('/api/province',RouteProvince)
+app.use('/api/district',RouteDistict)
 
 app.get('/',(req,res)=>{
     return res.sendFile(path.join(process.cwd(),'HTML/Index.html'))

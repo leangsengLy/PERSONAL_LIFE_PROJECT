@@ -149,7 +149,7 @@ function Province() {
           data={dataInForm}
           reDrawData={DataProvince}
           isCreate={isCreate} 
-          propDrawer={{open:isShowModal,label:"Add Country"}} 
+          propDrawer={{open:isShowModal,label:"Add Provine"}} 
         />
     </div>
   )
