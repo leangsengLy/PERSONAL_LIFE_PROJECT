@@ -9,6 +9,7 @@ import RouteUser from './Routes/User/Login.js'
 import RoutedCountry from './Routes/Country/Country.js';
 import RouteProvince from './Routes/Country/Province/Province.js'
 import RouteDistict from './Routes/Country/District/Distict.js';
+import RouteCommune from './Routes/Country/Commune/Commune.js';
 dotenv.config();
 
 const chromeFile = path.join(process.cwd(),'chrome')
@@ -25,6 +26,7 @@ app.use('/api/user',RouteUser)
 app.use('/api/country',RoutedCountry)
 app.use('/api/province',RouteProvince)
 app.use('/api/district',RouteDistict)
+app.use('/api/commune',RouteCommune)
 
 app.get('/',(req,res)=>{
     return res.sendFile(path.join(process.cwd(),'HTML/Index.html'))
