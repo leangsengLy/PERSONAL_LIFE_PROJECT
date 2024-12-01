@@ -55,12 +55,14 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     const checkValidatioForm = ()=>{
         if(HasReqired.length>0){
             if(GetData.length==0){
+                console.log("AA")
                 Object.keys(IsFirstInput).map((val)=>{
                     SetIsFirstInput(v=>{
                         return {...v,[val]:true}
                     })
                 })  
             }else{
+                console.log("ABA")
                 HasReqired.map((val)=>{
                     if(!Object.keys(GetData).includes(val.name)){
                         SetIsFirstInput(v=>{
@@ -74,11 +76,13 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                     }
                 })
                 if(isCreate){
+                    console.log("Y")
                     if(fn.onSave){
                         fn.onSave(GetData)
                     }
                 }
                 else {
+                    console.log("Y1")
                     if(fn.onSaveEdit){
                         fn.onSaveEdit(GetData)
                     }
@@ -236,6 +240,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                             {val.type=="textArea"?(<>
                                 <Textarea 
                                 label={val.label} 
+                                value={GetData[val.name]}
                                 name={val.name}
                                 onChange={EventInputForm} 
                                 isRequired={val.isRequired??false}

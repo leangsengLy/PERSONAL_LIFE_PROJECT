@@ -16,6 +16,7 @@ function Country() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
@@ -27,7 +28,8 @@ function Country() {
         setIsShowModal(true)
     }
     const ViewDetail=(data)=>{
-        navigate(`/web/setting/country/province`)
+        const queryString = new URLSearchParams({name:"lyleangseng",pw:'015844712'}).toString();
+        navigate(`/web/setting/country/province?${queryString}`)
     }
     const DeleteCountry=(data)=>{
         dispatch(setIsShow(true))
@@ -166,16 +168,16 @@ function Country() {
         })
     },[])
     useEffect(()=>{
+        console.log("123132")
         getList();
-    },[DataCountry])
-
+    },[])
+    
     const getList=()=>{
         HttpRequest({
             url:"/api/country/list",
             method:'get',
             success:(result)=>{
-                console.log(result.data)
-                SetData(result.data)
+                SetData(result)
             },
             error:(error)=>{
                 console.log(error)

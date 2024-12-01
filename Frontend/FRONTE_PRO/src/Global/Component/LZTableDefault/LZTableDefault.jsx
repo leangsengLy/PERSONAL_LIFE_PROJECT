@@ -8,6 +8,7 @@ import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
 
 function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent}) {
+    const tableRef = useRef(null);
     const param = useParams();
     const blogFilterTop = useRef();
     const TableDefault = useRef();
@@ -41,6 +42,18 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent}) {
             return {...val,Page:page}
         })
     }
+    // useEffect(() => {
+    //     // Example: Initialize plugin after rendering
+    //     console.log(tableRef.current)
+    //     const tableInstance = tableRef.current.DataTable();
+    
+    //     return () => {
+    //       // Cleanup plugin instance to avoid errors
+    //       if (tableInstance && tableInstance.destroy) {
+    //         tableInstance.destroy(true); // Destroy and clean up DOM
+    //       }
+    //     };
+    //   }, []);
     useEffect(()=>{
         setTimeout(()=>{
             console.log(FilterData)
@@ -67,7 +80,7 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent}) {
             className='w-full style-height-default'
             // style={{height:"calc(100vh - 34vh)"}}
         >
-            <TableHeader columns={column}>
+            <TableHeader columns={column} ref={tableRef}>
                 {
                     column.map((val)=>(
                         <TableColumn width={val.width}>{val.title}</TableColumn>

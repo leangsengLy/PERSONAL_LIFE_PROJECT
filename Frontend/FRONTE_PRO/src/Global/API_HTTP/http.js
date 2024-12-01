@@ -4,7 +4,6 @@ import { ShowSnackbar } from "../../Util/globalUtils";
 export const HttpRequest = async ({url,method='get',data,success,error,type='data'})=>{
     let URI = `http://localhost:8080${url.startsWith('/')?url:`/${url}`}`;
     const getToken = sessionStorage.getItem('token');
-    console.log(getToken)
     if(method.toLowerCase()=="get"){
         await axios.get(URI,{
             headers:{
@@ -12,13 +11,17 @@ export const HttpRequest = async ({url,method='get',data,success,error,type='dat
                 'Content-Type': 'multipart/form-data'
             }
         }).then(response=>{
-            if(success) success(response)
+            console.log(response.data)
+            if(success) success(response.data)
         }).catch(err=>{
             console.log(err)
             if(err.status==401) {
                 ShowSnackbar({message:err.response.data.message,type:'error'})
             }
-            if(err)error(err.response.data)
+            else if(err.status == 200){
+                console.log(err)
+                error(err.response.data)
+            }
         })
     }
     else if(method.toLowerCase()=="post"){
