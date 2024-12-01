@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TitleHeaderFeature from '../../../Global/Component/TitleHeaderFeature/TitleHeaderFeature'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault'
 import LZIcon from '../../../Global/Component/Icon/LZIcon'
 import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm'
@@ -8,23 +8,32 @@ import LZButton from '../../../Global/Component/Button/LZButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm'
 import { HttpRequest } from '../../../Global/API_HTTP/http'
-import { ShowSnackbar } from '../../../Util/globalUtils'
+import { decryptObject, ShowSnackbar } from '../../../Util/globalUtils'
+import moment from 'moment'
 
 function Province() {
     const navigate = useNavigate()
     const onBackpage=()=>{
         navigate('/web/setting/country')
     }
+    const [searchParams] = useSearchParams()
+
     const dispatch = useDispatch()
     const isOpenModal = useSelector(state=>state.Confirm.isOpen)
     const [isShowModal,SetIsShowModal] = useState(false)
     const [ReDrawDataProvince,SetReDrawDataProvince] = useState(false)
     const [DataProvince,SetDataProvince] = useState([]);
     const [isCreate,SetIsCreate] = useState(false)
+    const [dataCountry,setDataCountry] = useState({});
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search); 
+    console.log(atob(queryParams.get('Country')))
     const ViewProvince=(data)=>{
       console.log(data)
     }
     useEffect(async()=>{
+      //decryptObject on this paramter we use for get object by convert fron encrypt code and atob we use for match the query string don't defferent value when we get from query string if don't have atob it will be different value
+      setDataCountry(decryptObject(atob(queryParams.get('Country'))))
       await getListProvince();
     },[])
     const getListProvince =async()=>{
@@ -45,12 +54,25 @@ function Province() {
         message:'Do you want delete this pronvince?',
         type:'delete',
         onClose:onCloseConfirm,
-        onOk:onOkConfirm,
+        onOk:()=>{
+          onOkConfirm(data)
+        },
       }))
       dispatch(setIsShow(true))
     }
-    const onOkConfirm=()=>{
-      console.log("You are click ok ")
+    const onOkConfirm=(data)=>{
+      HttpRequest({
+        url:`/api/province/delete/${data.Id}`,
+        method:"get",
+        success:(result)=>{
+          SetIsShowModal(false)
+          getListProvince()
+          ShowSnackbar({message:result?.message,type:"success"})
+        },
+        error:(error)=>{
+          ShowSnackbar({message:error?.message,type:"error"})
+        }
+      })
       dispatch(setIsShow(false))
     }
     const onCloseConfirm=()=>{
@@ -84,11 +106,33 @@ function Province() {
             title:"CreateBy",
             data:"CreateBy",
             width: "200px" ,
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className=''>
+                            <p>{data.CreateBy}</p>
+                            <p>{moment(data.DateCreated).format('DD MMMM,YYYY')}</p>
+                        </div>
+                    </>
+                )
+            }
         },
         {
             title:"UpdateBy",
             data:"UpdateBy",
             width: "200px" ,
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className=''>
+                            <p>{data.UpdateBy}</p>
+                            <p>{moment(data.UpdateDate).format('DD MMMM,YYYY')}</p>
+                        </div>
+                    </>
+                )
+            }
           
         },
        
@@ -114,11 +158,18 @@ function Province() {
     ]
       const dataInForm = [
         {
+          label:"Code",
+          name:"Code",
+          isRequired:true,
+          type:"text",
+      },
+        {
             label:"Name",
             name:"Name",
             isRequired:true,
             type:"text",
         },
+        
         {
             label:"EnglishName",
             name:"EnglishName",
@@ -137,31 +188,10 @@ function Province() {
     const closeModal=()=>{
       SetIsShowModal(false)
     }
-    // const DataProvince=[
-    //     {
-    //         Name:'ទឹកថ្លា',
-    //         Code:'1',
-    //         EnglishName:'Tek tla',
-    //     },
-    //     {
-    //       Name:'ទឹកថ្លា',
-    //       Code:'3',
-    //       EnglishName:'Tek tla',
-    //     },
-    //     {Code:'3',
-    //       Name:'ទឹកថ្លា',
-    //       EnglishName:'Tek tla',
-    //   },
-    //     {
-    //       Code:'3',
-    //       Name:'ទឹកថ្លា',
-    //       EnglishName:'Tek tla',
-    //   }
-    // ]
     const onSaveProvince=(data)=>{
       HttpRequest({
         url:'/api/province/create',
-        data:data,
+        data:{...data,CountryId:dataCountry.Id},
         method:"post",
         success:(result)=>{
           SetIsShowModal(false)

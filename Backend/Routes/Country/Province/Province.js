@@ -8,7 +8,7 @@ RouteProvince.get('/list',ValidToken,async(req,res)=>{
     let stringQery = `SELECT * FROM LZPROVINCE ORDER BY ID DESC`
     let exec = await db.request().query(stringQery)
     return res.status(200).send(exec.recordset);
-})
+})      
 RouteProvince.post('/create',ValidToken,async(req,res)=>{
     const {Code,Name,EnglishName,Description,CountryId} = req.body;
     console.log(req.body)

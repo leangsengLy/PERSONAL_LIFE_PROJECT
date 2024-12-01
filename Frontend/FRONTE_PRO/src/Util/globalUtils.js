@@ -1,4 +1,5 @@
 import { toast,Slide } from "react-toastify"
+import CryptoJS  from 'crypto-js'
 export const ShowSnackbar=({message,type})=>{
     if(type=="error"){
         toast.error(message,
@@ -43,3 +44,23 @@ export const isEmpty=(data)=>{
 export const IsValidUserName=(text)=>{
     return /[0-9 -_$%@]/.test(text);
 }
+
+
+export const EncriptObject=(Object)=>{
+    const Json = JSON.stringify(Object);
+    const genderateQueryString = CryptoJS.AES.encrypt(Json,"Work@123").toString(); //line for generate new encrypt code
+    return genderateQueryString;
+}
+export const decryptObject = (encryptedText) => {
+    try {
+      // Decrypt the string
+      const bytes = CryptoJS.AES.decrypt(encryptedText, "Work@123");
+      // Convert back to JSON string
+      const decryptedJson = bytes.toString(CryptoJS.enc.Utf8);
+      // Parse the JSON string back to an object
+      return JSON.parse(decryptedJson);
+    } catch (error) {
+      console.error('Error decrypting:', error);
+      return null;
+    }
+  };

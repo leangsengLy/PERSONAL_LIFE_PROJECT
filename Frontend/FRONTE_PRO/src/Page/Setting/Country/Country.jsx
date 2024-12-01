@@ -4,7 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useDispatch, useSelector } from 'react-redux';
 import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm';
 import { HttpRequest } from '../../../Global/API_HTTP/http';
-import { ShowSnackbar } from '../../../Util/globalUtils';
+import { decryptObject, EncriptObject, ShowSnackbar } from '../../../Util/globalUtils';
 import { SystemSpeakByText } from '../../../Util/SystenSayByText';
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
 import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
@@ -28,8 +28,7 @@ function Country() {
         setIsShowModal(true)
     }
     const ViewDetail=(data)=>{
-        const queryString = new URLSearchParams({name:"lyleangseng",pw:'015844712'}).toString();
-        navigate(`/web/setting/country/province?${queryString}`)
+        navigate(`/web/setting/country/province?Country=${btoa(EncriptObject(data))}`)
     }
     const DeleteCountry=(data)=>{
         dispatch(setIsShow(true))
