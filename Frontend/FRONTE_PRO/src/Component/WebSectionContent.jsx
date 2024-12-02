@@ -21,12 +21,12 @@ function WebSectionContent() {
         }
         
     },[])
-    useEffect(()=>{
-      if(SubMenuCode!==''){
-        navigate(`/web/${param.type}/${SubMenuCode}`)
-      }
-    },[SubMenuCode])
-    
+    // useEffect(()=>{
+    //   if(SubMenuCode!==''){
+    //     console.log("Work Calcu")
+    //     // navigate(`/web/${param.type}/${SubMenuCode}`)
+    //   }
+    // },[SubMenuCode])
     const ClickHome=()=>{
       navigate('/')
     }

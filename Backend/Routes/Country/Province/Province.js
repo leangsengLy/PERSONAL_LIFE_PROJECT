@@ -4,8 +4,10 @@ import sql from 'mssql'
 import db from '../../../Database/db_connect.js'
 import moment from 'moment';
 import ValidToken from '../../../Auth/ValidToken.js';
-RouteProvince.get('/list',ValidToken,async(req,res)=>{
-    let stringQery = `SELECT * FROM LZPROVINCE ORDER BY ID DESC`
+RouteProvince.get('/list/:Id',ValidToken,async(req,res)=>{
+    const {Id} = req.params;
+    if(Id==null || Id=='') return res.status(400).send({message:"data not found with country Id!"})
+    let stringQery = `SELECT * FROM LZPROVINCE WHERE CountryId=${Id} ORDER BY ID DESC`
     let exec = await db.request().query(stringQery)
     return res.status(200).send(exec.recordset);
 })      

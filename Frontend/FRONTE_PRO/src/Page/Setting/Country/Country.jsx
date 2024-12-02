@@ -167,11 +167,11 @@ function Country() {
         })
     },[])
     useEffect(()=>{
-        console.log("123132")
-        getList();
+        // window.location.reload()
+         getList();
     },[])
     
-    const getList=()=>{
+     const getList=()=>{
         HttpRequest({
             url:"/api/country/list",
             method:'get',

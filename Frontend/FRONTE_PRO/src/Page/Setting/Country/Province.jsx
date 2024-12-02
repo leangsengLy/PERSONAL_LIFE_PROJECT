@@ -14,7 +14,8 @@ import moment from 'moment'
 function Province() {
     const navigate = useNavigate()
     const onBackpage=()=>{
-        navigate('/web/setting/country')
+        navigate('/web/setting/country/')
+        window.location.reload() // we use this function becuase i did not find the solution for back page without white screen
     }
     const [searchParams] = useSearchParams()
 
@@ -27,18 +28,21 @@ function Province() {
     const [dataCountry,setDataCountry] = useState({});
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search); 
-    console.log(atob(queryParams.get('Country')))
     const ViewProvince=(data)=>{
       console.log(data)
     }
     useEffect(async()=>{
-      //decryptObject on this paramter we use for get object by convert fron encrypt code and atob we use for match the query string don't defferent value when we get from query string if don't have atob it will be different value
+      console.log(decryptObject(atob(queryParams.get('Country'))))
+      // decryptObject on this paramter we use for get object by 
+      // convert fron encrypt code and atob we use for match
+      //  the query string don't defferent value when we get from query string if don't have atob it will be different value
       setDataCountry(decryptObject(atob(queryParams.get('Country'))))
+      console.log(decryptObject(atob(queryParams.get('Country'))).Id)
       await getListProvince();
     },[])
     const getListProvince =async()=>{
       await HttpRequest({
-        url:'/api/province/list',
+        url:`/api/province/list/${decryptObject(atob(queryParams.get('Country'))).Id}`,
         method:'get',
         error:(error)=>{
           console.log(error)
@@ -111,8 +115,8 @@ function Province() {
                 return (
                     <>
                         <div className=''>
-                            <p>{data.CreateBy}</p>
-                            <p>{moment(data.DateCreated).format('DD MMMM,YYYY')}</p>
+                            <p>{data.CreateBy!==null?data.CreateBy:''}</p>
+                            <p>{data.DateCreated!==null?moment(data.DateCreated).format('DD MMMM,YYYY'):''}</p>
                         </div>
                     </>
                 )
@@ -127,8 +131,8 @@ function Province() {
                 return (
                     <>
                         <div className=''>
-                            <p>{data.UpdateBy}</p>
-                            <p>{moment(data.UpdateDate).format('DD MMMM,YYYY')}</p>
+                        <p>{data.UpdateBy!==null?data.UpdateBy:''}</p>
+                        <p>{data.UpdateDate!==null?moment(data.UpdateDate).format('DD MMMM,YYYY'):''}</p>
                         </div>
                     </>
                 )
