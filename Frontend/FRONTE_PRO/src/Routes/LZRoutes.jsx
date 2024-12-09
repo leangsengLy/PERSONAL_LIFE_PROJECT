@@ -6,6 +6,7 @@ import HomeMenu from '../Component/HomeMenu.jsx'
 import WebSectionContent from '../Component/WebSectionContent.jsx'
 import SubMenuContent from '../Component/SubMenuContent/SubMenuContent.jsx'
 import Province from '../Page/Setting/Country/Province.jsx'
+import ProfileIndex from '../Page/Profile/ProfileIndex.jsx'
 function LZRoutes() {
   return (
     <>
@@ -13,6 +14,7 @@ function LZRoutes() {
             <Route path='/' Component={HomeMenu}/>
             <Route path='/login' Component={Login}/>
             <Route path='/logout' Component={Login}/>
+            <Route path='/profile' Component={ProfileIndex}/>
             <Route path='/web/:type' Component={WebSectionContent}>
               <Route path=':subType' Component={SubMenuContent}>
                 {/* // Route below we just setup for check in component "SubMenuContent" by param to know about we click to the child and then we render the same place  */}

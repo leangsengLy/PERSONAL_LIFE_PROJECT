@@ -8,8 +8,10 @@ import Lyzee from '../../../public/Image/Lyzee/lyzee.jpg';
 import { useDispatch } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
 import { SoundAudio } from '../../Util/Sound'
+import { useNavigate } from 'react-router-dom';
 function ActionTopRight({isLoginOrisHomePage}) {
   const [isClickSetting,setIsClickSetting] = useState(false)
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   const click = SoundAudio("click")
   const onClose=()=>{
@@ -21,6 +23,10 @@ function ActionTopRight({isLoginOrisHomePage}) {
     sessionStorage.clear();
     window.speechSynthesis.cancel();
     window.location.href="/logout"
+  }
+  const ClickOnProfile=()=>{
+    console.log("viewing the profile");
+    navigate('/profile')
   }
   const onClickLogout=()=>{
       click.play();
@@ -42,7 +48,7 @@ function ActionTopRight({isLoginOrisHomePage}) {
           <div className='text-[14px]  text-white '>Admin</div>
     </div>
     <div className='w-full px-4 flex flex-col mt-[9px] gap-y-2'>
-      <div className='flex gap-x-2 color-1 hover-text lz-animation'>
+      <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={ClickOnProfile} >
         <i className="ri-user-fill"></i>
         <p>Profile</p>
       </div>

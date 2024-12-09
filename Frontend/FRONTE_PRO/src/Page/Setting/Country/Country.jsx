@@ -167,7 +167,7 @@ function Country() {
         })
     },[])
     useEffect(()=>{
-        // window.location.reload()
+        
          getList();
     },[])
     
