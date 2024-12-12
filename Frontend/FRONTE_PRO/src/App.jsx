@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import LZRoutes from './Routes/LZRoutes.jsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import LZComfirm from './Global/View/ConfirmAction/LZComfirm.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
     const navigate = useNavigate();
+    const selectedColorSystem = useSelector(state=>state.ColorSystem.selectColor);
     useEffect(()=>{
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         if(getUserInfo==null) navigate('/login')
@@ -35,7 +36,7 @@ const App = () => {
     })
 
     return (
-        <div className={`transition-all ease-linear ${isDark? "dark" : ""} ${language.code??'kh'}`}>
+        <div className={`transition-all ease-linear  ${isDark? selectedColorSystem==""?'dark':`general_color_${selectedColorSystem}` : ""} ${language.code??'kh'}`}>
             <LZRoutes/>
             <LZComfirm/>
             <ToastContainer position="bottom-right" autoClose={5000}/>
