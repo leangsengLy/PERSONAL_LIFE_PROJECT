@@ -5,6 +5,7 @@ import StoreLanguage from '../Store/Language/Langauge.js'
 import ConfirmStore from '../Store/Confirm/Confirm.js'
 import CountryStore from '../Store/Page/Country/Country.js'
 import UserLoginStore from '../Store/UserLogin/UserLogin.js'
+import ColorSystemStore from '../Store/Profile/ColorSystem/ColorSystem.js'
 export const store = configureStore({
     reducer:{
         counterTest:SliceStore,
@@ -12,6 +13,7 @@ export const store = configureStore({
         Language:StoreLanguage,
         Confirm:ConfirmStore,
         Country:CountryStore,
-        User:UserLoginStore
+        User:UserLoginStore,
+        ColorSystem:ColorSystemStore
     }
 })
