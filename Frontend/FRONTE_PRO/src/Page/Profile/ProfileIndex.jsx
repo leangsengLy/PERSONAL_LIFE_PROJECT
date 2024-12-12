@@ -30,7 +30,7 @@ function ProfileIndex() {
         <ActionTopRight isLoginOrisHomePage={true} />
         <div className='grid grid-cols-[250px_1fr] gap-x-5 h-[600px] w-[900px] rounded-[24px]'>
             <div className='w-full bg-slate rounded-[18px] px-5 py-6 flex flex-col gap-y-2'>
-              <div className='font-bold color-1 text-[18px]'>Setting</div>
+              <div className='font-bold color-1 text-[18px] color-primary'>Setting</div>
               <div className='grid gap-y-2'>
                 {
                   MenuTab.map((val)=>{

@@ -28,6 +28,9 @@ function ActionTopRight({isLoginOrisHomePage}) {
     console.log("viewing the profile");
     navigate('/profile')
   }
+  const clickOnHomePage=()=>{
+    navigate('/')
+  }
   const onClickLogout=()=>{
       click.play();
       dispatch(setModalConfirm({
@@ -48,6 +51,10 @@ function ActionTopRight({isLoginOrisHomePage}) {
           <div className='text-[14px]  text-white '>Admin</div>
     </div>
     <div className='w-full px-4 flex flex-col mt-[9px] gap-y-2'>
+      <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={clickOnHomePage} >
+        <i className="ri-function-fill"></i>
+        <p>Home</p>
+      </div>
       <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={ClickOnProfile} >
         <i className="ri-user-fill"></i>
         <p>Profile</p>

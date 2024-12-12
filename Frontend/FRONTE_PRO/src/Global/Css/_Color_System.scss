@@ -1,5 +1,5 @@
 :root{
-    --main-primary:#C96112;
+    
     --white-dark:#ffffff;
     --slate:#a7a7a72e;
     --popup:#f7f7f7;
@@ -13,14 +13,143 @@
     --bg-navleft:#f2f2f2;
 }
 
-
-.general_color_001A6E{
+.main_color{
+    --main-primary:#C96112;
+}
+.dark{
+    --main-primary:#C96112;
+}
+.color_primary_001A6E{
     --main-primary:#001A6E;
+}
+.color_primary_074799{
+    --main-primary:#074799;
+}
+.color_primary_009990{
+    --main-primary:#009990;
+}
+.color_primary_F26B0F{
+    --main-primary:#F26B0F;
+}
+.color_primary_FCC737{
+    --main-primary:#FCC737;
+}
+.color_primary_7E1891{
+    --main-primary:#7E1891;
+}
+.color_primary_F72C5B{
+    --main-primary:#F72C5B;
+}
+.color_primary_B1F0F7{
+    --main-primary:#B1F0F7;
+}
+.color_primary_0A97B0{
+    --main-primary:#0A97B0;
+}
+.color_primary_A7D477{
+    --main-primary:#A7D477;
+}
+.color_primary_0A97B0{
+    --main-primary:#0A97B0;
+}
+.color_primary_219B9D{
+    --main-primary:#219B9D;
+}
+.color_primary_FA4032{
+    --main-primary:#FA4032;
+}
+.color_primary_8B5DFF{
+    --main-primary:#8B5DFF;
+}
+.color_primary_FF2929{
+    --main-primary:#FF2929;
+}
+.color_primary_FF7F3E{
+    --main-primary:#FF7F3E;
+}
+.color_primary_80C4E9{
+    --main-primary:#80C4E9;
+}
+.color_primary_4335A7{
+    --main-primary:#4335A7;
+}
+.color_primary_1F4529{
+    --main-primary:#1F4529;
+}
+.color_primary_EB5B00{
+    --main-primary:#EB5B00;
+}
+.color_primary_640D5F{
+    --main-primary:#640D5F;
+}
+.color_primary_2A3335{
+    --main-primary:#2A3335;
+}
+.color_primary_1A1A1D{
+    --main-primary:#1A1A1D;
+}
+.color_primary_3D5300{
+    --main-primary:#3D5300;
+}
+.color_primary_ABBA7C{
+    --main-primary:#ABBA7C;
+}
+.color_primary_FFE31A{
+    --main-primary:#FFE31A;
+}
+.color_primary_F09319{
+    --main-primary:#F09319;
+}
+.color_primary_000B58{
+    --main-primary:#000B58;
+}
+.color_primary_740938{
+    --main-primary:#740938;
+}
+.color_primary_133E87{
+    --main-primary:#133E87;
+}
+.color_primary_091057{
+    --main-primary:#091057;
+}
+.color_primary_00FF9C{
+    --main-primary:#00FF9C;
+}
+.color_primary_B6FFA1{
+    --main-primary:#B6FFA1;
+}
+.color_primary_257180{
+    --main-primary:#257180;
+}
+.color_primary_F2E5BF{
+    --main-primary:#F2E5BF;
+}
+.color_primary_EB8317{
+    --main-primary:#EB8317;
+}
+.color_primary_798645{
+    --main-primary:#798645;
+}
+.color_primary_72BF78{
+    --main-primary:#72BF78;
+}
+.color_primary_433878{
+    --main-primary:#433878;
+}
+.color_primary_FF6500{
+    --main-primary:#FF6500;
+}
+.color_primary_1E3E62{
+    --main-primary:#1E3E62;
+}
+.color_primary_87A2FF{
+    --main-primary:#87A2FF;
+}
+.color_primary_347928{
+    --main-primary:#347928;
 }
 
 .dark{
-    --main-primary:#C96112;
-
     --white-dark:#222831;
     --slate:#00000038;
     --popup:#1e1e1e;
