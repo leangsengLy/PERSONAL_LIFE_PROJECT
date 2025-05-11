@@ -9,6 +9,7 @@ import LZTableDefault from '../../Global/Component/LZTableDefault/LZTableDefault
 import LZIcon from '../../Global/Component/Icon/LZIcon';
 import {useNavigate} from 'react-router-dom';
 import {format} from 'date-fns';
+import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 
 function Offers() {
     const dataList = useSelector((state)=>state.Country.dataList)
@@ -18,6 +19,7 @@ function Offers() {
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
+    const [Filter,setFilter]=useState({})
     const [DrawData,setDrawData]=useState({})
     const [data,SetData] = useState([])
     const EditCountry=(data)=>{
@@ -32,7 +34,7 @@ function Offers() {
         dispatch(setIsShow(true))
         dispatch(setModalConfirm({
             type:"delete",
-            message:"Do you want to delete this country?",
+            message:"Do you want to delete?",
             onClose:()=>{
                 dispatch(setIsShow(false))
             },
@@ -42,7 +44,6 @@ function Offers() {
                     url:`/api/offer/delete?Id=${data.Id}`,
                     method:"get",
                     success:(result)=>{
-                        console.log(result)
                         // SystemSpeakByText(result.data.message,false);
                         getList();
                        
@@ -70,13 +71,11 @@ function Offers() {
             renderTag:(data)=>{
                 return (
                     <>
-                     {console.log(`http://localhost:8080`+data.PathImage)}
                         <div className='w-[35px] h-[35px] rounded-md bg-black overflow-hidden'>
                             <img src={`http://localhost:8080`+data.PathImage} alt="" onError={OnerrorImage}  className='w-full h-full object-cover'/>
                         </div>
                     </>
                 )
-                console.log(data)
             }
         },
         {
@@ -91,7 +90,6 @@ function Offers() {
                         <div className='w-[300px] text-ellipsis overflow-hidden'>{data.Label}</div>
                     </>
                 )
-                console.log(data)
             }
         },
         {
@@ -156,7 +154,6 @@ function Offers() {
                         </div>
                     </>
                 )
-                console.log(data)
             }
         },
        
@@ -167,14 +164,18 @@ function Offers() {
         e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
     }
     const FilterData=(filter)=>{
-        console.log(filter)
+        setFilter(filter);
+       
     }
+    useEffect(()=>{
+         getList();
+    },[Filter])
+
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
             else if(e.target.className.includes("view")) console.log("view")
             else if(e.target.className.includes("delete")){
-                console.log(e.target)
                 let Id = e.target.attributes
                 dispatch(setModalConfirm({
                     type:"delete",
@@ -183,7 +184,6 @@ function Offers() {
                         dispatch(setIsShow(false))
                     },
                     onOk:()=>{
-                        console.log("Ok")
                         DeleteCountry()
                         dispatch(setIsShow(false))
                     }
@@ -193,18 +193,17 @@ function Offers() {
         })
     },[])
     useEffect(()=>{
-        
          getList();
     },[])
     
-     const getList=()=>{
-        HttpRequest({
+     const getList=async()=>{
+       await  HttpRequest({
             url:"/api/offer/list",
             method:'post',
             data:{
                     search:"",
-                    pages:1,
-                    records:10
+                    pages:Filter.Page,
+                    records:Filter.Record,
             },
             success:(result)=>{
                 SetData(result)
@@ -217,14 +216,19 @@ function Offers() {
     const CloseModal=()=>{
         setIsShowModal(false)
     }
-    const UpdateData=(data)=>{
-        console.log(data)
+    const UpdateData=async(data)=>{
+        var image = await GetBase64ByImage(data.File)
         HttpRequest({
             url:'api/offer/update',
             data:{
                 id:data.Id,
                 label:data.Label,
                 detail:data.Detail,
+                uploadFileDataModel:{
+                    fileName: "ImageOffer.jpg",
+                    fileType: image.ImageType,
+                    base64Data:image.Base64,
+                }
             },
             method:"post",
             success:(success)=>{
@@ -257,24 +261,31 @@ function Offers() {
         {
             label:"Detail",
             name:"Detail",
-            type:"text",
+            type:"textArea",
         },
-        // {
-        //     label:"Country Image",
-        //     name:"File",
-        //     type:"file",
-        // },
+        {
+            label:"Image",
+            name:"File",
+            type:"file",
+        },
     ]
     const CanceModal=(title)=>{
         setIsShowModal(false)
     }
+    
     const SaveData=async (data)=>{
+        var image = await GetBase64ByImage(data.File)
        await HttpRequest({
             url:"api/offer/create",
             method:"Post",
             data:{
                 label:data.Label,
                 detail:data.Detail,
+                uploadFileDataModel:{
+                    fileName: "ImageOffer.jpg",
+                    fileType: image.ImageType,
+                    base64Data:image.Base64,
+                }
             },
             success:(result)=>{
                 getList();
@@ -292,7 +303,7 @@ function Offers() {
             {/* <div className='flex justify-end mb-5'>
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
             </div> */}
-            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns}/>
+            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 

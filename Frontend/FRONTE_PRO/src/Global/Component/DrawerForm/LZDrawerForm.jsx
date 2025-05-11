@@ -42,30 +42,25 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     },[propDrawer.open])
     let NameCheckBox = "";
     const EventInputForm=(e)=>{
-        console.log(e.target.value)
         setGetData(val=>{
             return {...val,[e.target.name]:e.target.value}
         })
         SetIsFirstInput(val=>{
             return {...val,[e.target.name]:true}
         })
-        console.log(IsFirstInput)
     }
     const selectTheRadio = (name)=>{
         NameCheckBox =name;
     }
     const checkValidatioForm = ()=>{
-          console.log("iscreate",isCreate)
         if(HasReqired.length>0){
             if(GetData.length==0){
-                console.log("AA")
                 Object.keys(IsFirstInput).map((val)=>{
                     SetIsFirstInput(v=>{
                         return {...v,[val]:true}
                     })
                 })  
             }else{
-                console.log("ABA")
                 HasReqired.map((val)=>{
                     if(!Object.keys(GetData).includes(val.name)){
                         SetIsFirstInput(v=>{
@@ -79,15 +74,12 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                     }
                 })
                 if(isCreate){
-                    console.log("Y")
                     if(fn.onSave){
                         fn.onSave(GetData)
                     }
                 }
                 else {
-                    console.log("Y1")
                     if(fn.onSaveEdit){
-                        console.log("after udpate,",GetData)
                         fn.onSaveEdit(GetData)
                     }
                 }
@@ -137,7 +129,6 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                 setImage(null);
                 setSourseImage(null);
                 dispatch(setIsShow(false))
-                console.log(Image)
             },
             message:"Do you want delele this Image!",
             type:"delete"
@@ -225,10 +216,10 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                             Image!==null?(<>
                                                     <div className='mt-4 relative w-full border flex justify-start gap-x-2 items-center border-slate-200 rounded-xl p-2'>
                                                         <div className='min-w-[100px] w-[100px] min-h-[60px] h-[60px] rounded-xl overflow-hidden '>
-                                                            <img src={isCreateNew?Image:Image.ImagePath} alt="" className='w-full rounded-xl h-full object-cover' />
+                                                            <img src={isCreateNew?Image:"http://localhost:8080"+Image?.PathImage} alt="" className='w-full rounded-xl h-full object-cover' />
                                                         </div>
                                                         <div className='!pr-9'>
-                                                                <p className='lz-line text-[14px]'>{isCreateNew?SourseImage?.name:SourseImage?.OrginalName??''}</p>
+                                                                <p className='lz-line text-[14px]'>{isCreateNew?SourseImage?.name:Image?.PathImage?.split("/")[Image?.PathImage?.split("/").length-1]}</p>
                                                                 <p className='text-[13px]'>{isCreateNew?SourseImage?.size:SourseImage?.SizeImage}</p>
                                                         </div>
                                                         <div className='absolute right-3'>

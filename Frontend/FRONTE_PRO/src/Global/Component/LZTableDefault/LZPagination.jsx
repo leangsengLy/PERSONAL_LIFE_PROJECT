@@ -12,7 +12,7 @@ function LZPagination({SelectPage,totalRecord=0}) {
   return (
     <div className='mt-5 flex justify-between items-center'>
         <p>Total Record: {totalRecord}</p>
-        <Pagination total={10} classNames={{item:'bg-navleft'}}  onChange={ChangePagination} page={1} initialPage={10} variant='flat'/>
+        <Pagination total={(totalRecord/10)+1} classNames={{item:'bg-navleft'}}  onChange={ChangePagination} page={1} initialPage={10} variant='flat'/>
     </div>
   )
 }

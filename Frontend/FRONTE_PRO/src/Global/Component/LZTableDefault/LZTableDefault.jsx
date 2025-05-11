@@ -8,15 +8,15 @@ import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
 // import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
-function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns}) {
+function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,totalRecord}) {
     const tableRef = useRef(null);
     const param = useParams();
     const blogFilterTop = useRef();
     const TableDefault = useRef();
     const [FilterData,SetFilterdata] = useState({
-        Record:0,
+        Record:10,
         Search:'',
-        Page:0,
+        Page:1,
     })
     useEffect(()=>{
         console.log(blogFilterTop.current.getBoundingClientRect().top+12)
@@ -58,6 +58,7 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns}) 
     useEffect(()=>{
         setTimeout(()=>{
             console.log(FilterData)
+             OnChangeFilter(FilterData)
         },100)
     },[FilterData.Search,FilterData.Page,FilterData.Record])
   return (
@@ -87,7 +88,8 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns}) 
         <Table removeWrapper={false} 
             ref={TableDefault}
             classNames={{
-                wrapper:['bg-navleft lzscroll-table'],
+                base:[" h-full"],
+                wrapper:['bg-navleft lzscroll-table h-full'],
                 th:['bg-box-wrapper'],
             }}
             className='w-full style-height-default'
@@ -127,7 +129,7 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns}) 
                     
             </TableBody>
         </Table>
-        <LZPagination SelectPage={onSelectPage} totalRecord={data.length}/>
+        <LZPagination SelectPage={onSelectPage} totalRecord={totalRecord}/>
         </div>
     </div>
   )
