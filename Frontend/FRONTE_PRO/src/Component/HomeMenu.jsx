@@ -26,8 +26,11 @@ const HomeMenu = () => {
     click.play();
   }
   const onClickMenu=(TitleName)=>{
-    navigate(`/web/${TitleName}`)
-    
+      var list = StoreMenu.filter(va=>va.code==TitleName);
+      console.log(list)
+      if(list[0].SubMenu.length>0){
+        navigate(`/web/${TitleName}/${list[0].SubMenu[0].Code}`);
+      }else navigate(`/web/${TitleName}`)
   }
   
   return (
