@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LZButton from '../../../Global/Component/Button/LZButton'
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useDispatch, useSelector } from 'react-redux';
 import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm';
 import { HttpRequest } from '../../../Global/API_HTTP/http';
 import { decryptObject, EncriptObject, ShowSnackbar } from '../../../Util/globalUtils';
-import { SystemSpeakByText } from '../../../Util/SystenSayByText';
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
 import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
 import LZIcon from '../../../Global/Component/Icon/LZIcon';
-import LZMainWrapper from '../../../Global/Component/Container/LZMainWrapper';
 import {useNavigate} from 'react-router-dom';
+import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function Country() {
     const dataList = useSelector((state)=>state.Country.dataList)
@@ -39,18 +38,19 @@ function Country() {
                 dispatch(setIsShow(false))
             },
             onOk:async()=>{
-                dispatch(setIsShow(false))
+                 dispatch(setIsShow(false))
                 await HttpRequest({
-                    url:`/api/country/delete/${data.Id}`,
+                    url:`/api/movie_type/delete?Id=${data.Id}`,
                     method:"get",
                     success:(result)=>{
                         console.log(result)
-                        SystemSpeakByText(result.data.message,false);
-                        ShowSnackbar({message:result.data.message,type:'success'})
+                        // SystemSpeakByText(result.data.message,false);
                         getList();
+                       
+                        ShowSnackbar({message:result.data.message,type:'success'})
                     },
                     error:(err)=>{
-                        SystemSpeakByText(err.message,false);
+                        // SystemSpeakByText(err.message,false);
                         ShowSnackbar({message:err.message,type:'error'})
                     }
                 })
@@ -59,26 +59,22 @@ function Country() {
         
     }
     const columnData=[
-        {
-            title:"Code",
-            data:"Code",
-            isDraw:true,
-            width: "100px" ,
-            className:"min-width",
-            renderTag:(data)=>{
-                return (
-                    <>
-                        <div className=' flex gap-x-2 items-center'>
-                            <div className='w-[34px] h-[34px] rounded-full bd-primary p-[3px]'>
-                                <img src={data.ImagePath} onError={ErrorImage} className='w-full h-full rounded-full ' alt="" />
-                            </div>
-                            <p>{data.Code}</p>
-                        </div>
-                    </>
-                )
-            }
-           
-        },
+        // {
+        //     title:"Code",
+        //     data:"Code",
+        //     isDraw:true,
+        //     width: "100px" ,
+        //     className:"min-width",
+        //     renderTag:(data)=>{
+        //         return (
+        //             <>
+        //                 <div className=' flex gap-x-2 items-center'>
+        //                     <p>{data.Code}</p>
+        //                 </div>
+        //             </>
+        //         )
+        //     }
+        // },
         {
             title:"Name",
             data:"Name",
@@ -94,13 +90,12 @@ function Country() {
             title:"CreateBy",
             data:"CreateBy",
             width: "100px" ,
-
         },
         {
             title:"CreateDate",
             data:"DateCreated",
             isDateTime:true,
-            width: "250px" ,
+            width: "180px" ,
         },
         {
             title:"UpdateBy",
@@ -112,7 +107,7 @@ function Country() {
             title:"UpdateDate",
             data:"UpdateDate",
             isDateTime:true,
-            width: "250px" ,
+            width: "180px" ,
         },
         {
             title:"Action",
@@ -124,7 +119,6 @@ function Country() {
                 return (
                     <>
                         <div className='text-red-400 flex gap-x-2'>
-                            <LZIcon  typeIcon="view" onClickIcon={()=>{ViewDetail(data)}}/>
                             <LZIcon  typeIcon="edit" onClickIcon={()=>{EditCountry(data)}}/>
                             <LZIcon  typeIcon="delete" onClickIcon={()=>{DeleteCountry(data)}}/>
                         </div>
@@ -173,8 +167,13 @@ function Country() {
     
      const getList=()=>{
         HttpRequest({
-            url:"/api/country/list",
-            method:'get',
+            url:"/api/movie_type/list",
+            method:'post',
+            data:{
+                    search:"",
+                    pages:0,
+                    records:0
+            },
             success:(result)=>{
                 SetData(result)
             },
@@ -187,19 +186,21 @@ function Country() {
         setIsShowModal(false)
     }
     const UpdateData=(data)=>{
+        console.log(data)
         HttpRequest({
-            url:'/api/country/update',
-            data:data,
-            type:'file',
+            url:'api/movie_type/update',
+            data:{
+                id:data.Id,
+                name:data.Name,
+                englishName:data.EnglishName,
+            },
             method:"post",
             success:(success)=>{
                 setIsShowModal(false)
                 getList();
-                SystemSpeakByText(success.message,false)
                 ShowSnackbar({message:success.message,type:'success'})
             },
             error:(error)=>{
-                SystemSpeakByText(error.message,false)
                 ShowSnackbar({message:error.message,type:'error'})
             }
         })
@@ -209,12 +210,12 @@ function Country() {
         setIsShowModal(true)
     }
     const dataInForm = [
-        {
-            label:"Code",
-            name:"Code",
-            isRequired:true,
-            type:"text",
-        },
+        // {
+        //     label:"Code",
+        //     name:"Code",
+        //     isRequired:true,
+        //     type:"text",
+        // },
         {
             label:"Name",
             name:"Name",
@@ -226,38 +227,40 @@ function Country() {
             name:"EnglishName",
             type:"text",
         },
-        {
-            label:"Country Image",
-            name:"File",
-            type:"file",
-        },
+        // {
+        //     label:"Country Image",
+        //     name:"File",
+        //     type:"file",
+        // },
     ]
     const CanceModal=(title)=>{
         setIsShowModal(false)
     }
     const SaveData=async (data)=>{
        await HttpRequest({
-            url:"/api/country/create",
+            url:"api/movie_type/create",
             method:"Post",
-            type:'file',
-            data:data,
+            data:{
+                name:data.Name,
+                englishName:data.EnglishName,
+            },
             success:(result)=>{
                 getList();
                 setIsShowModal(false)
             },
             error:(error)=>{
-                SystemSpeakByText(error.message,false)
                 ShowSnackbar({message:error.message,type:"error"})
             }
         })
     }
+    const btns = [{type:"Create",OnCreate:OnclickAdd}];
   return (
-    <div className='h-full'>
+    <div className='h-full grid grid-rows-[30px_1fr]'>
         <h1 className='text-[17px] font-bold'>Country</h1>
-            <div className='flex justify-end mb-5'>
+            {/* <div className='flex justify-end mb-5'>
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
-            </div>
-            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData}/>
+            </div> */}
+            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 

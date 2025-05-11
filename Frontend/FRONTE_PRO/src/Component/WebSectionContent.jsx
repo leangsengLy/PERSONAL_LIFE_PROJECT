@@ -56,7 +56,7 @@ function WebSectionContent() {
       },200)
     }
   return (
-    <div className={`wrapper-all-section lz-animation bg-box-wrapper w-screen h-screen color-default grid ${collapse?`grid-cols-[80px_1fr]`:`grid-cols-[240px_1fr]`}`}>
+    <div className={`wrapper-all-section lz-animation !max-w-[2200px] !mx-auto !my-0 bg-box-wrapper w-screen h-screen color-default grid ${collapse?`grid-cols-[80px_1fr]`:`grid-cols-[240px_1fr]`}`}>
             <div className={`left relative bg-navleft lz-animation px-4 py-6 flex flex-col gap-y-[10px] ${collapse?`overflow-hidden`:``}`}>
                   <div className={`flex gap-x-2 items-center   mb-2 font-bold  `}>
                     <div onClick={onSwitchCollapse} className='w-[9px] h-[45px] animate-pulse absolute top-1/2 right-[10px] cursor-pointer -translate-y-1/2 -translate-x-1/2  rounded-full bg-primary'></div>

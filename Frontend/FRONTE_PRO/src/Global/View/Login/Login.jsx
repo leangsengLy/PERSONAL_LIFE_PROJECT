@@ -66,7 +66,7 @@ const onSignUpUser=()=>{
   if(inputDataCreate.Password=="") message+="Password ";
   if(inputDataCreate.HintPassword=="") message+="Hint Password ";
   if(inputDataCreate.Username=="" || inputDataCreate.Password=="" || inputDataCreate.HintPassword==""){
-    SystemSpeakByText(`Please input ${message}!`,false)
+    // //SystemSpeakByText(`Please input ${message}!`,false)
     ShowSnackbar({message:`Please input ${message}!`,type:`error`})
   }
   else {
@@ -120,24 +120,24 @@ const onSignUpUser=()=>{
     click.play();
     if(inputData.Password=="" && inputData.Username=="" ){
       ShowSnackbar({message:`Please input password and username!`,type:`error`})
-      SystemSpeakByText(`Please input password and username!`,false)
+      // //SystemSpeakByText(`Please input password and username!`,false)
     }
     else if(inputData.Username==""){
       ShowSnackbar({message:`Please input username!`,type:`error`})
-      SystemSpeakByText(`Please input username!`,false)
+      // //SystemSpeakByText(`Please input username!`,false)
     }
     else if(inputData.Password==""){
-      SystemSpeakByText('Please input password!',false)
-      ShowSnackbar({message:`Please input password!`,type:`error`})
+      //SystemSpeakByText('Please input password!',false)
+      // ShowSnackbar({message:`Please input password!`,type:`error`})
     }
     else{
      SetInShowSpin(true)
      HttpRequest({
-      url:'api/user/login',
+      url:'api/login/login',
       method:"post",
       data:{
-        PASSWORD:inputData.Password,
-        USERNAME:inputData.Username,
+        password:inputData.Password,
+        email:inputData.Username,
       },
       success:(result)=>{
         const getToken = DecodeToken(result.token);
@@ -148,7 +148,7 @@ const onSignUpUser=()=>{
         ShowSnackbar({message:result.message,type:"success"})
         navigate('/')
         setTimeout(()=>{
-          SystemSpeakByText(result.message,false)
+          // //SystemSpeakByText(result.message,false)
         },400)
      },
      error:(err)=>{
@@ -156,7 +156,7 @@ const onSignUpUser=()=>{
       SetInShowSpin(false)
       ShowSnackbar({message:err.message,type:"error"})
       setTimeout(()=>{
-        SystemSpeakByText(err.message,false)
+        // //SystemSpeakByText(err.message,false)
       },600)
       
      }
@@ -201,7 +201,7 @@ const onSignUpUser=()=>{
             <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>V-Are System</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='text' isRequired={true}  onKeyDown={KeyEnter} value={inputData.Username } errorMessage={`${IsValidUserName(inputData.Username)?`Your username should have only text!`:`Username are required!`}`} isInvalid={(inputData.Username==""  && !isFirstLoginPw.current) || IsValidUserName(inputData.Username)}  name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input type='email' isRequired={true}  onKeyDown={KeyEnter} value={inputData.Username }  isInvalid={(inputData.Username==""  && !isFirstLoginPw.current)}  name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
             <Input  labelPlacement='outside'  onKeyDown={KeyEnter} isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Username==""  && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'

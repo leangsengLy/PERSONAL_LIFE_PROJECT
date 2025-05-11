@@ -1,4 +1,4 @@
-import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import moment from 'moment/moment'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -6,8 +6,9 @@ import LZPagination from './LZPagination';
 import LZSearch from './LZSearch';
 import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
+// import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
-function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent}) {
+function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns}) {
     const tableRef = useRef(null);
     const param = useParams();
     const blogFilterTop = useRef();
@@ -62,15 +63,27 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent}) {
   return (
     <div>
         <div className='grid gap-y-3 mb-4 test-offset'>
-            <div ref={blogFilterTop} className='w-full flex justify-between items-center'>
-                <LZSearch onSearching={onSearching}/>
+            <div className='flex w-full mt-[15px]'>
+                <div ref={blogFilterTop} className='w-full flex items-center'>
                 <LZSelectRecord SelectRecord ={onSelectRecord}/>
+                <LZSearch onSearching={onSearching}/>
+                </div>
+                <div className='flex gap-x-2'>
+                    {
+                        Btns.length>0?(Btns.map((val,index)=>{
+                            return(
+                                <Button onClick={val.OnCreate} radius='sm' key={index} size='md' color='success'>{val.type}</Button>
+                            )
+                            })):""
+                            
+                    }
+                </div>
             </div>
             <div>
                 {ChipperContent}
             </div>
         </div>
-        <div className='h-full flex flex-col justify-between '>
+        <div className='h-[90%] flex flex-col justify-between '>
         <Table removeWrapper={false} 
             ref={TableDefault}
             classNames={{

@@ -27,6 +27,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         }, {});
         SetIsFirstInput(dataObject)
         isSetCreateNew(isCreate)
+      
         if(isCreate){
             setGetData([]);
             setImage(null);
@@ -41,6 +42,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     },[propDrawer.open])
     let NameCheckBox = "";
     const EventInputForm=(e)=>{
+        console.log(e.target.value)
         setGetData(val=>{
             return {...val,[e.target.name]:e.target.value}
         })
@@ -53,6 +55,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         NameCheckBox =name;
     }
     const checkValidatioForm = ()=>{
+          console.log("iscreate",isCreate)
         if(HasReqired.length>0){
             if(GetData.length==0){
                 console.log("AA")
@@ -84,6 +87,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                 else {
                     console.log("Y1")
                     if(fn.onSaveEdit){
+                        console.log("after udpate,",GetData)
                         fn.onSaveEdit(GetData)
                     }
                 }

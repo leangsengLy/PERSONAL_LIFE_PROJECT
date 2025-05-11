@@ -13,6 +13,7 @@ const App = () => {
     useEffect(()=>{
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         if(getUserInfo==null) navigate('/login')
+         
     },[])
     window.addEventListener('click',()=>{
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -36,7 +37,7 @@ const App = () => {
     })
 
     return (
-        <div className={`transition-all ease-linear color_primary_${selectedColorSystem} ${isDark? `dark` : ""} ${language.code??'kh'}`}>
+        <div className={`transition-all ease-linear  color_primary_${selectedColorSystem} ${isDark? `dark` : ""} ${language.code??'kh'}`}>
             <LZRoutes/>
             <LZComfirm/>
             <ToastContainer position="bottom-right" autoClose={5000}/>

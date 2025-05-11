@@ -7,7 +7,7 @@ export const HttpRequest = async ({url,method='get',data,success,error,type='dat
     if(method.toLowerCase()=="get"){
         await axios.get(URI,{
             headers:{
-                Authorization:`Bearer ${getToken}`,
+                // Authorization:`Bearer ${getToken}`,
                 'Content-Type': 'multipart/form-data'
             }
         }).then(response=>{
@@ -27,7 +27,7 @@ export const HttpRequest = async ({url,method='get',data,success,error,type='dat
     else if(method.toLowerCase()=="post"){
         await axios.post(URI,{...data},{
             headers:{
-                Authorization:`Bearer ${getToken}`,
+                // Authorization:`Bearer ${getToken}`,
                 'Content-Type': type=='file'?'multipart/form-data':'application/json',
             }
         }).then(response=>{
@@ -36,7 +36,8 @@ export const HttpRequest = async ({url,method='get',data,success,error,type='dat
             if(err.status==401) {
                 ShowSnackbar({message:err.response.data.message,type:'error'})
             }
-            if(err)error(err.response.data)
+            console.log(err)
+            // if(err)error(err.response.data)
         })
     }
 }

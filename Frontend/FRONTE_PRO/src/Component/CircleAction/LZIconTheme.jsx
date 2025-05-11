@@ -11,6 +11,7 @@ const LZIconTheme = ({isLoginOrisHomePage}) => {
   const isDark = useSelector(state=>state.Theme.isDark);
   const onChangeTheme=()=>{
     click.play();
+    localStorage.setItem("isDark",!isDark)
     dispatch(changeTheme(!isDark))
   }
   return (
