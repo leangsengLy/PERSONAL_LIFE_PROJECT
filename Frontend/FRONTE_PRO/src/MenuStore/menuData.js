@@ -174,7 +174,14 @@ export const StoreMenu = [
         Name:"Media",
         EnglishName:"Media",
         iconImage:media,
-        SubMenu:[]
+         SubMenu:[
+            {   
+                Code:"offer",
+                Name:"ផ្តល់ដំណឹង",
+                EnglishName:"Offers",
+                icon :"ri-pages-line"
+            },
+        ]
     },
   
 ]

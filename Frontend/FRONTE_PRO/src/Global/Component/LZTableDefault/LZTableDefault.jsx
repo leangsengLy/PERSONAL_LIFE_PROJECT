@@ -83,7 +83,7 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns}) 
                 {ChipperContent}
             </div>
         </div>
-        <div className='h-[90%] flex flex-col justify-between '>
+        <div className='h-[90%]  flex flex-col justify-between '>
         <Table removeWrapper={false} 
             ref={TableDefault}
             classNames={{
