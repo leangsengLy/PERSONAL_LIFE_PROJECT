@@ -4,6 +4,7 @@ import Chat from '../../public/Menu/chat.svg'
 import calendar from '../../public/Menu/calendar.svg'
 import family from '../../public/Menu/parenting.svg'
 import data from '../../public/Menu/growth-graph.svg'
+import food from '../../public/Menu/food.svg'
 import chart from '../../public/Menu/pie-chart.svg'
 import media from '../../public/Menu/social-promotion.svg'
 import Setting from '../../public/Menu/gear-setting.svg'
@@ -96,9 +97,9 @@ export const StoreMenu = [
         iconImage:Setting,
         SubMenu:[
             {   
-                Code:"country",
-                Name:"ប្រទេស",
-                EnglishName:"Country",
+                Code:"movie_type",
+                Name:"ប្រភេទរឿង",
+                EnglishName:"Movie Type",
                 icon :"ri-global-fill"
             },
             {   
@@ -158,6 +159,28 @@ export const StoreMenu = [
                 EnglishName:"Shop coffee",
                 iconImage:family,
             }
+        ]
+    },
+    {
+        Id:8,
+        Name:"គ្រឿបរិភោគ",
+        code:'food',
+        EnglishName:"អាហារ",
+        iconImage:food,
+        SubMenu:[
+            {   
+                 Code:"drink",
+                 Name:"ភេសជ្ជះ",
+                EnglishName:"Drink",
+                 icon :"ri-drinks-2-line"
+            },
+             {   
+                Code:"bread",
+                Name:"នំប៏ុង",
+                EnglishName:"Bread",
+                 icon :"ri-bread-line"
+            },
+           
         ]
     },
     

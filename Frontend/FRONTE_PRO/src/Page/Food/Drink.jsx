@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import LZButton from '../../../Global/Component/Button/LZButton'
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useDispatch, useSelector } from 'react-redux';
-import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm';
-import { HttpRequest } from '../../../Global/API_HTTP/http';
-import { decryptObject, EncriptObject, ShowSnackbar } from '../../../Util/globalUtils';
-import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
-import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
-import LZIcon from '../../../Global/Component/Icon/LZIcon';
+import LZDrawerForm from '../../Global/Component/DrawerForm/LZDrawerForm';
+import { HttpRequest } from '../../Global/API_HTTP/http';
+import { decryptObject, EncriptObject, ShowSnackbar } from '../../Util/globalUtils';
+import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm';
+import LZTableDefault from '../../Global/Component/LZTableDefault/LZTableDefault';
+import LZIcon from '../../Global/Component/Icon/LZIcon';
 import {useNavigate} from 'react-router-dom';
-import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import {format} from 'date-fns';
+import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 
-function Country() {
+function Drink() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -19,6 +19,7 @@ function Country() {
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
+    const [Filter,setFilter]=useState({})
     const [DrawData,setDrawData]=useState({})
     const [data,SetData] = useState([])
     const EditCountry=(data)=>{
@@ -33,17 +34,16 @@ function Country() {
         dispatch(setIsShow(true))
         dispatch(setModalConfirm({
             type:"delete",
-            message:"Do you want to delete this country?",
+            message:"Do you want to delete?",
             onClose:()=>{
                 dispatch(setIsShow(false))
             },
             onOk:async()=>{
                  dispatch(setIsShow(false))
                 await HttpRequest({
-                    url:`/api/movie_type/delete?Id=${data.Id}`,
+                    url:`/api/offer/delete?Id=${data.Id}`,
                     method:"get",
                     success:(result)=>{
-                        console.log(result)
                         // SystemSpeakByText(result.data.message,false);
                         getList();
                        
@@ -58,57 +58,87 @@ function Country() {
         }))
         
     }
+    const OnerrorImage=(e)=>{
+        e.target.src= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500";
+    }
     const columnData=[
-        // {
-        //     title:"Code",
-        //     data:"Code",
-        //     isDraw:true,
-        //     width: "100px" ,
-        //     className:"min-width",
-        //     renderTag:(data)=>{
-        //         return (
-        //             <>
-        //                 <div className=' flex gap-x-2 items-center'>
-        //                     <p>{data.Code}</p>
-        //                 </div>
-        //             </>
-        //         )
-        //     }
-        // },
+         {
+            title:"Picture",
+            data:"Label",
+            width: "50px" ,
+            className:"all",
+                 isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='w-[35px] h-[35px] rounded-md bg-black overflow-hidden'>
+                            <img src={`http://localhost:8080`+data.ImagePath} alt="" onError={OnerrorImage}  className='w-full h-full object-cover'/>
+                        </div>
+                    </>
+                )
+            }
+        },
         {
             title:"Name",
-            data:"Name",
+            data:"Label",
             width: "100px" ,
-            className:"all ",
+            className:"all max-w-[200px]",
+                 isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='w-[300px] text-ellipsis overflow-hidden'>{data.Name}</div>
+                    </>
+                )
+            }
         },
         {
             title:"EnglishName",
-            data:"EnglishName",
-            className:"all ",
+            data:"Detail",
+            className:"all max-w-[200px]",
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='w-[500px] text-ellipsis overflow-hidden'>{data.EnglishName}</div>
+                    </>
+                )
+            }
         },
         {
             title:"CreateBy",
             data:"CreateBy",
             width: "100px" ,
-        },
-        {
-            title:"CreateDate",
-            data:"DateCreated",
-            isDateTime:true,
-            width: "180px" ,
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                   <>
+                        <div>
+                            <p className='text-[14px]'>{data.CreateBy}</p>
+                            <p className='text-[13px]'>{format(new Date(data.CreateDate), 'MMMM dd,yyyy')}</p>
+                        </div>
+                    </>
+                )
+            }
         },
         {
             title:"UpdateBy",
-            data:"UpdateBy",
-            width: "100px" ,
-          
-        },
-        {
-            title:"UpdateDate",
-            data:"UpdateDate",
+            data:"DateCreated",
             isDateTime:true,
             width: "180px" ,
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div>
+                            <p className='text-[14px]'>{data.UpdateBy}</p>
+                            <p className='text-[13px]'>{format(new Date(data.UpdateDate), 'MMMM dd,yyyy')}</p>
+                        </div>
+                    </>
+                )
+            }
         },
+      
         {
             title:"Action",
             data:null,
@@ -124,7 +154,6 @@ function Country() {
                         </div>
                     </>
                 )
-                console.log(data)
             }
         },
        
@@ -135,14 +164,18 @@ function Country() {
         e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
     }
     const FilterData=(filter)=>{
-        console.log(filter)
+        setFilter(filter);
+       
     }
+    useEffect(()=>{
+         getList();
+    },[Filter])
+
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
             else if(e.target.className.includes("view")) console.log("view")
             else if(e.target.className.includes("delete")){
-                console.log(e.target)
                 let Id = e.target.attributes
                 dispatch(setModalConfirm({
                     type:"delete",
@@ -151,7 +184,6 @@ function Country() {
                         dispatch(setIsShow(false))
                     },
                     onOk:()=>{
-                        console.log("Ok")
                         DeleteCountry()
                         dispatch(setIsShow(false))
                     }
@@ -161,18 +193,18 @@ function Country() {
         })
     },[])
     useEffect(()=>{
-        
          getList();
     },[])
     
-     const getList=()=>{
-        HttpRequest({
-            url:"/api/movie_type/list",
+     const getList=async()=>{
+       await  HttpRequest({
+            url:"/api/food/list",
             method:'post',
             data:{
-                    search:"",
-                    pages:0,
-                    records:0
+                id:23,
+                search:"",
+                pages:Filter.Page,
+                records:Filter.Record,
             },
             success:(result)=>{
                 SetData(result)
@@ -185,14 +217,19 @@ function Country() {
     const CloseModal=()=>{
         setIsShowModal(false)
     }
-    const UpdateData=(data)=>{
-        console.log(data)
+    const UpdateData=async(data)=>{
+        var image = await GetBase64ByImage(data.File)
         HttpRequest({
-            url:'api/movie_type/update',
+            url:'api/offer/update',
             data:{
                 id:data.Id,
-                name:data.Name,
-                englishName:data.EnglishName,
+                label:data.Label,
+                detail:data.Detail,
+                uploadFileDataModel:{
+                    fileName: "ImageOffer.jpg",
+                    fileType: image.ImageType,
+                    base64Data:image.Base64,
+                }
             },
             method:"post",
             success:(success)=>{
@@ -217,32 +254,39 @@ function Country() {
         //     type:"text",
         // },
         {
-            label:"Name",
-            name:"Name",
+            label:"Label",
+            name:"Label",
             isRequired:true,
             type:"text",
         },
         {
-            label:"EnglishName",
-            name:"EnglishName",
-            type:"text",
+            label:"Detail",
+            name:"Detail",
+            type:"textArea",
         },
-        // {
-        //     label:"Country Image",
-        //     name:"File",
-        //     type:"file",
-        // },
+        {
+            label:"Image",
+            name:"File",
+            type:"file",
+        },
     ]
     const CanceModal=(title)=>{
         setIsShowModal(false)
     }
+    
     const SaveData=async (data)=>{
+        var image = await GetBase64ByImage(data.File)
        await HttpRequest({
-            url:"api/movie_type/create",
+            url:"api/offer/create",
             method:"Post",
             data:{
-                name:data.Name,
-                englishName:data.EnglishName,
+                label:data.Label,
+                detail:data.Detail,
+                uploadFileDataModel:{
+                    fileName: "ImageOffer.jpg",
+                    fileType: image.ImageType,
+                    base64Data:image.Base64,
+                }
             },
             success:(result)=>{
                 getList();
@@ -256,11 +300,11 @@ function Country() {
     const btns = [{type:"Create",OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
-        <h1 className='text-[17px] font-bold'>Movie Type</h1>
+        <h1 className='text-[17px] font-bold'>Drink</h1>
             {/* <div className='flex justify-end mb-5'>
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
             </div> */}
-            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount}/>
+            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 
@@ -274,4 +318,4 @@ function Country() {
   )
 }
 
-export default Country
+export default Drink

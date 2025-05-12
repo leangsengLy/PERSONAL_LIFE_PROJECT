@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import Country from '../../Page/Setting/Country/Country';
 import Province from '../../Page/Setting/Country/Province';
 import Offers from '../../Page/Media/Offers';
+import Drink from '../../Page/Food/Drink';
 
 function SubMenuContent() {
 const param = useParams();
@@ -12,8 +13,9 @@ let render = "";
 if(Object.keys(param).includes('subChild')){
   if(subChild=="province") render = <Province/>;
 }else{
-  if(renderFile=="country") render = <Country/>;
+  if(renderFile=="movie_type") render = <Country/>;
   if(renderFile=="offer") render = <Offers/>;
+  if(renderFile=="drink") render = <Drink/>;
 }
   return (
     render
