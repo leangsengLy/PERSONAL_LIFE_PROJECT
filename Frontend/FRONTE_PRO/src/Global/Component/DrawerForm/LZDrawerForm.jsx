@@ -1,5 +1,5 @@
 import { Drawer } from '@mui/material'
-import { Input, Radio, RadioGroup, Textarea } from '@nextui-org/react'
+import { Input, Radio, RadioGroup, Select, Textarea,SelectItem } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
@@ -52,6 +52,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     const selectTheRadio = (name)=>{
         NameCheckBox =name;
     }
+ 
     const checkValidatioForm = ()=>{
         if(HasReqired.length>0){
             if(GetData.length==0){
@@ -120,6 +121,14 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         UploadFile.current.click();
     }
   
+    useEffect(()=>{
+        if(!propDrawer.open){
+            setTimeout(()=>{
+                setGetData([])
+            },100)
+        }
+        
+    },[propDrawer.open])
     const clickCancelImage=()=>{
         dispatch(setModalConfirm({
             onClose:()=>{
@@ -216,10 +225,16 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                             Image!==null?(<>
                                                     <div className='mt-4 relative w-full border flex justify-start gap-x-2 items-center border-slate-200 rounded-xl p-2'>
                                                         <div className='min-w-[100px] w-[100px] min-h-[60px] h-[60px] rounded-xl overflow-hidden '>
-                                                            <img src={isCreateNew?Image:"http://localhost:8080"+Image?.PathImage} alt="" className='w-full rounded-xl h-full object-cover' />
+                                                            {Image?.PathImage!==""?(<><img src={isCreateNew?Image:"http://localhost:8080"+Image?.PathImage} alt="" className='w-full rounded-xl h-full object-cover' /></>):(<></>)}
                                                         </div>
                                                         <div className='!pr-9'>
-                                                                <p className='lz-line text-[14px]'>{isCreateNew?SourseImage?.name:Image?.PathImage?.split("/")[Image?.PathImage?.split("/").length-1]}</p>
+                                                            {console.log("check Image",isCreateNew,Image.ImagePath)}
+                                                                {
+                                                                    Image?.PathImage!==""?(<><p className='lz-line text-[14px]'>{isCreateNew?SourseImage?.name:Image?.PathImage?.split("/")[Image?.PathImage?.split("/").length-1]}</p> </>):(<> </>)
+                                                                }
+                                                                {
+                                                                    Image.ImagePath!==""?(<><p className='lz-line text-[14px]'>{isCreateNew?SourseImage?.name:Image?.ImagePath?.split("/")[Image?.ImagePath?.split("/").length-1]}</p></>):(<></>)
+                                                                }
                                                                 <p className='text-[13px]'>{isCreateNew?SourseImage?.size:SourseImage?.SizeImage}</p>
                                                         </div>
                                                         <div className='absolute right-3'>
@@ -242,7 +257,22 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                 isInvalid={val.isRequired?true:``} 
                                 errorMessage={val.isRequired?`Error input data!`:``} 
                                 />
-                            </>):(<></>)}
+                            </>):val.type=="number"?(<>
+                                <Input 
+                                label={val.label} 
+                                value={GetData[val.name]}
+                                name={val.name}
+                                type={val.type}
+                                onChange={EventInputForm} 
+                                isRequired={val.isRequired??false}
+                                isInvalid={val.isRequired?true:``} 
+                                errorMessage={val.isRequired?`Error input data!`:``} 
+                                />
+                            </>):val.type=="select"?(<><Select onSelectionChange={()=>{console.log(val.data)}} className="max-w-xs" label={val.label}>
+                                    {val.data.map((animal) => (
+                                         <SelectItem  startContent={<div className='w-[40px] h-[40px] bd-primary rounded-full p-[2px] '><img className='w-full rounded-full  h-full' src={`http://localhost:8080${animal.PathImage}`} alt="" /></div>} key={animal.key}>{animal.label}</SelectItem>
+                                    ))}
+                                </Select></>):(<></>)}
                         </>)
                     })}
                 </div>

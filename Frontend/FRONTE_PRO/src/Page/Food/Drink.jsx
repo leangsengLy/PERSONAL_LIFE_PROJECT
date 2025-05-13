@@ -22,6 +22,7 @@ function Drink() {
     const [Filter,setFilter]=useState({})
     const [DrawData,setDrawData]=useState({})
     const [data,SetData] = useState([])
+    const [Cinemas,SetCinema] = useState([])
     const EditCountry=(data)=>{
         setIsCreate(false)
         setDrawData(data)
@@ -41,7 +42,7 @@ function Drink() {
             onOk:async()=>{
                  dispatch(setIsShow(false))
                 await HttpRequest({
-                    url:`/api/offer/delete?Id=${data.Id}`,
+                    url:`/api/food/delete?Id=${data.Id}`,
                     method:"get",
                     success:(result)=>{
                         // SystemSpeakByText(result.data.message,false);
@@ -72,7 +73,7 @@ function Drink() {
                 return (
                     <>
                         <div className='w-[35px] h-[35px] rounded-md bg-black overflow-hidden'>
-                            <img src={`http://localhost:8080`+data.ImagePath} alt="" onError={OnerrorImage}  className='w-full h-full object-cover'/>
+                            <img src={`http://localhost:8080`+data.PathImage} alt="" onError={OnerrorImage}  className='w-full h-full object-cover'/>
                         </div>
                     </>
                 )
@@ -101,6 +102,32 @@ function Drink() {
                 return (
                     <>
                         <div className='w-[500px] text-ellipsis overflow-hidden'>{data.EnglishName}</div>
+                    </>
+                )
+            }
+        },
+         {
+            title:"Price",
+            data:"Detail",
+            className:"all max-w-[200px]",
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='text-ellipsis overflow-hidden'>{data.Price}</div>
+                    </>
+                )
+            }
+        },
+         {
+            title:"Qty",
+            data:"Detail",
+            className:"all max-w-[200px]",
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='text-ellipsis overflow-hidden'>{data.Qty}</div>
                     </>
                 )
             }
@@ -193,9 +220,26 @@ function Drink() {
         })
     },[])
     useEffect(()=>{
+        getListCinema();
          getList();
     },[])
-    
+    const getListCinema = async ()=>{
+        await  HttpRequest({
+            url:"/api/cinema/list",
+            method:'post',
+            data:{
+                 id:0,
+                 search:""
+            },
+            success:(result)=>{
+                SetCinema(result)
+                console.log(Cinemas)
+            },
+            error:(error)=>{
+                console.log(error)
+            }
+        })
+    }
      const getList=async()=>{
        await  HttpRequest({
             url:"/api/food/list",
@@ -218,19 +262,28 @@ function Drink() {
         setIsShowModal(false)
     }
     const UpdateData=async(data)=>{
-        var image = await GetBase64ByImage(data.File)
-        HttpRequest({
-            url:'api/offer/update',
-            data:{
+          console.log(data.File)
+          const dataSend = {
                 id:data.Id,
-                label:data.Label,
-                detail:data.Detail,
-                uploadFileDataModel:{
+                name:data.Name,
+                qty:data.Qty,
+                cinemaId:23,
+                price:data.Price,
+                englishName:data.EnglishName,
+                
+          }
+          if(data.File!==undefined){
+                 var image = await GetBase64ByImage(data.File)
+                data.uploadFileDataModel={
                     fileName: "ImageOffer.jpg",
                     fileType: image.ImageType,
                     base64Data:image.Base64,
-                }
-            },
+                };
+          }
+   
+        HttpRequest({
+            url:'api/food/update',
+            data:dataSend,
             method:"post",
             success:(success)=>{
                 setIsShowModal(false)
@@ -247,22 +300,33 @@ function Drink() {
         setIsShowModal(true)
     }
     const dataInForm = [
-        // {
-        //     label:"Code",
-        //     name:"Code",
-        //     isRequired:true,
-        //     type:"text",
-        // },
         {
-            label:"Label",
-            name:"Label",
+            label:"Code",
+            name:"Code",
+            isRequired:true,
+            type:"select",
+            data:  Cinemas.map((val)=>({...val,key:val.EnglishName,label:val.EnglishName}))
+        },
+        {
+            label:"Name",
+            name:"Name",
             isRequired:true,
             type:"text",
         },
         {
-            label:"Detail",
-            name:"Detail",
-            type:"textArea",
+            label:"EnglishName",
+            name:"EnglishName",
+            type:"text",
+        },
+        {
+            label:"Price",
+            name:"Price",
+            type:"number",
+        },
+        {
+            label:"Qty",
+            name:"Qty",
+            type:"number",
         },
         {
             label:"Image",
@@ -275,15 +339,19 @@ function Drink() {
     }
     
     const SaveData=async (data)=>{
+      
         var image = await GetBase64ByImage(data.File)
        await HttpRequest({
-            url:"api/offer/create",
+            url:"api/food/create",
             method:"Post",
             data:{
-                label:data.Label,
-                detail:data.Detail,
+                cinemaId:23,
+                name:data.Name,
+                qty:data.Qty,
+                price:data.Price,
+                englishName:data.EnglishName,
                 uploadFileDataModel:{
-                    fileName: "ImageOffer.jpg",
+                    fileName: "ImageDrink.jpg",
                     fileType: image.ImageType,
                     base64Data:image.Base64,
                 }
@@ -310,7 +378,7 @@ function Drink() {
                 data={dataInForm} 
                 reDrawData={DrawData} 
                 isCreate={isCreate} 
-                propDrawer={{open:isShowModal,label:"Add Country"}} 
+                propDrawer={{open:isShowModal,label:`${isCreate?"Add Drink":"Update Drink"}`}} 
                 fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}
             />
         
