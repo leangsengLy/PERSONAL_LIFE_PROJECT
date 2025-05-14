@@ -174,6 +174,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                     type={val.type}
                                     isRequired={val.isRequired}
                                     value={GetData[val.name]}
+                                    isDisabled={!isCreate?val.isDisabled:false}
                                     errorMessage={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
                                     isInvalid={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
                                     onChange={EventInputForm} 
@@ -268,10 +269,17 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                 isInvalid={val.isRequired?true:``} 
                                 errorMessage={val.isRequired?`Error input data!`:``} 
                                 />
-                            </>):val.type=="select"?(<><Select onSelectionChange={()=>{console.log(val.data)}} className="max-w-xs" label={val.label}>
-                                    {val.data.map((animal) => (
-                                         <SelectItem  startContent={<div className='w-[40px] h-[40px] bd-primary rounded-full p-[2px] '><img className='w-full rounded-full  h-full' src={`http://localhost:8080${animal.PathImage}`} alt="" /></div>} key={animal.key}>{animal.label}</SelectItem>
-                                    ))}
+                            </>):val.type=="select"?(<><Select onSelectionChange={(event)=>{val.onSelect(event.currentKey)}} isRequired className="max-w-xs" label={val.label}>
+                                    {val.data.map((item,index) => {
+                                        return (
+                                            <SelectItem  value={item} startContent={<div className='w-[40px] h-[40px] bd-primary rounded-full p-[2px] '>
+                                                <img className='w-full rounded-full  h-full' src={`http://localhost:8080${item.PathImage}`} alt="" />
+                                                </div>} key={item.Id}>
+                                                {item.label}
+                                            </SelectItem>
+                                        
+                                    )
+                                    })}
                                 </Select></>):(<></>)}
                         </>)
                     })}

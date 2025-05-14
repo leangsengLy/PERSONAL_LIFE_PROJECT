@@ -10,8 +10,9 @@ import LZIcon from '../../Global/Component/Icon/LZIcon';
 import {useNavigate} from 'react-router-dom';
 import {format} from 'date-fns';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
+import moment from 'moment';
 
-function Drink() {
+function Cinema() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -43,7 +44,7 @@ function Drink() {
             onOk:async()=>{
                  dispatch(setIsShow(false))
                 await HttpRequest({
-                    url:`/api/food/delete?Id=${data.Id}`,
+                    url:`/api/cinema/delete?Id=${data.Id}`,
                     method:"get",
                     success:(result)=>{
                         // SystemSpeakByText(result.data.message,false);
@@ -81,6 +82,20 @@ function Drink() {
             }
         },
         {
+            title:"Code",
+            data:"Code",
+            width: "100px" ,
+            className:"all max-w-[100px]",
+                 isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div>{data.Code}</div>
+                    </>
+                )
+            }
+        },
+        {
             title:"Name",
             data:"Label",
             width: "100px" ,
@@ -107,32 +122,47 @@ function Drink() {
                 )
             }
         },
-         {
-            title:"Price",
-            data:"Detail",
-            className:"all max-w-[200px]",
-            isDraw:true,
+        {
+            title:"Address",
+            data:"Address",
+            className:"all",
+                 isDraw:true,
             renderTag:(data)=>{
                 return (
                     <>
-                        <div className='text-ellipsis overflow-hidden'>{data.Price}</div>
+                        <div>{data.Address}</div>
                     </>
                 )
             }
         },
-         {
-            title:"Qty",
-            data:"Detail",
-            className:"all max-w-[200px]",
-            isDraw:true,
+        {
+            title:"StartTime",
+            data:"StartTime",
+            className:"all",
+                 isDraw:true,
             renderTag:(data)=>{
                 return (
                     <>
-                        <div className='text-ellipsis overflow-hidden'>{data.Qty}</div>
+                        <div>{moment(new Date(`1970-01-01T${data.StartTime}`)).format('hh:mm A')}</div>
                     </>
                 )
             }
         },
+        {
+            title:"EndTime",
+            data:"EndTime",
+            width: "100px" ,
+            className:"all max-w-[100px]",
+                 isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div>{moment(new Date(`1970-01-01T${data.EndTime}`)).format('hh:mm A')}</div>
+                    </>
+                )
+            }
+        },
+        
         {
             title:"CreateBy",
             data:"CreateBy",
@@ -243,7 +273,7 @@ function Drink() {
     }
      const getList=async()=>{
        await  HttpRequest({
-            url:"/api/food/list",
+            url:"/api/cinema/list",
             method:'post',
             data:{
                 search:"",
@@ -265,12 +295,12 @@ function Drink() {
           console.log(data.File)
           const dataSend = {
                 id:data.Id,
+                code:data.Code,
                 name:data.Name,
-                qty:data.Qty,
-                cinemaId:23,
-                price:data.Price,
+                address:data.Address,
+                endTime:"09:20",
+                startTime:"11:45",
                 englishName:data.EnglishName,
-                
           }
           if(data.File!==undefined){
                  var image = await GetBase64ByImage(data.File)
@@ -282,7 +312,7 @@ function Drink() {
           }
    
         HttpRequest({
-            url:'api/food/update',
+            url:'api/cinema/update',
             data:dataSend,
             method:"post",
             success:(success)=>{
@@ -304,13 +334,8 @@ function Drink() {
             label:"Code",
             name:"Code",
             isRequired:true,
-            type:"select",
-            data:  Cinemas.map((val)=>({...val,key:val.EnglishName,label:val.EnglishName})),
-            onSelect:(data)=>{
-                console.log(data);
-                setCinemaId(data);
-            }
-
+            type:"text",
+            isDisabled:true
         },
         {
             label:"Name",
@@ -323,15 +348,21 @@ function Drink() {
             name:"EnglishName",
             type:"text",
         },
-        {
-            label:"Price",
-            name:"Price",
-            type:"number",
+        
+         {
+            label:"StartTime",
+            name:"StartTime",
+            type:"text",
         },
-        {
-            label:"Qty",
-            name:"Qty",
-            type:"number",
+         {
+            label:"EndTime",
+            name:"EndTime",
+            type:"text",
+        },
+         {
+            label:"Address",
+            name:"Address",
+            type:"textArea",
         },
         {
             label:"Image",
@@ -344,16 +375,16 @@ function Drink() {
     }
     
     const SaveData=async (data)=>{
-      
         var image = await GetBase64ByImage(data.File)
        await HttpRequest({
-            url:"api/food/create",
+            url:"api/cinema/create",
             method:"Post",
             data:{
-                cinemaId:CinemaId,
+                code:data.Code,
                 name:data.Name,
-                qty:data.Qty,
-                price:data.Price,
+                address:data.Address,
+                endTime:"09:20",
+                startTime:"11:45",
                 englishName:data.EnglishName,
                 uploadFileDataModel:{
                     fileName: "ImageDrink.jpg",
@@ -391,4 +422,4 @@ function Drink() {
   )
 }
 
-export default Drink
+export default Cinema;

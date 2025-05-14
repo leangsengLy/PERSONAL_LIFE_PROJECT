@@ -20,15 +20,15 @@ import horizontal from '../../public/Menu/Sub_Menu_Coffee/align-horizontal.svg'
 export const StoreMenu = [
     {
         Id:1,
-        code:'coffee',
-        Name:"ហាងការហ្វេ",
-        EnglishName:"Shop coffee",
+        code:'cinema',
+        Name:"ខ្សែរភាគយន្ត",
+        EnglishName:"Legend Cinema",
         iconImage:store,
         SubMenu:[
             {   
-                Code:"Product",
-                Name:"ផលិតផល",
-                EnglishName:"Product",
+                Code:"cinema",
+                Name:"រោងកុន",
+                EnglishName:"Cinema",
                 iconImage:inventory,
                 icon :"ri-box-3-fill"
             },
@@ -57,38 +57,38 @@ export const StoreMenu = [
           
         ]
     },
-    {
-        Id:2,
-        code:'money',
-        Name:"ហិរញ្ញវត្ថុ",
-        EnglishName:"Money",
-        iconImage:MoneyPie,
-        SubMenu:[]
-    },
-    {
-        Id:3,
-        code:'chat',
-        Name:"ផ្ញើរសារ",
-        EnglishName:"Chat",
-        iconImage:Chat,
-        SubMenu:[]
-    },
-    {
-        Id:4,
-        Name:"ស្ថិតិ",
-        code:'graph',
-        EnglishName:"Graph",
-        iconImage:data,
-        SubMenu:[]
-    },
-    {
-        Id:5,
-        Name:"QR Scan",
-        code:'qr_scan',
-        EnglishName:"QR Scan",
-        iconImage:QR,
-        SubMenu:[]
-    },
+    // {
+    //     Id:2,
+    //     code:'money',
+    //     Name:"ហិរញ្ញវត្ថុ",
+    //     EnglishName:"Money",
+    //     iconImage:MoneyPie,
+    //     SubMenu:[]
+    // },
+    // {
+    //     Id:3,
+    //     code:'chat',
+    //     Name:"ផ្ញើរសារ",
+    //     EnglishName:"Chat",
+    //     iconImage:Chat,
+    //     SubMenu:[]
+    // },
+    // {
+    //     Id:4,
+    //     Name:"ស្ថិតិ",
+    //     code:'graph',
+    //     EnglishName:"Graph",
+    //     iconImage:data,
+    //     SubMenu:[]
+    // },
+    // {
+    //     Id:5,
+    //     Name:"QR Scan",
+    //     code:'qr_scan',
+    //     EnglishName:"QR Scan",
+    //     iconImage:QR,
+    //     SubMenu:[]
+    // },
     {
         Id:6,
         Name:"ប្រព័ន្ទកែប្រែ",
@@ -111,56 +111,56 @@ export const StoreMenu = [
         ]
     },
     
-    {
-        Id:7,
-        Name:"កាលវីភាគ",
-        code:'schedule',
-        EnglishName:"Schedule",
-        iconImage:calendar,
-        SubMenu:[
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:calendar,
-            },
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:store,
-            },
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:store,
-            },
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:store,
-            }
-        ]
-    },
-    {
-        Id:8,
-        Name:"គ្រួសារ",
-        code:'family',
-        EnglishName:"Family",
-        iconImage:family,
-        SubMenu:[
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:calendar,
-            },
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:store,
-            },
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:family,
-            },
-            {   Name:"ហាងការហ្វេ",
-                EnglishName:"Shop coffee",
-                iconImage:family,
-            }
-        ]
-    },
+    // {
+    //     Id:7,
+    //     Name:"កាលវីភាគ",
+    //     code:'schedule',
+    //     EnglishName:"Schedule",
+    //     iconImage:calendar,
+    //     SubMenu:[
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:calendar,
+    //         },
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:store,
+    //         },
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:store,
+    //         },
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:store,
+    //         }
+    //     ]
+    // },
+    // {
+    //     Id:8,
+    //     Name:"គ្រួសារ",
+    //     code:'family',
+    //     EnglishName:"Family",
+    //     iconImage:family,
+    //     SubMenu:[
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:calendar,
+    //         },
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:store,
+    //         },
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:family,
+    //         },
+    //         {   Name:"ហាងការហ្វេ",
+    //             EnglishName:"Shop coffee",
+    //             iconImage:family,
+    //         }
+    //     ]
+    // },
     {
         Id:8,
         Name:"គ្រឿបរិភោគ",
@@ -184,13 +184,13 @@ export const StoreMenu = [
         ]
     },
     
-    {  Id:9,
-        Name:"ស្ថិតិ",
-        code:'graph',
-        EnglishName:"Graph",
-        iconImage:chart,
-        SubMenu:[]
-    },
+    // {  Id:9,
+    //     Name:"ស្ថិតិ",
+    //     code:'graph',
+    //     EnglishName:"Graph",
+    //     iconImage:chart,
+    //     SubMenu:[]
+    // },
     {
         Id:10,
         code:'media',

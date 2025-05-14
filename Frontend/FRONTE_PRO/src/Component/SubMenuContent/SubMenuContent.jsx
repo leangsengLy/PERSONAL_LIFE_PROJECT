@@ -4,6 +4,7 @@ import Country from '../../Page/Setting/Country/Country';
 import Province from '../../Page/Setting/Country/Province';
 import Offers from '../../Page/Media/Offers';
 import Drink from '../../Page/Food/Drink';
+import Cinema from '../../Page/Movie/Cinema';
 
 function SubMenuContent() {
 const param = useParams();
@@ -16,6 +17,7 @@ if(Object.keys(param).includes('subChild')){
   if(renderFile=="movie_type") render = <Country/>;
   if(renderFile=="offer") render = <Offers/>;
   if(renderFile=="drink") render = <Drink/>;
+  if(renderFile=="cinema") render = <Cinema/>;
 }
   return (
     render

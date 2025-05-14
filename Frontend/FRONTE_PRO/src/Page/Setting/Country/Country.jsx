@@ -244,7 +244,7 @@ function Country() {
                 name:data.Name,
                 englishName:data.EnglishName,
             },
-            success:(result)=>{
+            success:(result)=>{c
                 getList();
                 setIsShowModal(false)
             },
