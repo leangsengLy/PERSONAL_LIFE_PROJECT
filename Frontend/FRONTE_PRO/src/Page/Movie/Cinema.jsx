@@ -75,7 +75,7 @@ function Cinema() {
                 return (
                     <>
                         <div className='w-[35px] h-[35px] rounded-md bg-black overflow-hidden'>
-                            <img src={`http://localhost:8080`+data.PathImage} alt="" onError={OnerrorImage}  className='w-full h-full object-cover'/>
+                            <img src={`http://localhost:8080`+data.PathImage} alt="" onError={OnerrorImage}  className='preview-image w-full h-full object-cover'/>
                         </div>
                     </>
                 )
@@ -276,7 +276,7 @@ function Cinema() {
             url:"/api/cinema/list",
             method:'post',
             data:{
-                search:"",
+                search:Filter.Search,
                 pages:Filter.Page,
                 records:Filter.Record,
             },

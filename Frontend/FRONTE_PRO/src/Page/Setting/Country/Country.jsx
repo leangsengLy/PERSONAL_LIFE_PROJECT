@@ -21,6 +21,7 @@ function Country() {
     const [DataCountry,setDataCountry]=useState([])
     const [DrawData,setDrawData]=useState({})
     const [data,SetData] = useState([])
+    const [Filter,SetFilter] = useState([])
     const EditCountry=(data)=>{
         setIsCreate(false)
         setDrawData(data)
@@ -136,7 +137,11 @@ function Country() {
     }
     const FilterData=(filter)=>{
         console.log(filter)
+        SetFilter(filter);
     }
+    useEffect(()=>{
+        getList();
+    },[Filter])
     useEffect( ()=>{
         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
@@ -170,9 +175,9 @@ function Country() {
             url:"/api/movie_type/list",
             method:'post',
             data:{
-                    search:"",
-                    pages:0,
-                    records:0
+                    search:Filter.Search,
+                    pages:Filter.Pages,
+                    records:Filter.Records
             },
             success:(result)=>{
                 SetData(result)
