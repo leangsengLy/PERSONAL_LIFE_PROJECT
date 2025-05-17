@@ -6,6 +6,7 @@ import LZComfirm from './Global/View/ConfirmAction/LZComfirm.jsx';
 import { useNavigate } from 'react-router-dom';
 import { ShowSnackbar } from './Util/globalUtils.js';
 import PreviewImage from './Global/Component/PreviewImage/PreviewImage.jsx';
+import LZModal from './Global/Component/Modal/LZModal.jsx';
 const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
@@ -41,6 +42,7 @@ const App = () => {
         <div className={`transition-all ease-linear  color_primary_${selectedColorSystem} ${isDark? `dark` : ""} ${language.code??'kh'}`}>
             <LZRoutes/>
             <PreviewImage/>
+            <LZModal/>
             <LZComfirm/>
             <ToastContainer position="bottom-right" autoClose={5000}/>
         </div>

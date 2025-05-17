@@ -7,6 +7,7 @@ import CountryStore from '../Store/Page/Country/Country.js'
 import UserLoginStore from '../Store/UserLogin/UserLogin.js'
 import ColorSystemStore from '../Store/Profile/ColorSystem/ColorSystem.js'
 import PreviewImageStore from '../Store/PreviewImage/PreviewImage.js'
+import ModalStore from '../Store/Modal/ModalStore.js'
 export const store = configureStore({
     reducer:{
         counterTest:SliceStore,
@@ -16,6 +17,7 @@ export const store = configureStore({
         Country:CountryStore,
         User:UserLoginStore,
         ColorSystem:ColorSystemStore,
-        PreviewImage: PreviewImageStore
+        PreviewImage: PreviewImageStore,
+        Modal: ModalStore,
     }
 })

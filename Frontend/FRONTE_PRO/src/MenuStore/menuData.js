@@ -97,17 +97,18 @@ export const StoreMenu = [
         iconImage:Setting,
         SubMenu:[
             {   
+                Code:"movie",
+                Name:"ភាគយន្ត",
+                EnglishName:"Movie",
+                icon :"ri-movie-2-ai-line"
+            },
+            {   
                 Code:"movie_type",
                 Name:"ប្រភេទរឿង",
                 EnglishName:"Movie Type",
-                icon :"ri-global-fill"
+                icon :"ri-film-line"
             },
-            {   
-                Code:"userLogin",
-                Name:"អ្នកប្រើប្រាស់",
-                EnglishName:"UserAccount",
-                icon :"ri-admin-fill"
-            },
+            
         ]
     },
     

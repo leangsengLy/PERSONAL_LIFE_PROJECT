@@ -226,7 +226,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                             Image!==null?(<>
                                                     <div className='mt-4 relative w-full border flex justify-start gap-x-2 items-center border-slate-200 rounded-xl p-2'>
                                                         <div className='min-w-[100px] w-[100px] min-h-[60px] h-[60px] rounded-xl overflow-hidden '>
-                                                            {Image?.PathImage!==""?(<><img src={isCreateNew?Image:"http://localhost:8080"+Image?.PathImage} alt="" className='w-full rounded-xl h-full object-cover' /></>):(<></>)}
+                                                            {Image?.PathImage!==""?(<><img src={isCreateNew?Image:"http://localhost:8080"+Image?.PathImage} alt="" className='preview-image cursor-pointer w-full rounded-xl h-full object-cover' /></>):(<></>)}
                                                         </div>
                                                         <div className='!pr-9'>
                                                             {console.log("check Image",isCreateNew,Image.ImagePath)}
