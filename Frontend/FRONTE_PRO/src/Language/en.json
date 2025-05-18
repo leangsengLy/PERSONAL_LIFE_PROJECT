@@ -16,6 +16,8 @@
     "drink":"Drink",
     "description":"Description",
     "delete":"Delete",
-    "no_available_data":"No available data!"
+    "no_available_data":"No available data!",
+    "cancel":"Cancel",
+     "ok":"Ok"
 
 }

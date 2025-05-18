@@ -5,8 +5,8 @@ const ModalStore = createSlice({
     initialState:{
         modal:{
             isPadding:true,
-            width:200,
-            height:200
+            w:'h-[440px]',
+            h:'w-[340px]'
         },
         label:"",
         isShow:false,
@@ -29,5 +29,5 @@ const ModalStore = createSlice({
     }
 })
 
-export const {setModal,setIsShowModal,setBody} = ModalStore.actions;
+export const {setModal,setIsShowModal,setBody,setLabel} = ModalStore.actions;
 export default ModalStore.reducer;

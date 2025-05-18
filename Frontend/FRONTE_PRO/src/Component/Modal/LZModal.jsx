@@ -5,6 +5,8 @@ function LZModal() {
     const label = useSelector(state=>state.Modal.label);
     const isShow = useSelector(state=>state.Modal.isShow);
     const isNoPadding = useSelector(state=>state.Modal.modal.isPadding);
+    const width = useSelector(state=>state.Modal.modal.w);
+    const h = useSelector(state=>state.Modal.modal.h);
     const body = useSelector(state=>state.Modal.body);
     const onClickCloseModal=()=>{
         dispath(setIsShowModal(false))
@@ -12,9 +14,9 @@ function LZModal() {
   return (
     <>
      {isShow?(<>
-     <div className='w-screen h-screen fixed top-0 left-0 z-[10000000] bg-[#0000006b]'>
+     <div className='w-screen h-screen fixed top-0 left-0 z-[200] bg-[#0000006b]'>
         <div className='w-full h-full relative flex justify-center items-center'>
-           <div className={`w-[430px] overflow-hidden h-auto  bg-white ${isNoPadding?'':'p-5 py-3'} rounded-2xl`}
+           <div className={`${width} overflow-hidden h-auto  bg-white ${isNoPadding?'':'p-5 py-3'} rounded-2xl`}
            >
                 {
                     label!==""?(<>
