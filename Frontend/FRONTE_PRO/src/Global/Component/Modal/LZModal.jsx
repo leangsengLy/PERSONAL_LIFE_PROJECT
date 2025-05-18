@@ -4,6 +4,8 @@ function LZModal() {
     const dispath = useDispatch()
     const label = useSelector(state=>state.Modal.label);
     const isShow = useSelector(state=>state.Modal.isShow);
+    const isNoPadding = useSelector(state=>state.Modal.modal.isPadding);
+    const body = useSelector(state=>state.Modal.body);
     const onClickCloseModal=()=>{
         dispath(setIsShowModal(false))
     }
@@ -12,7 +14,8 @@ function LZModal() {
      {isShow?(<>
      <div className='w-screen h-screen fixed top-0 left-0 z-[10000000] bg-[#0000006b]'>
         <div className='w-full h-full relative flex justify-center items-center'>
-           <div className='w-[440px] h-[500px] bg-white p-5 py-3 rounded-xl'>
+           <div className={`w-[430px] overflow-hidden h-auto  bg-white ${isNoPadding?'':'p-5 py-3'} rounded-2xl`}
+           >
                 {
                     label!==""?(<>
                      <div className="flex justify-between items-center">
@@ -21,7 +24,7 @@ function LZModal() {
                     </div>
                     </>):(<></>)
                 }
-               
+                {body}
            </div>
         </div>
     </div>

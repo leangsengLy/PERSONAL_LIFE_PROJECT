@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import LZRoutes from './Routes/LZRoutes.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import LZComfirm from './Global/View/ConfirmAction/LZComfirm.jsx';
+import LZComfirm from './Global/Component/ConfirmAction/LZComfirm.jsx';
 import { useNavigate } from 'react-router-dom';
 import { ShowSnackbar } from './Util/globalUtils.js';
 import PreviewImage from './Global/Component/PreviewImage/PreviewImage.jsx';

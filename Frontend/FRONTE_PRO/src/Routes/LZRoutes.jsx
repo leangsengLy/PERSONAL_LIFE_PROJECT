@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Route,Routes } from 'react-router-dom'
-import Login from '../Global/View/Login/Login'
+import Login from '../Global/Component/Login/Login.jsx'
 import PageNotFound from '../Component/PageNotFound'
 import HomeMenu from '../Component/HomeMenu.jsx'
 import WebSectionContent from '../Component/WebSectionContent.jsx'

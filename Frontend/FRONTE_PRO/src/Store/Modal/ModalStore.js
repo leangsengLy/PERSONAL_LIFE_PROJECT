@@ -4,13 +4,17 @@ const ModalStore = createSlice({
     name:"ModalStore",
     initialState:{
         modal:{
-
+            isPadding:true,
+            width:200,
+            height:200
         },
-        label:"Preview",
-        isShow:false
+        label:"",
+        isShow:false,
+        body:"",
     },
     reducers:{
         setModal:(state,action)=>{
+            console.log(action)
             state.modal = action.payload;
         },
         setIsShowModal:(state,action)=>{
@@ -18,9 +22,12 @@ const ModalStore = createSlice({
         },
         setLabel:(state,action)=>{
             state.label = action.payload;
+        },
+        setBody:(state,action)=>{
+            state.body = action.payload;
         }
     }
 })
 
-export const {setModal,setIsShowModal} = ModalStore.actions;
+export const {setModal,setIsShowModal,setBody} = ModalStore.actions;
 export default ModalStore.reducer;
