@@ -8,6 +8,7 @@ import UserLoginStore from '../Store/UserLogin/UserLogin.js'
 import ColorSystemStore from '../Store/Profile/ColorSystem/ColorSystem.js'
 import PreviewImageStore from '../Store/PreviewImage/PreviewImage.js'
 import ModalStore from '../Store/Modal/ModalStore.js'
+import PreviewIframeStore from '../Store/PreviewIFrame/PreviewIFrame.js'
 export const store = configureStore({
     reducer:{
         counterTest:SliceStore,
@@ -19,5 +20,6 @@ export const store = configureStore({
         ColorSystem:ColorSystemStore,
         PreviewImage: PreviewImageStore,
         Modal: ModalStore,
+        Iframe: PreviewIframeStore,
     }
 })

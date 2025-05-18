@@ -10,6 +10,11 @@
     "create_an_account":"បង្កើតគណនេយ្យ",
     "not_register_yet":"មិនទាន់មានគណនេយ្យ?",
     "movie":"ភាគយន្ត",
-      "more":"បន្ថែម",
-      "add":"បង្កើត"
+    "more":"បន្ថែម",
+    "add":"បង្កើត",
+    "menu":"ទំព័រដើម",
+    "drink":"ភេសជ្ជះ",
+    "description":"ការពិពណ៌នា",
+    "delete":"លុប",
+     "no_available_data":"មិនមានទិន្នន័យ!"
 }

@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import LZButton from '../../Global/Component/Button/LZButton'
+import LZButton from '../../Component/Button/LZButton'
 import {setIsShowModal,setBody,setModal} from '../../Store/Modal/ModalStore';
 import { useDispatch, useSelector } from 'react-redux'
 import { HttpRequest } from '../../Global/API_HTTP/http';
 import '../../Css/Setting/Movie.css';
 import LZGlobal from '../../Util/LZGlobal';
+import { setIframe, setIsShow } from '../../Store/PreviewIFrame/PreviewIFrame';
+import moment from 'moment';
+import LZSearch from '../../Component/LZTableDefault/LZSearch';
+import LZPagination from '../../Component/LZTableDefault/LZPagination';
+import LZSelectRecord from '../../Component/LZTableDefault/LZSelectRecord';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
     const [dataMovie,setDataMovie]  = useState([]);
+    const [isLoading,setIsLoading]  = useState(false);
+    const [Search,setSearch]  = useState("");
+    const [Page,setPage]  = useState(1);
+    const [Record,setRecord]  = useState(10);
     const dispatch = useDispatch()
-   
-
-  
     const onClickCreate=()=>{
         console.log("click the button create")
     }
@@ -26,8 +32,9 @@ function Movie() {
     }
     useEffect(()=>{
         getMovieList();
-    },[])
+    },[Search,Record,Page])
     const getMovieList = async()=>{
+        setIsLoading(true)
          await HttpRequest({
                      url:"api/movie/list",
                      method:"Post",
@@ -37,9 +44,13 @@ function Movie() {
                             toDate:"",
                             search:"",
                             duration:"",
-                            release:""
+                            release:"",
+                            Search:Search,
+                            Pages:Page,
+                            Records:Record,
                      },
                      success:(result)=>{
+                         setIsLoading(false)
                         setMovies(result);
                      },
                      error:(error)=>{
@@ -47,11 +58,24 @@ function Movie() {
                      }
                  })
     }
-    
+    const OnPreviewIframe=(data)=>{
+        console.log("Yes")
+         dispatch(setIsShow(true))
+         dispatch(setIframe({path:dataMovie?.UrlYT}))
+    }
+    const onSearching=(search)=>{
+        setSearch(search)
+    }
+    const onSelectRecord=(record)=>{
+        setRecord(record)
+    }
+    const onSelectPage=(page)=>{
+        setPage(page)
+    }
      const body = <div className='w-full h-full'>
-            <div className='w-full h-[160px] bg-red-600 relative'>
+            <div className='w-full h-[160px] relative'>
                 <div onClick={onClosePreviewMore} className='absolute opacity-40 hover:opacity-100 transition-all ease-linear flex top-4 right-4 w-[30px] h-[30px]  justify-center items-center rounded-full bg-red-50'><i class="ri-close-line  rounded-full text-[23px]  cursor-pointer" ></i></div>
-                <div className='absolute displayMiddle cursor-pointer w-[50px] flex justify-center items-center h-[50px] rounded-full bg-red-600' >
+                <div onClick={OnPreviewIframe}  className='absolute displayMiddle cursor-pointer w-[50px] flex justify-center items-center h-[50px] rounded-full bg-red-600' >
                     <i class="ri-play-fill scale-100 text-white"></i>
                 </div>
                 <img src={`http://localhost:8080${dataMovie.ImagePath}`} className='object-cover w-full h-full' alt="" />
@@ -61,25 +85,24 @@ function Movie() {
                     <div className=' flex justify-between'>
                             <div className='flex gap-x-2 items-center' >
                                 <b className='text-[18px]'>{LZGlobal.translate({en:dataMovie.EnglishName,km:dataMovie.Name})}</b>
-                                 <span className='text-medium'>• {dataMovie.Duration}mn</span>
+                                 <span className='text-medium'>• {LZGlobal.convertTime(dataMovie.Duration).hour}h{LZGlobal.convertTime(dataMovie.Duration).minute}mn</span>
                             </div>
                             <div className='px-3 bg-[#7070702f] text-[12px] py-1 rounded-md'>
                                 Action
                             </div>
                     </div>
-                    <p className='color-1 text-[13px]'>Cremation, The</p>
-                    <p className='color-1 text-[13px]' >January 20,2025 - January 25-2025</p>
+                    <p className='color-1 text-[13px]' >{moment(dataMovie.FromDate).format("MMM DD,YYYY")} - {moment(dataMovie.ToDate).format("MMM DD,YYYY")}</p>
                 </div>
                 <div>
                     {
                         dataMovie.Description!=""?(<>
-                         <p className='text-[14px]'>Description</p>
-                    <p className='text-[13px]'>{dataMovie.Description}</p></>):(<></>)
+                         <p className='text-[14px] mb-1'>{tr.description}</p>
+                    <p className='text-[13px] color-2'>{dataMovie.Description}</p></>):(<></>)
                     }
                    
                 </div>
                 <div className='w-full text-white cursor-pointer transition-all ease-in h-[55px] bg-red-400 hover:bg-red-600 flex justify-center items-center rounded-xl'>
-                        Delete
+                        {tr.delete}
                 </div>
             </div>
     </div>
@@ -90,20 +113,49 @@ function Movie() {
         <b>{tr.movie}</b>
         <LZButton label={tr.add} click={onClickCreate}/>
     </div>
-    <div className='grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4'>
+    <div className='flex mb-4'>
+        <LZSelectRecord SelectRecord={onSelectRecord}/>
+        <LZSearch onSearching={onSearching}/>
+    </div>
+    <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>
         {
-            movies.map((val)=>{
+            movies.length!==0?(<><div className='lzscroll grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4'>
+            {
+                isLoading?(<>{[1,2,3,4,5,6,7,5,6,7,5].map((val)=>{
                 return (<><div className='flex flex-col gap-y-2'>
                     <div className='w-full h-[150px] overflow-hidden rounded-lg'>
-                        <img src={`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image cursor-pointer object-cover w-full h-full'/>
+                        <div className='w-full h-full bg-loading animate-pulse'></div>
                     </div>
                     <div className='flex flex-col gap-y-[2px'>
-                        <p className='text-[13px]'>{LZGlobal.translate({en:val.EnglishName,km:val.Name})}</p>
-                        <p className='text-[12px] cursor-pointer' onClick={()=>{onClickMore(val)}}>{tr.more}...</p>
+                        <div className='text-[13px] w-[100px] h-[20px] bg-loading rounded-md animate-pulse'></div>
+                        <div className='text-[13px] w-[50px] mt-2 h-[20px] bg-loading rounded-md animate-pulse'></div>
                     </div>
                 </div></>)
-            })
+                    })}</>):(<>{
+                    movies.length!=0?(<>{
+                    movies.map((val)=>{
+                        return (<><div className='flex flex-col gap-y-2'>
+                                <div className='w-full h-[150px] overflow-hidden rounded-lg'>
+                                    <img src={`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image cursor-pointer object-cover w-full h-full'/>
+                                </div>
+                                <div className='flex flex-col gap-y-[2px'>
+                                    <p className='text-[13px]'>{LZGlobal.translate({en:val.EnglishName,km:val.Name})}</p>
+                                    <p className='text-[12px] cursor-pointer' onClick={()=>{onClickMore(val)}}>{tr.more}...</p>
+                                </div>
+                        </div></>)
+                    })
+                    }</>):(<></>)
+            }</>)
+        }</div></>):(<></>)
         }
+        {
+            movies.length==0?(<>
+                <div className='flex justify-center items-center flex-col'>
+                    <img src={LZGlobal.NodataImage} alt="" className='w-[120px]'/>    
+                    <p>{tr.no_available_data}</p></div>
+            </>):(<></>)
+        }
+        <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
     </>
   )

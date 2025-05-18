@@ -3,7 +3,9 @@ import {Outlet, useNavigate, useParams } from 'react-router-dom'
 import {StoreMenu} from '../MenuStore/menuData.js'
 import img from './../../public/Gif/Gears.gif'
 import ActionTopRight from './BlogContent/ActionTopRight.jsx'
-import LZMainWrapper from '../Global/Component/Container/LZMainWrapper.jsx'
+import LZMainWrapper from './Container/LZMainWrapper.jsx'
+import LZGlobal from '../Util/LZGlobal.js'
+import { useSelector } from 'react-redux'
 function WebSectionContent() {
     const param = useParams()
     const navigate = useNavigate();
@@ -11,6 +13,7 @@ function WebSectionContent() {
     const [collapse,SetCollapse]=useState(false)
     const [duration,setDuration]=useState(false)
     const [SubMenuCode,SetSubMenuCode]=useState('')
+    const t = useSelector(state=>state.Language.translate);
     useEffect(()=>{
         let data = StoreMenu.filter(val=>val.code==param.type);
         if(data.length>0) {
@@ -71,11 +74,11 @@ function WebSectionContent() {
               
                 <div className='flex flex-col gap-y-[3px] color-default'>
                 <div onClick={ClickHome} className='hover:bg-[#ffffff0d] hover:rounded-md cursor-pointer py-1  flex items-center'>
-                  <div className='flex gap-x-3 pl-3 items-center whitespace-nowrap'>
-                    <i className="ri-function-fill text-[22px]"></i> 
+                  <i class="ri-arrow-left-s-fill"></i>
+                  <div className='flex gap-x-3 pl-3 h-[50px] items-center whitespace-nowrap'>
                     {
                           !duration?(<>
-                            <div className='text-[16px]'>Menu</div>
+                            <div className='text-[16px]'>{t.menu}</div>
                           </>):(<></>)
                         } 
                    
@@ -90,7 +93,7 @@ function WebSectionContent() {
                         <i className={`${val.icon} text-[22px]`}></i>
                         {
                           !duration?(<>
-                           <div className='text-[15px]'>{val.EnglishName}</div>
+                           <div className='text-[15px]'>{LZGlobal.translate({en:val.EnglishName,km:val.Name})}</div>
                           </>):(<></>)
                         }
                        

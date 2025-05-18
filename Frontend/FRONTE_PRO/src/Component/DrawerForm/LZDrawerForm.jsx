@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm'
+import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
 
 function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     // console.log(ui)

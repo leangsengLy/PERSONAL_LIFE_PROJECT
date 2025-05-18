@@ -13,6 +13,8 @@
     --bd-slate:#cbcbcb;
     --bg-navleft:#f2f2f2;
     --main-primary:#C96112;
+    --bg-loading:#0000001a;
+    // --bg-loading:
 }
 .dark{
     --white-dark:#222831;
@@ -26,6 +28,7 @@
     --bg-input:#3d3d3d;
     --bd-slate:#ffffff4a;
     --bg-navleft:#1e242c;
+    --bg-loading:#ffffff0d;
 }
 
 .main_color{
@@ -88,4 +91,8 @@
 }
 .bd-primary{
     border: 1px solid var(--main-primary);
+}
+
+.bg-loading{
+    background: var(--bg-loading) !important;
 }

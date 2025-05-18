@@ -37,6 +37,12 @@ export const translateBy=({en,km})=>{
     return text;
 }
 
+export const ConvertMnToHour=(minute)=>{
+    var hour = parseInt((minute / 60));
+    var mn = minute % 60;
+    return {hour:hour,minute:mn}
+}
+
 export const isEmpty=(data)=>{
     return  data!=='' && data!==undefined && data!==null && (Array.isArray(data)&& data.length>0) && (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length>0)
 }

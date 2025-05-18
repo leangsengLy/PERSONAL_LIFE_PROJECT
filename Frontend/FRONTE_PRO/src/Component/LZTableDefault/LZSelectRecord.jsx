@@ -16,8 +16,7 @@ function LZSelectRecord({SelectRecord}) {
         SelectRecord(Record)
     },[Record])
   return (
-        <div className='min-w-[150px] flex items-center gap-x-3'>
-                <p>Record:</p>
+        <div className='min-w-[80px] flex items-center gap-x-3'>
                 <Select className="max-w-[70px]" defaultSelectedKeys={[Record]} onSelectionChange={SelectRecordItem} classNames={{trigger:'bg-navleft'}} items={Record} size='sm' variant='flat'> 
                 {
                     Records.map((val)=>(

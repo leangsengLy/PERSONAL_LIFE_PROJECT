@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import LZButton from '../../../Global/Component/Button/LZButton'
+import LZButton from '../../../Component/Button/LZButton'
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useDispatch, useSelector } from 'react-redux';
-import LZDrawerForm from '../../../Global/Component/DrawerForm/LZDrawerForm';
+import LZDrawerForm from '../../../Component/DrawerForm/LZDrawerForm';
 import { HttpRequest } from '../../../Global/API_HTTP/http';
 import { decryptObject, EncriptObject, ShowSnackbar } from '../../../Util/globalUtils';
 import { setIsShow, setModalConfirm } from '../../../Store/Confirm/Confirm';
-import LZTableDefault from '../../../Global/Component/LZTableDefault/LZTableDefault';
-import LZIcon from '../../../Global/Component/Icon/LZIcon';
+import LZTableDefault from '../../../Component/LZTableDefault/LZTableDefault';
+import LZIcon from '../../../Component/Icon/LZIcon';
 import {useNavigate} from 'react-router-dom';
 import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 

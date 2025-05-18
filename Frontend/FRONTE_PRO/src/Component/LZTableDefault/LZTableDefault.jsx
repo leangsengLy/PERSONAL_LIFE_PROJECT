@@ -92,7 +92,7 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,to
                 wrapper:['bg-navleft lzscroll-table h-full'],
                 th:['bg-box-wrapper'],
             }}
-            className='w-full style-height-default'
+            className='w-full style-height-default  '
             // style={{height:"calc(100vh - 34vh)"}}
         >
             <TableHeader columns={column} ref={tableRef}>

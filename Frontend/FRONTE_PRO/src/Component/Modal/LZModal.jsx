@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import {setIsShowModal} from '../../../Store/Modal/ModalStore';
+import {setIsShowModal} from '../../Store/Modal/ModalStore';
 function LZModal() {
     const dispath = useDispatch()
     const label = useSelector(state=>state.Modal.label);

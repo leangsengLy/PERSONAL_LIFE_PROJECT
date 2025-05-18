@@ -108,6 +108,12 @@ export const StoreMenu = [
                 EnglishName:"Movie Type",
                 icon :"ri-film-line"
             },
+             {   
+                Code:"test",
+                Name:"សាក",
+                EnglishName:"Test",
+                icon :"ri-film-line"
+            },
             
         ]
     },

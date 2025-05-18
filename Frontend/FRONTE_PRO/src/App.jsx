@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import LZRoutes from './Routes/LZRoutes.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import LZComfirm from './Global/Component/ConfirmAction/LZComfirm.jsx';
+import LZComfirm from './Component/ConfirmAction/LZComfirm.jsx';
 import { useNavigate } from 'react-router-dom';
 import { ShowSnackbar } from './Util/globalUtils.js';
-import PreviewImage from './Global/Component/PreviewImage/PreviewImage.jsx';
-import LZModal from './Global/Component/Modal/LZModal.jsx';
+import PreviewImage from './Component/PreviewImage/PreviewImage.jsx';
+import LZModal from './Component/Modal/LZModal.jsx';
+import LZIframe from './Component/PreviewIframe/LZIframe.jsx';
 const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
@@ -44,6 +45,7 @@ const App = () => {
             <PreviewImage/>
             <LZModal/>
             <LZComfirm/>
+            <LZIframe/>
             <ToastContainer position="bottom-right" autoClose={5000}/>
         </div>
     );

@@ -1,20 +1,20 @@
-import Online_Delivery_Service from '../../../../public/Menu/Online_Delivery_Service.gif'
 
 import React, { useEffect, useRef, useState } from 'react'
+import Online_Delivery_Service from '../../../public/Menu/Online_Delivery_Service.gif';
 import { useDispatch, useSelector } from 'react-redux'
-import { changeTheme } from '../../../Store/ThemeBackground/Theme.js'
+import { changeTheme } from '../../Store/ThemeBackground/Theme.js'
 import { Button, Checkbox, input, Input, Spinner, Tooltip } from '@nextui-org/react'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { getLanguage } from '../../../Store/Language/Langauge.js'
-import { isEmpty, IsValidUserName, setCockieOnWeb, ShowSnackbar,translateBy } from '../../../Util/globalUtils.js'
-import { HttpRequest } from '../../API_HTTP/http.js'
-import { SoundAudio } from '../../../Util/Sound.js'
-import { SystemSpeakByText } from '../../../Util/SystenSayByText.js'
-import CountryLanguage from '../../../Component/CircleAction/LZIconLanguage.jsx'
-import LZIconTheme from '../../../Component/CircleAction/LZIconTheme.jsx'
-import { DecodeToken } from '../../../Util/DecodeToken.js'
-import { setInforUser } from '../../../Store/UserLogin/UserLogin.js'
+import { getLanguage } from '../../Store/Language/Langauge.js'
+import { isEmpty, IsValidUserName, setCockieOnWeb, ShowSnackbar,translateBy } from '../../Util/globalUtils.js'
+import { HttpRequest } from '../../Global/API_HTTP/http.js'
+import { SoundAudio } from '../../Util/Sound.js'
+import { SystemSpeakByText } from '../../Util/SystenSayByText.js'
+import CountryLanguage from '../CircleAction/LZIconLanguage.jsx'
+import LZIconTheme from '../CircleAction/LZIconTheme.jsx'
+import { DecodeToken } from '../../Util/DecodeToken.js'
+import { setInforUser } from '../../Store/UserLogin/UserLogin.js'
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
@@ -188,7 +188,6 @@ const onSignUpUser=()=>{
   
   return (
     <div className='w-screen h-screen lz-animation bg-box-wrapper select-none flex justify-center items-center relative'>
-      {/* <ToastContainer position="bottom-right" draggableDirection={true} autoClose={2000}/> */}
       <div className='absolute top-6 right-7 flex gap-x-3'>
                 <CountryLanguage isLoginOrisHomePage={true}/>
                 <LZIconTheme  isLoginOrisHomePage={true}/>
@@ -198,13 +197,13 @@ const onSignUpUser=()=>{
           {
             !isCreateAccount?(<>
               <div className='max-w-[330px]  w-full  rounded-3xl bg-slate  px-7 pt-10 !pb-10'>
-            <h1 className='text-center text-[29px] font-bold color-primary mb-5 '>V-Are System</h1>
+            <h1 className='text-center text-[25px] font-bold color-primary mb-5 '>V-Are System</h1>
             <div className='flex flex-col gap-y-4'>
             <div>
-             <Input type='email' isRequired={true}  onKeyDown={KeyEnter} value={inputData.Username }  isInvalid={(inputData.Username==""  && !isFirstLoginPw.current)}  name="Username" onChange={inputValue} className='color-1' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
+             <Input classNames={{label:"text-[13px]",input:"text-[13px]"}} type='email' isRequired={true}  onKeyDown={KeyEnter} value={inputData.Username }  isInvalid={(inputData.Username==""  && !isFirstLoginPw.current)}  name="Username" onChange={inputValue} className='color-1 !text-[13px]' radius='lg' labelPlacement='outside' size='lg' placeholder={tr.enter_username} label={tr.username}/> 
             </div>
             <div>
-            <Input  labelPlacement='outside'  onKeyDown={KeyEnter} isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Username==""  && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
+            <Input classNames={{label:"text-[13px]",input:"text-[13px]"}} labelPlacement='outside'  onKeyDown={KeyEnter} isRequired={true} name="Password" value={inputData.Password}  isInvalid={inputData.Username==""  && !isFirstLoginPw.current} errorMessage="Password are required!"  onChange={inputValue} size='lg' placeholder={tr.enter_password} label={tr.password} className='color-1'
              endContent={
               <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                 {isVisible ? (

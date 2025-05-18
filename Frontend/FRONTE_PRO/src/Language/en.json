@@ -11,6 +11,11 @@
     "not_register_yet":"Not registered yet",
     "movie":"Movie",
     "more":"More",
-    "add":"Add"
+    "add":"Add",
+    "menu":"menu",
+    "drink":"Drink",
+    "description":"Description",
+    "delete":"Delete",
+    "no_available_data":"No available data!"
 
 }

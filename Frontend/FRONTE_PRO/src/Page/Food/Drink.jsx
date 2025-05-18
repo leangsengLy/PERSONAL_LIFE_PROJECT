@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useDispatch, useSelector } from 'react-redux';
-import LZDrawerForm from '../../Global/Component/DrawerForm/LZDrawerForm';
+import LZDrawerForm from '../../Component/DrawerForm/LZDrawerForm';
 import { HttpRequest } from '../../Global/API_HTTP/http';
 import { decryptObject, EncriptObject, ShowSnackbar } from '../../Util/globalUtils';
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm';
-import LZTableDefault from '../../Global/Component/LZTableDefault/LZTableDefault';
-import LZIcon from '../../Global/Component/Icon/LZIcon';
+import LZTableDefault from '../../Component/LZTableDefault/LZTableDefault';
+import LZIcon from '../../Component/Icon/LZIcon';
 import {useNavigate} from 'react-router-dom';
 import {format} from 'date-fns';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 
 function Drink() {
     const dataList = useSelector((state)=>state.Country.dataList)
+    const t = useSelector(state=>state.Language.translate)
     const dispatch = useDispatch();
     const navigate = useNavigate()
     
@@ -373,7 +374,7 @@ function Drink() {
     const btns = [{type:"Create",OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
-        <h1 className='text-[17px] font-bold'>Drink</h1>
+        <h1 className='text-[17px] font-bold'>{t.drink}</h1>
             {/* <div className='flex justify-end mb-5'>
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
             </div> */}

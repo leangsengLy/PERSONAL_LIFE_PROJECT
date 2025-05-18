@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Route,Routes } from 'react-router-dom'
-import Login from '../Global/Component/Login/Login.jsx'
+import Login from '../Component/Login/Login.jsx'
 import PageNotFound from '../Component/PageNotFound'
 import HomeMenu from '../Component/HomeMenu.jsx'
 import WebSectionContent from '../Component/WebSectionContent.jsx'
@@ -9,10 +9,14 @@ import Province from '../Page/Setting/Country/Province.jsx'
 import ProfileIndex from '../Page/Profile/ProfileIndex.jsx'
 import {changeTheme} from '../Store/ThemeBackground/Theme.js'
 import { useDispatch } from 'react-redux'
+import { getLanguage } from '../Store/Language/Langauge.js'
 function LZRoutes() {
    const dispatch = useDispatch()
   useEffect(()=>{
+    console.log("yes")
     var isDark = localStorage.getItem("isDark");
+    var language = localStorage.getItem("language");
+    dispatch(getLanguage(language))
     dispatch(changeTheme(isDark=="true"))
   })
   return (

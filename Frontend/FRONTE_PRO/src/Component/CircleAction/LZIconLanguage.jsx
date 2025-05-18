@@ -19,7 +19,8 @@ const LZIconLanguage = ({isLoginOrisHomePage}) => {
         }
       })
       useEffect(()=>{
-        dispatch(getLanguage('kh'))
+        var lang = localStorage.getItem("language")
+        dispatch(getLanguage(lang))
       },[])
     const OnclickCountry=(code)=>{
       console.log(langauge)

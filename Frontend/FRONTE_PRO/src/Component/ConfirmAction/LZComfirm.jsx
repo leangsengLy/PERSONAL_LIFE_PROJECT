@@ -1,8 +1,8 @@
 import React from 'react'
 import { Modal,ModalContent,ModalFooter,ModalHeader,ModalBody, Button } from '@nextui-org/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { SystemSpeakByText } from '../../../Util/SystenSayByText';
-import { setIsShow } from '../../../Store/Confirm/Confirm';
+import { SystemSpeakByText } from '../../Util/SystenSayByText';
+import { setIsShow } from '../../Store/Confirm/Confirm';
 const LZComfirm = () => {
   const dispatch = useDispatch()
   const comfirm = useSelector(state=>state.Confirm.confirm);
