@@ -18,6 +18,7 @@
     "delete":"Delete",
     "no_available_data":"No available data!",
     "cancel":"Cancel",
-     "ok":"Ok"
+     "ok":"Ok",
+     "save":"Save"
 
 }

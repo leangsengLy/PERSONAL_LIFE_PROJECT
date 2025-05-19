@@ -11,11 +11,13 @@ import moment from 'moment';
 import LZSearch from '../../Component/LZTableDefault/LZSearch';
 import LZPagination from '../../Component/LZTableDefault/LZPagination';
 import LZSelectRecord from '../../Component/LZTableDefault/LZSelectRecord';
+import LZModalForm from '../../Component/Modal/LZModalForm';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
     const [dataMovie,setDataMovie]  = useState([]);
     const [isLoading,setIsLoading]  = useState(false);
+    const [isShowModalForm,setIsShowModalForm]  = useState(false);
     
     const [Search,setSearch]  = useState("");
     const [Page,setPage]  = useState(1);
@@ -82,10 +84,7 @@ function Movie() {
         </div>
     </div>
     const onClickCreate=()=>{
-        dispatch(setModal({isPadding:false,w:'w-[700px]'}))
-        dispatch(setLabel("Create"))
-        dispatch(setBody(modalCreate))
-        dispatch(setIsShowModal(true))
+        setIsShowModalForm(true)
     }
     dispatch(setModalConfirm({
         type:"delete",
@@ -138,6 +137,9 @@ function Movie() {
  
     const onSearching=(search)=>{
         setSearch(search)
+    }
+    const onCloseForm=()=>{
+        setIsShowModalForm(false)
     }
   
     const onSelectRecord=(record)=>{
@@ -198,6 +200,7 @@ function Movie() {
         }
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
+    <LZModalForm isShowModal={isShowModalForm} onClose={onCloseForm} columns={3} label="Create movie"/>
     </>
   )
 }
