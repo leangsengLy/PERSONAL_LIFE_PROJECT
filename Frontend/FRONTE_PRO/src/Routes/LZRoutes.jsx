@@ -18,7 +18,7 @@ function LZRoutes() {
     var language = localStorage.getItem("language");
     dispatch(getLanguage(language))
     dispatch(changeTheme(isDark=="true"))
-  })
+  },[])
   return (
     <>
         <Routes>

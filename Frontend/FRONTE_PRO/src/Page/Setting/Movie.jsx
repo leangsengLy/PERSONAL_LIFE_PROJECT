@@ -12,6 +12,7 @@ import LZSearch from '../../Component/LZTableDefault/LZSearch';
 import LZPagination from '../../Component/LZTableDefault/LZPagination';
 import LZSelectRecord from '../../Component/LZTableDefault/LZSelectRecord';
 import LZModalForm from '../../Component/Modal/LZModalForm';
+import LZNoData from '../../Component/BlogContent/LZNoData';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
@@ -86,17 +87,19 @@ function Movie() {
     const onClickCreate=()=>{
         setIsShowModalForm(true)
     }
-    dispatch(setModalConfirm({
+    useEffect(()=>{
+        dispatch(setModalConfirm({
         type:"delete",
         message:"",
         onOk:()=>{
-            console.log("Ok")
               dispatch(SetIsShowConfirm(false))
         },
         onClose:()=>{
              dispatch(SetIsShowConfirm(false))
         }
     }))
+      dispatch(setBody(body))
+    },[])
     
     const onClickMore=(data)=>{
         dispatch(setModal({isPadding:true,w:"w-[440px]"}))
@@ -105,7 +108,7 @@ function Movie() {
         dispatch(setIsShowModal(true))
       
     }
-      dispatch(setBody(body))
+    
     useEffect(()=>{
         getMovieList();
     },[Search,Record,Page])
@@ -194,9 +197,7 @@ function Movie() {
         }
         {
             movies.length==0?(<>
-                <div className='flex justify-center items-center flex-col'>
-                    <img src={LZGlobal.NodataImage} alt="" className='w-[120px]'/>    
-                    <p>{tr.no_available_data}</p></div>
+                    <LZNoData/>
             </>):(<></>)
         }
         </div>
