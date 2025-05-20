@@ -161,7 +161,8 @@ function Movie() {
         <LZSearch onSearching={onSearching}/>
     </div>
     <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>
-        {
+        <div>
+            {
             movies.length!==0?(<><div className='lzscroll grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4'>
             {
                 isLoading?(<>{[1,2,3,4,5,6,7,5,6,7,5].map((val)=>{
@@ -198,6 +199,7 @@ function Movie() {
                     <p>{tr.no_available_data}</p></div>
             </>):(<></>)
         }
+        </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
     <LZModalForm isShowModal={isShowModalForm} onClose={onCloseForm} columns={3} label="Create movie"/>

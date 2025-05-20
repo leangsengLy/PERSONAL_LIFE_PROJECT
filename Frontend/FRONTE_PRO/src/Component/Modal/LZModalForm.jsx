@@ -75,7 +75,7 @@
 // export default LZModalForm
 
 import React, { useEffect, useState } from 'react'
-import { Modal,ModalContent,ModalFooter,ModalHeader,ModalBody, Button, Input } from '@nextui-org/react'
+import { Modal,ModalContent,ModalFooter,ModalHeader,ModalBody, Button, Input, Textarea, DatePicker, SelectItem, Select } from '@nextui-org/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SystemSpeakByText } from '../../Util/SystenSayByText';
 import { setIsShow } from '../../Store/Confirm/Confirm';
@@ -86,12 +86,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
     setIsShow(false);
     onClose();
   }
+  
   const onClickCancel=()=>{
     onClose();
   }
   const onClickSave=()=>{
     onClose();
   }
+  const onSelect=(key)=>{
+    console.log(key)
+  }
+
    useEffect(()=>{
          setIsShow(isShowModal);
      },[isShowModal]);
@@ -107,7 +112,6 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
           }}>
             <ModalContent>
                 <ModalHeader>
-                
                 <h1 className='justify-center'>{label||""}</h1> 
                 </ModalHeader>
                 <ModalBody>
@@ -120,6 +124,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
                         type="text"
                         labelPlacement = "outside"
                         isRequired={true}
+                        size='md'
                         isInvalid={false}
                         errorMessage="Please enter your email"
                         variant="faded"
@@ -133,11 +138,39 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
                             }
                             } 
                         />
+                        <Select isRequired className="max-w-xs" label="label" placeholder='Please select' labelPlacement='outside' radius='sm' variant='bordered' size='md' onValueChange={onSelect} >
+                                    {[1,2,3,4,5].map((item,index) => {
+                                        return (
+                                            <SelectItem  value={item}  startContent={<div className='w-[40px] h-[40px] bd-primary rounded-full p-[2px] '>
+                                                <img className='w-full rounded-full  h-full' src={`http://localhost:8080${item.PathImage}`} alt="" />
+                                                </div>} key={item.Id}>
+                                                {item.label}
+                                            </SelectItem>
+                                        
+                                    )
+                                    })}
+                                </Select>
+                        <DatePicker 
+                        className="max-w-[284px] !min-h-[50px]"
+                          size='md'
+                          label="Birth date" 
+                          radius='sm' 
+                          classNames={
+                            {
+                               inputWrapper: "group-data-[focus-visible=true]:ring-0 group-data-[focus-visible=true]:ring-offset-0",
+                                label:'text-[12px] !text-black',
+                                input: "focus:ring-0 focus:border-none",
+                            }
+                            } 
+                          variant='bordered' 
+                          labelPlacement='outside' />
+                        
                         <Input 
                         label="Email" 
                         radius="sm"
                         className="text-[12px]"
                         type="text"
+                                size='md'
                         labelPlacement = "outside"
                         isRequired={true}
                         isInvalid={false}
@@ -154,6 +187,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
                             } 
                         />
                   </div>
+
+                  <Textarea 
+                  disableAnimation
+                  disableAutosize 
+                   classNames={{inputWrapper:'border border-black-150'}}
+                     className="max-w-xs !w-full" 
+                     variant='bordered'
+                     radius='sm'
+                      labelPlacement='outside'
+                      label="Description"
+                      placeholder="Enter your description" />
                     
                 </ModalBody>
                 <ModalFooter>
