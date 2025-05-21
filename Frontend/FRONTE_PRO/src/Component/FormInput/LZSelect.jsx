@@ -75,6 +75,7 @@ function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderVal
                                    if(keys.length>0){
                                         var find = list.find((val)=>keys.includes(val.key));
                                         if(find) return <span className='text-[12px]'>{find.value}</span>
+                                   }else{
                                    }
                             }else return renderValue(items,list)
                         }}

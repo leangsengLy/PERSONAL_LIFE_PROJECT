@@ -151,7 +151,46 @@ function Movie() {
     const onSelectPage=(page)=>{
         setPage(page)
     }
-   
+   const FormInput=[
+    {type:"input"},
+    {type:"input"},
+    {type:"number"},
+    {type:"date"},
+    {type:"date"},
+    {type:"date"},
+    {type:"input"},
+    {type:"select",
+        options:{
+            isMulti:false,
+            api:{
+                url:"/api/movie_type/list",
+                method:"post",
+                data:{  
+                        search:"",
+                        pages:1,
+                        records:100
+                },
+                key:"Id",
+                value:LZGlobal.translate({en:"EnglishName",km:"Name"})
+            },
+            startContent:(item)=>{
+                return (<>
+                        </>)
+            },
+            renderValue:(items,list)=>{
+                     var item = list.find((val)=>val.key==items[0].key)
+                      return (
+                          <>
+                              <div className='flex gap-x-2 items-center' >
+                                  <span className='text-[13px] text-black'>{item[LZGlobal.translate({en:"EnglishName",km:"Name"})]}</span>
+                              </div>
+                          </>
+                      );
+                  }
+        }
+    },
+    {type:"textarea"},
+   ]
      
   return (
     <>
@@ -203,7 +242,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} onClose={onCloseForm} columns={3} label="Create movie"/>
+    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={FormInput} onClose={onCloseForm} columns={3} label="Create movie"/>
     </>
   )
 }

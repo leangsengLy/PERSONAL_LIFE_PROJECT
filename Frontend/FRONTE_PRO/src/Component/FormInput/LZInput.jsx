@@ -17,7 +17,7 @@ function LZInput({isDisabled,isRequired,label,type}) {
                         label={label||"Label"}
                         radius="sm"
                         className="text-[12px]"
-                        type="text"
+                        type={type||"text"}
                         labelPlacement = "outside"
                         isRequired={isRequiredInput}
                         isDisabled={isDisabledInput}

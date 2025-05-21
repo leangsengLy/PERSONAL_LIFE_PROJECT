@@ -19,9 +19,6 @@ function LZDatePicker({label,isRequired,isDisabled}) {
                 isDisabled={isDisabledDate}
                 isInvalid={isInvalid}
                 onChange={onChangeDate}
-                hideTimeZone
-                showMonthAndYearPickers
-                defaultValue={now(getLocalTimeZone())}
                 errorMessage={isInvalid?"Please select a valid date":""}
                 radius='sm' 
                 variant='bordered' 

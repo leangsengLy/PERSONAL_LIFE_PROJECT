@@ -6,7 +6,7 @@ function LZTextArea() {
      <Textarea 
                   disableAnimation
                   disableAutosize 
-                   classNames={{inputWrapper:'border border-black-150'}}
+                   classNames={{inputWrapper:'border border-black-150',base:'!max-w-full'}}
                      className="max-w-xs !w-full" 
                      variant='bordered'
                      radius='sm'
