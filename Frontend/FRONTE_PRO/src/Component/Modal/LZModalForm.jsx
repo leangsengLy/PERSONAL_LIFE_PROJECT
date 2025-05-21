@@ -36,8 +36,6 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
   }
   const renderValue=(items,list)=>{
      var item = list.find((val)=>val.key==items[0].key)
-     console.log("Item",item)
-     console.log("list",list)
       return (
           <>
               <div className='flex gap-x-2 items-center' >
@@ -48,6 +46,9 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
               </div>
           </>
       );
+  }
+  const onSelecting=(item)=>{
+    console.log("onSelecting",item)
   }
    useEffect(()=>{
          setIsShow(isShowModal);
@@ -77,14 +78,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns}) => {
                        renderValue={renderValue}
                         isRequired={true}
                         isMulti={true}
-                         api={
-                          {
-                            url:"/api/cinema/list",
-                            method:"post",
-                            data:{id:0,search:""},
-                            key:"Id",
-                            value:LZGlobal.translate({en:"EnglishName",km:"Name"})
-                            }}/>
+                         onSelecting={onSelecting}
+                         localData={["Sone","sing"]}
+                        //  api={
+                        //   {
+                        //     url:"/api/cinema/list",
+                        //     method:"post",
+                        //     data:{id:0,search:""},
+                        //     key:"Id",
+                        //     value:LZGlobal.translate({en:"EnglishName",km:"Name"})
+                        //     }}
+                        />
                        {/* await  HttpRequest({
             url:"/api/cinema/list",
             method:'post',

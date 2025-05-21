@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { use } from 'react';
 import { HttpRequest } from '../../Global/API_HTTP/http';
 
-function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderValue}) {
+function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderValue,onSelecting}) {
     const [selectedValue, setSelectedValue] = useState([{key:"clear1",value:"---Clear data---"},{key:"clear2",value:"---Clear data---"},{key:"clear3",value:"---Clear data---"}]);
     const [IsMultiSelect, setIsMultiSelect] = useState(isMulti || false)
     const [isRequiredSelect, setIsRequiredSelect] = useState(isRequired || false)
     const [list, setList] = useState([])
     const onSelect=(key)=>{
-        console.log(key)
+        console.log("Selected",key)
+      
     }
     const getListApi=async()=>{
          await  HttpRequest({
@@ -26,9 +27,30 @@ function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderVal
                 })
     }
     useEffect(()=>{
-        if(api?.url!="") getListApi();
-        else setList(localData);
+        if(api?.url!="" && api?.url!=undefined){
+             getListApi();
+        }
+        else setList(
+            localData.map((val)=>({key:val,value:val})));
     },[])
+    const onSelectionChange=(item)=>{
+        console.log("onSelectionChange",item.target.value.split(","))
+        if(api?.url!="") {
+            if(!isMulti){
+                var find = list.find((val)=>val.key==item.anchorKey);
+                onSelecting(find)
+            }else{
+                var keys = item.target.value.split(",").map((val)=>parseInt(val));
+                var filterList = list.filter((val)=>keys.includes(val.key));
+                onSelecting(filterList)
+            }
+            
+        }else{
+            var find = list.find((val)=>val.key==item.anchorKey);
+             onSelecting(find)
+        }
+        onSelecting(item)
+    }
     useEffect(()=>{
         console.log("List",list)
     },[list])
@@ -45,13 +67,23 @@ function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderVal
                         isRequired={isRequiredSelect}
                         classNames={{base:'mb-[10px]'}}
                         size='md' 
-                        renderValue={(items)=>{return renderValue(items,list)}}
+                        // onSelectionChange ={onSelectionChange}
+                        onChange ={onSelectionChange}
+                        renderValue={(items)=>{
+                            if(api?.url=="" || api?.url==undefined){
+                                   var keys = items.map((val)=>val.key);
+                                   if(keys.length>0){
+                                        var find = list.find((val)=>keys.includes(val.key));
+                                        if(find) return <span className='text-[12px]'>{find.value}</span>
+                                   }
+                            }else return renderValue(items,list)
+                        }}
                         selectionMode={IsMultiSelect?"multiple":"single"}
                         onValueChange={onSelect} >
                                     {list.map((item,index) => {
                                         return (
                                             <SelectItem key={item.key} className="text-[12px]" startContent={startContent(item)}>
-                                                 {item[api.value]}
+                                                {api?.url=="" || api?.url==undefined ?(<>{item.value}</>):(<>{item[api.value]}</>)}
                                             </SelectItem>
                                         
                                     )
