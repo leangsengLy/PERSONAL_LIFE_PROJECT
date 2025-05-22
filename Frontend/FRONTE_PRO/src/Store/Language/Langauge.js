@@ -94,6 +94,7 @@ const StoreLanguage = createSlice({
             localStorage.setItem("language",action.payload)
             state.translate = state.Languages.filter(val=>val.code==action.payload)[0].Language;
             state.language = state.Languages.filter(val=>val.code==action.payload)[0];
+            console.log(state.Languages.filter(val=>val.code==action.payload)[0])
         }
     }
 })

@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import { NextUIProvider } from '@nextui-org/react'
 import 'primeicons/primeicons.css';
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
+import "../src/Css/font-kh.css"
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

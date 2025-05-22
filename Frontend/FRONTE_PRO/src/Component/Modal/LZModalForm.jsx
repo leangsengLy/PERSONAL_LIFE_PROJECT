@@ -6,10 +6,12 @@ import { SystemSpeakByText } from '../../Util/SystenSayByText';
 import { setIsShow } from '../../Store/Confirm/Confirm';
 import LZInput from '../FormInput/LZInput';
 import LZDateRangePicker from '../FormInput/LZDateRangePicker';
+import { setIframe, setIsShow as setIsShowIframe } from '../../Store/PreviewIFrame/PreviewIFrame';
 import LZSelect from '../FormInput/LZSelect';
 import LZDatePicker from '../FormInput/LZDatePicker';
 import LZTextArea from '../FormInput/LZTextArea';
 import LZGlobal from '../../Util/LZGlobal';
+import LZIcon from '../Icon/LZIcon';
 const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploadImage,HideClickSide,drawerInput}) => {
   const dispatch = useDispatch()
   const refActionImage = useRef(null);
@@ -18,13 +20,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
   const [IsHideClickSide,setIsHideClickSide] = useState(HideClickSide||false);
   const [UploadImage,setUploadImage] = useState({});
   const [isAnimeButton,setIsAnimeButton] = useState(false);
+  const tr = useSelector(state=>state.Language.translate);
   const refFileUpload = useRef(null);
   const refImage = useRef(null);
   const closeModal=()=>{
     setIsShow(false);
     onClose();
   }
-  
+  useEffect(()=>{
+    console.log("Fuck you bithc")
+    setDrawInput(drawerInput)
+  },[drawerInput]);
   const onClickCancel=()=>{
     onClose();
   }
@@ -54,6 +60,10 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
     console.log("File",file)
     var reader = new FileReader();
   }
+  const onClickPreviewIframe=(url)=>{
+        dispatch(setIframe({path:url}))
+        dispatch(setIsShowIframe(true))
+  }
    useEffect(()=>{
          setIsShow(isShowModal);
          setUploadImage("");
@@ -75,7 +85,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
           }}>
             <ModalContent>
                 <ModalHeader>
-                <h1 className='justify-center'>{label||""}</h1> 
+                <h1 className='justify-center text-[15px]'>{label||""}</h1> 
                 </ModalHeader>
                 <ModalBody>
                   
@@ -94,12 +104,12 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                       drawInput.map((val,index)=>{
                         return (
                           <>
-                            {val.type=="input"? <LZInput label={val.label} isRequired={true}/>: val.type=="select"?
+                            {val.type=="input"? <LZInput label={val.label} onChange={val.onChange} isRequired={val.required||false}/>: val.type=="select"?
                             <LZSelect 
                                  label={val.label||"label"}
                                 startContent={(item)=>{return val.options.startContent(item)}}
                                 renderValue={(item,list)=>{return val.options.renderValue(item,list)}}
-                                isRequired={true}
+                                isRequired={val.required||false}
                                 isMulti={val.options.isMulti}
                                 onSelecting={onSelecting}
                                 api={
@@ -110,7 +120,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                                     key:val.options.api.key,
                                     value:val.options.api.value,
                                     }
-                                  }/>:val.type=="date"?<LZDatePicker label={val.label||"label"} isRequired={true}/>:val.type=="number"?<LZInput label={val.label||"label"} type="number"/>:<></>}
+                                  }/>:val.type=="date"?<LZDatePicker label={val.label||"label"} isRequired={val.required||false}/>:val.type=="number"?<LZInput label={val.label||"label"} type="number"/>:val.type=="iframe"?<>
+                                  <div className='h-[74px] flex gap-x-3 items-center'>
+                                    <div  className='w-[170px] overflow-hidden rounded-lg h-full flex justify-center items-center border border-dashed border-black'>
+                                    {
+                                      val.URL!=""?
+                                      <iframe className='w-full h-full'  src={LZGlobal.GetURLPreviewIframe(val.URL)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                    </iframe>:<p className='text-[12px]'>Link URL</p>
+                                    }
+                                  </div>
+                                    {val.URL!=""?<LZIcon bgColor="success"  typeIcon="view" onClickIcon={()=>{onClickPreviewIframe(val.URL)}}/>:<></>}
+                                </div></>:<></>}
                           </>
                         )
                       })
@@ -123,7 +143,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                       drawInput.filter(v=>v.type=="textarea").map((val,index)=>{
                         return (
                           <>
-                            <LZTextArea isRequired={true} label={val.label}/>
+                            <LZTextArea isRequired={val.required} label={val.label}/>
                           </>
                         )
                       })
@@ -132,8 +152,8 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                   }
                 </ModalBody>
                 <ModalFooter>
-                    <Button size='md' color='default' onClick={onClickCancel}>Cancel</Button>
-                    <Button size='md' color='primary' onClick={onClickSave}>Save</Button>
+                    <Button size='md' color='default' onClick={onClickCancel}>{tr.cancel}</Button>
+                    <Button size='md' color='primary' onClick={onClickSave}>{tr.save}</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

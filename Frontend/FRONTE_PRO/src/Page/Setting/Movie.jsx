@@ -22,6 +22,7 @@ function Movie() {
     const [isLoading,setIsLoading]  = useState(false);
     const [isShowModalForm,setIsShowModalForm]  = useState(false);
     const [Search,setSearch]  = useState("");
+    const [URLYoutube,setURlYoutube]  = useState("");
     const [Page,setPage]  = useState(1);
     const [Record,setRecord]  = useState(10);
     const [from,setForm]  = useState([]);
@@ -30,16 +31,15 @@ function Movie() {
         dispatch(setIsShowModal(false))
     }
     useEffect(()=>{
-        dispatch(getLanguage('kh'))
         setForm([
             {type:"input",label:tr.name,required:true},
             {type:"input",label:tr.english_name,},
-            {type:"number",label:tr.duration,},
-            {type:"date",label:tr.release_date,},
-            {type:"date",label:tr.from_date,},
-            {type:"date",label:tr.to_date,},
-            {type:"input",label:tr.link_youtube,},
+            {type:"number",label:tr.duration,required:true},
+            {type:"date",label:tr.release_date,required:true},
+            {type:"date",label:tr.from_date,required:true},
+            {type:"date",label:tr.to_date,required:true},
             {type:"select",
+                required:true,
                 label:tr.movie_type,
                 options:{
                     isMulti:false,
@@ -70,10 +70,16 @@ function Movie() {
                         }
                 }
             },
+            {type:"input",label:tr.link_youtube,onChange:onChangeLinkYoutube},
+            {type:"iframe",URL:URLYoutube},
             {type:"textarea",label:tr.description,},
         ]);
-    },[tr])
-   
+        console.log("from",from)
+    },[tr,URLYoutube])
+    const onChangeLinkYoutube=(value)=>{
+        console.log("value",value)
+        setURlYoutube(value)
+    }
     const onClickButton=()=>{}
        const OnPreviewIframe=(data)=>{
          dispatch(setIsShow(true))
@@ -83,6 +89,7 @@ function Movie() {
         console.log("HOng")
         dispatch(SetIsShowConfirm(true))
     }
+
       const body = <div className='w-full h-full'>
             <div className='w-full h-[160px] relative'>
                 <div onClick={onClosePreviewMore} className='absolute opacity-40 hover:opacity-100 transition-all ease-linear flex top-4 right-4 w-[30px] h-[30px]  justify-center items-center rounded-full bg-red-50'><i class="ri-close-line  rounded-full text-[23px]  cursor-pointer" ></i></div>
@@ -115,23 +122,25 @@ function Movie() {
                 <LZButton isFullWith={true} click={onClickButtonDelete} cl="danger" label={tr.delete}/>
             </div>
     </div>
-    const onClickOk=()=>{
-        console.log("OK")
-                dispatch(setIsShowModal(false))
-    }
-    const onClickCancel=()=>{
-        console.log("cancel")
-            dispatch(setIsShowModal(false))
-    }
-    const modalCreate=<div>
-        <div>
+    // const onClickOk=()=>{
+    //     console.log("OK")
+    //             dispatch(setIsShowModal(false))
+    // }
+    // const onClickCancel=()=>{
+    //         dispatch(setIsShowModal(false))
+    // }
+    // useEffect(()=>{
+    //     console.log("dataMovie",dataMovie)
+    // },[dataMovie])
+    // const modalCreate=<div>
+    //     <div>
 
-        </div>
-        <div className='flex justify-end gap-x-2'>
-            <LZButton Variant="light" typeButton="cancel" label={tr.cancel} click={onClickCancel}/>
-            <LZButton typeButton="save" label={tr.ok} click={onClickOk}/>
-        </div>
-    </div>
+    //     </div>
+    //     <div className='flex justify-end gap-x-2'>
+    //         <LZButton Variant="light" typeButton="cancel" label={tr.cancel} click={onClickCancel}/>
+    //         <LZButton typeButton="save" label={tr.ok} click={onClickOk}/>
+    //     </div>
+    // </div>
     const onClickCreate=()=>{
         setIsShowModalForm(true)
     }
@@ -146,16 +155,17 @@ function Movie() {
              dispatch(SetIsShowConfirm(false))
         }
     }))
-      dispatch(setBody(body))
+       dispatch(setBody(body))
     },[])
-    
     const onClickMore=(data)=>{
         dispatch(setModal({isPadding:true,w:"w-[440px]"}))
         dispatch(setLabel(""))
         setDataMovie(data);
         dispatch(setIsShowModal(true))
-      
     }
+    useEffect(()=>{
+        dispatch(setBody(body))
+    },[dataMovie])
     
     useEffect(()=>{
         getMovieList();
@@ -250,7 +260,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={from} onClose={onCloseForm} columns={3} label="Create movie"/>
+    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={from} onClose={onCloseForm} columns={3} label={tr.add_movie}/>
     </>
   )
 }

@@ -12,8 +12,8 @@ const PreviewIframeStore = createSlice({
     },
     reducers:{
         setIframe:(state,action)=>{
-            console.log(action)
-            const videoId = action.payload.path.split('v=')[1]?.split('&')[0]; // Extracts 'lhzd3gwnVP4'
+            var videoId = action.payload.path.split('v=')[1]?.split('&')[0]; // Extracts 'lhzd3gwnVP4'
+            if(videoId==undefined)videoId = action.payload.path.split('v=')[1]; // Extracts 'lhzd3gwnVP4'
             const embedUrl = `https://www.youtube.com/embed/${videoId}`;
             state.iframe.path = embedUrl;
             if(action.payload.w!=null) state.iframe.w = action.payload.w;

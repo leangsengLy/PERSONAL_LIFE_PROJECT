@@ -34,7 +34,13 @@
         "from_date":"From Date",
         "to_date":"From Date",
         "link_youtube":"From Date",
-        "movie_type":"Movie Type"
+        "movie_type":"Movie Type",
+        "home":"Home",
+        "profile":"Profile",
+        "setting":"Setting",
+        "logout":"Logout",
+        "add_movie":"Add Movie",
+        "add_drink":"Add Drink"
 
 
 }

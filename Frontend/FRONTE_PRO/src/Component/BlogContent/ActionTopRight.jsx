@@ -5,12 +5,13 @@ import LZCircleAction from '../CircleAction/LZCircleAction'
 import setting from './../../../public/Gif/Setting.gif';
 import user from '../../../public/Icon/Infomation_User/user.svg';
 import Lyzee from '../../../public/Image/Lyzee/lyzee.jpg';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
 import { SoundAudio } from '../../Util/Sound'
 import { useNavigate } from 'react-router-dom';
 function ActionTopRight({isLoginOrisHomePage}) {
   const [isClickSetting,setIsClickSetting] = useState(false)
+  const tr= useSelector(state=>state.Language.translate);
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const click = SoundAudio("click")
@@ -53,15 +54,15 @@ function ActionTopRight({isLoginOrisHomePage}) {
     <div className='w-full px-4 flex flex-col mt-[9px] gap-y-2'>
       <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={clickOnHomePage} >
         <i className="ri-function-fill"></i>
-        <p>Home</p>
+        <p>{tr.home}</p>
       </div>
       <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={ClickOnProfile} >
         <i className="ri-user-fill"></i>
-        <p>Profile</p>
+        <p>{tr.profile}</p>
       </div>
       <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={onClickLogout}>
         <i className="ri-logout-circle-r-line"></i>
-        <div>Logout</div>
+        <div>{tr.logout}</div>
       </div>
     </div>
   </div>
