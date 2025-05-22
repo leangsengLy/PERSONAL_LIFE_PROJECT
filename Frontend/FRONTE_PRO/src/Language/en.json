@@ -19,6 +19,22 @@
     "no_available_data":"No available data!",
     "cancel":"Cancel",
      "ok":"Ok",
-     "save":"Save"
+     "save":"Save",
+     "name":"Name",
+     "email":"Email",
+        "phone":"Phone",
+        "address":"Address",
+        "city":"City",
+        "state":"State",
+        "zip":"Zip",
+        "country":"Country",
+        "english_name":"English Name",
+        "duration":"Duration",
+        "release_date":"Release Date",
+        "from_date":"From Date",
+        "to_date":"From Date",
+        "link_youtube":"From Date",
+        "movie_type":"Movie Type"
+
 
 }

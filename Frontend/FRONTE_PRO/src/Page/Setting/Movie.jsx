@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import LZButton from '../../Component/Button/LZButton'
 import {setIsShowModal,setBody,setModal,setLabel} from '../../Store/Modal/ModalStore';
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,20 +13,68 @@ import LZPagination from '../../Component/LZTableDefault/LZPagination';
 import LZSelectRecord from '../../Component/LZTableDefault/LZSelectRecord';
 import LZModalForm from '../../Component/Modal/LZModalForm';
 import LZNoData from '../../Component/BlogContent/LZNoData';
+import { use } from 'react';
+import { getLanguage } from '../../Store/Language/Langauge';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
     const [dataMovie,setDataMovie]  = useState([]);
     const [isLoading,setIsLoading]  = useState(false);
     const [isShowModalForm,setIsShowModalForm]  = useState(false);
-    
     const [Search,setSearch]  = useState("");
     const [Page,setPage]  = useState(1);
     const [Record,setRecord]  = useState(10);
+    const [from,setForm]  = useState([]);
     const dispatch = useDispatch()
      const onClosePreviewMore=()=>{
         dispatch(setIsShowModal(false))
     }
+    useEffect(()=>{
+        dispatch(getLanguage('kh'))
+        setForm([
+            {type:"input",label:tr.name,required:true},
+            {type:"input",label:tr.english_name,},
+            {type:"number",label:tr.duration,},
+            {type:"date",label:tr.release_date,},
+            {type:"date",label:tr.from_date,},
+            {type:"date",label:tr.to_date,},
+            {type:"input",label:tr.link_youtube,},
+            {type:"select",
+                label:tr.movie_type,
+                options:{
+                    isMulti:false,
+                    api:{
+                        url:"/api/movie_type/list",
+                        method:"post",
+                        data:{  
+                                search:"",
+                                pages:1,
+                                records:100
+                        },
+                        key:"Id",
+                        value:LZGlobal.translate({en:"EnglishName",km:"Name"})
+                    },
+                    startContent:(item)=>{
+                        return (<>
+                                </>)
+                    },
+                    renderValue:(items,list)=>{
+                            var item = list.find((val)=>val.key==items[0].key)
+                            return (
+                                <>
+                                    <div className='flex gap-x-2 items-center' >
+                                        <span className='text-[13px] text-black'>{item[LZGlobal.translate({en:"EnglishName",km:"Name"})]}</span>
+                                    </div>
+                                </>
+                            );
+                        }
+                }
+            },
+            {type:"textarea",label:tr.description,},
+        ]);
+    },[tr])
+   
+    const onClickButton=()=>{}
        const OnPreviewIframe=(data)=>{
          dispatch(setIsShow(true))
          dispatch(setIframe({path:dataMovie?.UrlYT}))
@@ -112,6 +160,7 @@ function Movie() {
     useEffect(()=>{
         getMovieList();
     },[Search,Record,Page])
+  
     const getMovieList = async()=>{
         setIsLoading(true)
          await HttpRequest({
@@ -137,60 +186,19 @@ function Movie() {
                      }
                  })
     }
- 
     const onSearching=(search)=>{
         setSearch(search)
     }
     const onCloseForm=()=>{
         setIsShowModalForm(false)
     }
-  
     const onSelectRecord=(record)=>{
         setRecord(record)
     }
     const onSelectPage=(page)=>{
         setPage(page)
     }
-   const FormInput=[
-    {type:"input"},
-    {type:"input"},
-    {type:"number"},
-    {type:"date"},
-    {type:"date"},
-    {type:"date"},
-    {type:"input"},
-    {type:"select",
-        options:{
-            isMulti:false,
-            api:{
-                url:"/api/movie_type/list",
-                method:"post",
-                data:{  
-                        search:"",
-                        pages:1,
-                        records:100
-                },
-                key:"Id",
-                value:LZGlobal.translate({en:"EnglishName",km:"Name"})
-            },
-            startContent:(item)=>{
-                return (<>
-                        </>)
-            },
-            renderValue:(items,list)=>{
-                     var item = list.find((val)=>val.key==items[0].key)
-                      return (
-                          <>
-                              <div className='flex gap-x-2 items-center' >
-                                  <span className='text-[13px] text-black'>{item[LZGlobal.translate({en:"EnglishName",km:"Name"})]}</span>
-                              </div>
-                          </>
-                      );
-                  }
-        }
-    },
-    {type:"textarea"},
-   ]
+  
      
   return (
     <>
@@ -242,7 +250,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={FormInput} onClose={onCloseForm} columns={3} label="Create movie"/>
+    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={from} onClose={onCloseForm} columns={3} label="Create movie"/>
     </>
   )
 }

@@ -34,20 +34,6 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
   const onSelect=(key)=>{
     console.log(key)
   }
-  
-  // const renderValue=(items,list)=>{
-  //    var item = list.find((val)=>val.key==items[0].key)
-  //     return (
-  //         <>
-  //             <div className='flex gap-x-2 items-center' >
-  //                 <div className='min-w-[30px] w-[30px] min-h-[30px] h-[30px] bd-primary rounded-full p-[2px] '>
-  //                 <img className='w-full rounded-full  h-full' src={`http://localhost:8080${item.PathImage}`} alt="" />
-  //                 </div>
-  //                 <span className='text-[13px] text-black'>{item[LZGlobal.translate({en:"EnglishName",km:"Name"})]}</span>
-  //             </div>
-  //         </>
-  //     );
-  // }
   const onSelecting=(item)=>{
     console.log("onSelecting",item)
   }
@@ -71,6 +57,8 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
    useEffect(()=>{
          setIsShow(isShowModal);
          setUploadImage("");
+         console.log(drawerInput)
+         setDrawInput(drawerInput);
      },[isShowModal]);
   return (
     <div>
@@ -106,8 +94,9 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                       drawInput.map((val,index)=>{
                         return (
                           <>
-                            {val.type=="input"? <LZInput isRequired={true}/>: val.type=="select"?
+                            {val.type=="input"? <LZInput label={val.label} isRequired={true}/>: val.type=="select"?
                             <LZSelect 
+                                 label={val.label||"label"}
                                 startContent={(item)=>{return val.options.startContent(item)}}
                                 renderValue={(item,list)=>{return val.options.renderValue(item,list)}}
                                 isRequired={true}
@@ -121,7 +110,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                                     key:val.options.api.key,
                                     value:val.options.api.value,
                                     }
-                                  }/>:val.type=="date"?<LZDatePicker isRequired={true}/>:val.type=="number"?<LZInput  type="number"/>:<></>}
+                                  }/>:val.type=="date"?<LZDatePicker label={val.label||"label"} isRequired={true}/>:val.type=="number"?<LZInput label={val.label||"label"} type="number"/>:<></>}
                           </>
                         )
                       })

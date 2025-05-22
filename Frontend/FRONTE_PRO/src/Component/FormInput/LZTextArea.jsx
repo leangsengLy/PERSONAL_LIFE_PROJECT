@@ -1,7 +1,7 @@
 import { Textarea } from '@nextui-org/react'
 import React from 'react'
 
-function LZTextArea() {
+function LZTextArea({label}) {
   return (
      <Textarea 
                   disableAnimation
@@ -11,7 +11,7 @@ function LZTextArea() {
                      variant='bordered'
                      radius='sm'
                       labelPlacement='outside'
-                      label="Description"
+                      label={label||"Label"}
                       placeholder="Enter your description" />
   )
 }

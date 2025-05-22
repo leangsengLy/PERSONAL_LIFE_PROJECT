@@ -19,5 +19,20 @@
      "no_available_data":"មិនមានទិន្នន័យ!",
      "cancel":"បោះបង់",
      "ok":"យល់ព្រម",
-     "save":"រក្សាទុក"
+     "save":"រក្សាទុក",
+      "name":"ឈ្មោះ",
+     "email":"អ៊ីមែល",
+        "phone":"ទូរស័ព្ទ",
+        "address":"អាសយដ្ឋាន",
+        "city":"ទីក្រុង",
+        "state":"State",
+        "zip":"Zip",
+        "country":"ប្រទេស",
+        "english_name":"ឈ្មោះជាភាសាអង់គ្លេស",
+         "duration":"រយៈពេល",
+        "release_date":"ថ្ងៃចេញផ្សាយ",
+        "from_date":"ពីថ្ងៃ",
+        "to_date":"ដល់ថ្ងៃ",
+        "link_youtube":"តំណភ្ជាប់យូធូប",
+        "movie_type":"ប្រភេទភាពយន្ត"
 }

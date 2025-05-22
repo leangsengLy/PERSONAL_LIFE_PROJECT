@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { use } from 'react';
 import { HttpRequest } from '../../Global/API_HTTP/http';
 
-function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderValue,onSelecting}) {
+function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,renderValue,onSelecting}) {
     const [selectedValue, setSelectedValue] = useState([{key:"clear1",value:"---Clear data---"},{key:"clear2",value:"---Clear data---"},{key:"clear3",value:"---Clear data---"}]);
     const [IsMultiSelect, setIsMultiSelect] = useState(isMulti || false)
     const [isRequiredSelect, setIsRequiredSelect] = useState(isRequired || false)
@@ -58,7 +58,7 @@ function LZSelect({items,isMulti,isRequired,api,localData,startContent,renderVal
   return (
     <Select  
                         className="max-w-xs" 
-                        label="Select" 
+                        label={api?.url=="" || api?.url==undefined ? "Select":label}
                         placeholder='Please select' 
                         labelPlacement='outside' 
                         radius='sm' 
