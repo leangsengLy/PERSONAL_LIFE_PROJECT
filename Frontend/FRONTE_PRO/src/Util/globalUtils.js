@@ -53,8 +53,8 @@ export const IsValidUserName=(text)=>{
 
 export const GetURLPreviewIframe =(path)=>{
     console.log("path",path.split('v=')[1])
-    //    const videoId = path.split('v=')[1]?.split('&')[0]; // Extracts 'lhzd3gwnVP4'
-       const videoId = path.split('v=')[1]; // Extracts 'lhzd3gwnVP4'
+       const videoId = path.split('v=')[1]?.split('&')[0]; // Extracts 'lhzd3gwnVP4'
+    //    const videoId = path.split('v=')[1]; // Extracts 'lhzd3gwnVP4'
        console.log("videoId",videoId)
         const embedUrl = `https://www.youtube.com/embed/${videoId}`;
         return embedUrl;

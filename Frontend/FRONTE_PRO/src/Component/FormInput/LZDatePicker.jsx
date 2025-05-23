@@ -3,12 +3,13 @@ import { DatePicker } from '@nextui-org/react'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 
-function LZDatePicker({label,isRequired,isDisabled}) {
+function LZDatePicker({label,isRequired,isDisabled,onChange}) {
   const [isDisabledDate,setIsDisabledDate]=useState(isDisabled || false)
   const [isRequiredDate,setisRequiredDate]=useState(isRequired || false)
   const [isInvalid,setIsInvalid]=useState(false)
   const onChangeDate=(e)=>{
-    console.log(moment(e).format("YYYY-MM-DD"))
+    console.log(onChange)
+    onChange(e)
   }
   return (
     <DatePicker 

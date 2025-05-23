@@ -12,13 +12,15 @@ import LZDatePicker from '../FormInput/LZDatePicker';
 import LZTextArea from '../FormInput/LZTextArea';
 import LZGlobal from '../../Util/LZGlobal';
 import LZIcon from '../Icon/LZIcon';
-const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploadImage,HideClickSide,drawerInput}) => {
+const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploadImage,HideClickSide,drawerInput,onSave}) => {
   const dispatch = useDispatch()
   const refActionImage = useRef(null);
   const [isShow,setIsShow] = useState(isShowModal);
+  const refIframe = useRef(null);
   const [drawInput,setDrawInput] = useState(drawerInput||[]);
   const [IsHideClickSide,setIsHideClickSide] = useState(HideClickSide||false);
   const [UploadImage,setUploadImage] = useState({});
+  const [InputForm,setInputForm] = useState({});
   const [isAnimeButton,setIsAnimeButton] = useState(false);
   const tr = useSelector(state=>state.Language.translate);
   const refFileUpload = useRef(null);
@@ -29,12 +31,29 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
   }
   useEffect(()=>{
     console.log("Fuck you bithc")
+    console.log(InputForm)
     setDrawInput(drawerInput)
+     if(isShowModal){
+          if (refIframe.current) {
+            console.log("Yesfff")
+            refIframe.current.src = ""; // Clears the iframe source
+          }
+      }
+
   },[drawerInput]);
   const onClickCancel=()=>{
     onClose();
   }
+  const onChangeInput=(e)=>{
+    setInputForm((val)=>{
+      return {...val,[e.target.name]:e.target.value}
+    })
+  }
+  useEffect(()=>{
+    console.log(InputForm)
+  },[InputForm])
   const onClickSave=()=>{
+    onSave(100)
     onClose();
   }
   const onSelect=(key)=>{
@@ -64,10 +83,16 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
         dispatch(setIframe({path:url}))
         dispatch(setIsShowIframe(true))
   }
+  const onFocusInput=(e,typeFocus)=>{
+    console.log(typeFocus)
+    if(typeFocus=="selectAll") e.target.select();
+  }
+  const onChangeDate=(e)=>{
+    console.log(moment(e).format("YYYY-MM-DD"))
+  }
    useEffect(()=>{
          setIsShow(isShowModal);
          setUploadImage("");
-         console.log(drawerInput)
          setDrawInput(drawerInput);
      },[isShowModal]);
   return (
@@ -95,7 +120,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                          <div ref={refActionImage} onClick={onClickActionImage} className={` ${isAnimeButton?'scale-50':''} transition-all cursor-pointer ease-linear absolute bottom-[-10px] flex justify-center items-center right-[-5px] w-[30px] h-[30px] rounded-full bg-white border border-[#cfcfcf]`}>
                               {UploadImage==""? <i class="ri-camera-line color-primary text-[13px]"></i>:<i class="ri-delete-bin-line text-red-600 text-[13px] "></i>}
                          </div>
-                         <Input type='file' ref={refFileUpload} onChange={onChangeImage}  classNames={{base:"!hidden"}}/>
+                         <Input type='file' ref={refFileUpload}  onChange={onChangeImage}  classNames={{base:"!hidden"}}/>
                       </div>
                   </div></>):(<></>)}
                   
@@ -104,8 +129,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                       drawInput.map((val,index)=>{
                         return (
                           <>
-                            {val.type=="input"? <LZInput label={val.label} onChange={val.onChange} isRequired={val.required||false}/>: val.type=="select"?
+                            {val.type=="input"? <LZInput label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
+                            name={val.name}
+                             onChange={(e)=>{
+                              if(val.onChange!=undefined){
+                                val.onChange(e.target.value);
+                              }
+                              onChangeInput(e)
+                            }
+                            } isRequired={val.required||false}/>: val.type=="select"?
                             <LZSelect 
+                            name={val.name}
                                  label={val.label||"label"}
                                 startContent={(item)=>{return val.options.startContent(item)}}
                                 renderValue={(item,list)=>{return val.options.renderValue(item,list)}}
@@ -120,12 +154,18 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                                     key:val.options.api.key,
                                     value:val.options.api.value,
                                     }
-                                  }/>:val.type=="date"?<LZDatePicker label={val.label||"label"} isRequired={val.required||false}/>:val.type=="number"?<LZInput label={val.label||"label"} type="number"/>:val.type=="iframe"?<>
+                                  }/>:val.type=="date"?<LZDatePicker onChange={onChangeDate} label={val.label||"label"} isRequired={val.required||false}/>:val.type=="number"?<LZInput 
+                                  onChange={(e)=>{
+                                      if(val.onChange!=undefined)val.onChange(e.target.value);
+                                        onChangeInput(e)
+                                    }}  
+                                    name={val.name}
+                                    label={val.label||"label"} type="number"/>:val.type=="iframe"?<>
                                   <div className='h-[74px] flex gap-x-3 items-center'>
                                     <div  className='w-[170px] overflow-hidden rounded-lg h-full flex justify-center items-center border border-dashed border-black'>
                                     {
                                       val.URL!=""?
-                                      <iframe className='w-full h-full'  src={LZGlobal.GetURLPreviewIframe(val.URL)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                      <iframe className='w-full h-full' ref={refIframe}  src={LZGlobal.GetURLPreviewIframe(val.URL)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                                     </iframe>:<p className='text-[12px]'>Link URL</p>
                                     }
                                   </div>

@@ -31,14 +31,18 @@ function Movie() {
         dispatch(setIsShowModal(false))
     }
     useEffect(()=>{
+        setURlYoutube("")
+    },[isShowModalForm])
+    useEffect(()=>{
         setForm([
-            {type:"input",label:tr.name,required:true},
-            {type:"input",label:tr.english_name,},
-            {type:"number",label:tr.duration,required:true},
-            {type:"date",label:tr.release_date,required:true},
-            {type:"date",label:tr.from_date,required:true},
-            {type:"date",label:tr.to_date,required:true},
+            {type:"input",label:tr.name,required:true,name:"Name"},
+            {type:"input",label:tr.english_name,name:"EnglishName"},
+            {type:"number",label:tr.duration,required:true,name:"Duration"},
+            {type:"date",label:tr.release_date,required:true,name:"Release"},
+            {type:"date",label:tr.from_date,required:true,name:"FromDate"},
+            {type:"date",label:tr.to_date,required:true,name:"ToDate"},
             {type:"select",
+                name:"MovieType",
                 required:true,
                 label:tr.movie_type,
                 options:{
@@ -70,9 +74,9 @@ function Movie() {
                         }
                 }
             },
-            {type:"input",label:tr.link_youtube,onChange:onChangeLinkYoutube},
+            {type:"input",label:tr.link_youtube,onChange:onChangeLinkYoutube,focus:"selectAll",name:"UrlYT"},
             {type:"iframe",URL:URLYoutube},
-            {type:"textarea",label:tr.description,},
+            {type:"textarea",label:tr.description,name:"Description"},
         ]);
         console.log("from",from)
     },[tr,URLYoutube])
@@ -208,6 +212,9 @@ function Movie() {
     const onSelectPage=(page)=>{
         setPage(page)
     }
+    const onSaveForm=(data)=>{
+        console.log(data)
+    }
   
      
   return (
@@ -260,7 +267,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={from} onClose={onCloseForm} columns={3} label={tr.add_movie}/>
+    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
     </>
   )
 }
