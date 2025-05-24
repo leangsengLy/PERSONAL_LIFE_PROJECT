@@ -227,7 +227,7 @@ function Offers() {
                 detail:data.Detail,
                 uploadFileDataModel:{
                     fileName: "ImageOffer.jpg",
-                    fileType: image.ImageType,
+                    fileType: image.FileType,
                     base64Data:image.Base64,
                 }
             },
@@ -284,7 +284,7 @@ function Offers() {
                 detail:data.Detail,
                 uploadFileDataModel:{
                     fileName: "ImageOffer.jpg",
-                    fileType: image.ImageType,
+                    fileType: image.FileType,
                     base64Data:image.Base64,
                 }
             },

@@ -277,7 +277,7 @@ function Drink() {
                  var image = await GetBase64ByImage(data.File)
                 data.uploadFileDataModel={
                     fileName: "ImageOffer.jpg",
-                    fileType: image.ImageType,
+                    fileType: image.FileType,
                     base64Data:image.Base64,
                 };
           }
@@ -345,7 +345,6 @@ function Drink() {
     }
     
     const SaveData=async (data)=>{
-      
         var image = await GetBase64ByImage(data.File)
        await HttpRequest({
             url:"api/food/create",
@@ -358,7 +357,7 @@ function Drink() {
                 englishName:data.EnglishName,
                 uploadFileDataModel:{
                     fileName: "ImageDrink.jpg",
-                    fileType: image.ImageType,
+                    fileType: image.FileType,
                     base64Data:image.Base64,
                 }
             },

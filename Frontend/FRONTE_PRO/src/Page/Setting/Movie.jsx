@@ -15,6 +15,7 @@ import LZModalForm from '../../Component/Modal/LZModalForm';
 import LZNoData from '../../Component/BlogContent/LZNoData';
 import { use } from 'react';
 import { getLanguage } from '../../Store/Language/Langauge';
+import { ShowSnackbar } from '../../Util/globalUtils';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
@@ -42,8 +43,8 @@ function Movie() {
             {type:"date",label:tr.from_date,required:true,name:"FromDate"},
             {type:"date",label:tr.to_date,required:true,name:"ToDate"},
             {type:"select",
-                name:"MovieType",
                 required:true,
+                name:"MovieTypeId",
                 label:tr.movie_type,
                 options:{
                     isMulti:false,
@@ -193,7 +194,7 @@ function Movie() {
                      },
                      success:(result)=>{
                          setIsLoading(false)
-                        setMovies(result);
+                         setMovies(result);
                      },
                      error:(error)=>{
                          ShowSnackbar({message:error.message,type:"error"})
@@ -212,8 +213,36 @@ function Movie() {
     const onSelectPage=(page)=>{
         setPage(page)
     }
-    const onSaveForm=(data)=>{
-        console.log(data)
+    const onSaveForm=async(data)=>{
+        console.log("data",data)
+        await HttpRequest({
+                    url:"api/movie/create",
+                    method:"Post",
+                    data:{
+                        movieTypeId:data?.MovieTypeId,
+                        name:data?.Name,
+                        englishName:data?.EnglishName,
+                        duration:data?.Duration,
+                        release:data?.Release,
+                        fromDate:data?.FromDate,
+                        toDate:data?.ToDate,
+                        urlYT:data?.UrlYT||'',
+                        description:data?.Description||'',
+                        uploadFileDataModel:{
+                            fileName: data?.Files?.FileName,
+                            fileType: data?.Files?.FileType,
+                            base64Data:data?.Files?.Base64
+                        }
+                    },
+                    success:(result)=>{
+                        getMovieList();
+                        setIsShowModal(false)
+                    },
+                    error:(error)=>{
+                        console.log(error)
+                        ShowSnackbar({message:error.message,type:"error"})
+                    }
+                })
     }
   
      

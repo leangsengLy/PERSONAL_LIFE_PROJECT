@@ -9,6 +9,8 @@ export const GetBase64ByImage=async(file)=>{
         })
     return {
         Base64:dataFile.split(",")[1],
-        ImageType: dataFile.split(",")[0].split(";")[0].split(":")[1]
+        FileName: file.name,
+        FileSize: file.size,
+        FileType: file.type,
     };
 }

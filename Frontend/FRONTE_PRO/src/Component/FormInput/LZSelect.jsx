@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { use } from 'react';
 import { HttpRequest } from '../../Global/API_HTTP/http';
 
-function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,renderValue,onSelecting}) {
+function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,renderValue,onSelecting,name}) {
     const [selectedValue, setSelectedValue] = useState([{key:"clear1",value:"---Clear data---"},{key:"clear2",value:"---Clear data---"},{key:"clear3",value:"---Clear data---"}]);
     const [IsMultiSelect, setIsMultiSelect] = useState(isMulti || false)
     const [isRequiredSelect, setIsRequiredSelect] = useState(isRequired || false)
@@ -34,22 +34,24 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
             localData.map((val)=>({key:val,value:val})));
     },[])
     const onSelectionChange=(item)=>{
-        console.log("onSelectionChange",item.target.value.split(","))
+        // console.log("onSelectionChange",item.target.value.split(","))
         if(api?.url!="") {
             if(!isMulti){
-                var find = list.find((val)=>val.key==item.anchorKey);
-                onSelecting(find)
+                var find = list.find((val)=>val.key==item.target.value);
+                onSelecting(name||'label',find)
+                return; 
             }else{
                 var keys = item.target.value.split(",").map((val)=>parseInt(val));
                 var filterList = list.filter((val)=>keys.includes(val.key));
-                onSelecting(filterList)
+                onSelecting(name||'label',filterList)
+                return; 
             }
-            
         }else{
             var find = list.find((val)=>val.key==item.anchorKey);
-             onSelecting(find)
+             onSelecting(name||'label',find)
+             return ; 
         }
-        onSelecting(item)
+        
     }
     useEffect(()=>{
         console.log("List",list)
@@ -64,6 +66,7 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
                         radius='sm' 
                         variant='bordered' 
                         items={list}
+                        name={name}
                         isRequired={isRequiredSelect}
                         classNames={{base:'mb-[10px]'}}
                         size='md' 

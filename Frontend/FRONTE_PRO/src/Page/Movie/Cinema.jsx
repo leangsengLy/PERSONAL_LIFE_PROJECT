@@ -306,7 +306,7 @@ function Cinema() {
                  var image = await GetBase64ByImage(data.File)
                 data.uploadFileDataModel={
                     fileName: "ImageOffer.jpg",
-                    fileType: image.ImageType,
+                    fileType: image.FileType,
                     base64Data:image.Base64,
                 };
           }
@@ -388,7 +388,7 @@ function Cinema() {
                 englishName:data.EnglishName,
                 uploadFileDataModel:{
                     fileName: "ImageDrink.jpg",
-                    fileType: image.ImageType,
+                    fileType: image.FileType,
                     base64Data:image.Base64,
                 }
             },

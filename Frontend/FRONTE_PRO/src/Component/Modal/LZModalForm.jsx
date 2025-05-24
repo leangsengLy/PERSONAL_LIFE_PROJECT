@@ -12,6 +12,7 @@ import LZDatePicker from '../FormInput/LZDatePicker';
 import LZTextArea from '../FormInput/LZTextArea';
 import LZGlobal from '../../Util/LZGlobal';
 import LZIcon from '../Icon/LZIcon';
+import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploadImage,HideClickSide,drawerInput,onSave}) => {
   const dispatch = useDispatch()
   const refActionImage = useRef(null);
@@ -35,7 +36,6 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
     setDrawInput(drawerInput)
      if(isShowModal){
           if (refIframe.current) {
-            console.log("Yesfff")
             refIframe.current.src = ""; // Clears the iframe source
           }
       }
@@ -45,6 +45,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
     onClose();
   }
   const onChangeInput=(e)=>{
+    console.log(e.target.value)
     setInputForm((val)=>{
       return {...val,[e.target.name]:e.target.value}
     })
@@ -53,14 +54,17 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
     console.log(InputForm)
   },[InputForm])
   const onClickSave=()=>{
-    onSave(100)
+    onSave(InputForm)
     onClose();
   }
   const onSelect=(key)=>{
     console.log(key)
   }
-  const onSelecting=(item)=>{
-    console.log("onSelecting",item)
+  const onSelecting=(name,item)=>{
+    console.log(name,item)
+       setInputForm((val)=>{
+      return {...val,[name]:item.Id}
+    })
   }
   const onClickActionImage=(e)=>{
     if(UploadImage!=""){
@@ -72,12 +76,13 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
         setIsAnimeButton(false);
     },100)
   }
-  const onChangeImage=(e)=>{
+  const onChangeImage=async(e)=>{
     var file = e.target.files[0];
-    setUploadImage(URL.createObjectURL(file));
-    console.log(URL.createObjectURL(file))
-    console.log("File",file)
-    var reader = new FileReader();
+    setUploadImage(URL.createObjectURL(file))
+    var image = await GetBase64ByImage(file)
+    setInputForm((val)=>{
+      return {...val,Files:image}
+    })
   }
   const onClickPreviewIframe=(url)=>{
         dispatch(setIframe({path:url}))
@@ -87,8 +92,11 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
     console.log(typeFocus)
     if(typeFocus=="selectAll") e.target.select();
   }
-  const onChangeDate=(e)=>{
-    console.log(moment(e).format("YYYY-MM-DD"))
+  const onChangeDate=(name,date)=>{
+     setInputForm((val)=>{
+      return {...val,[name]:date}
+    })
+   
   }
    useEffect(()=>{
          setIsShow(isShowModal);
@@ -154,9 +162,11 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                                     key:val.options.api.key,
                                     value:val.options.api.value,
                                     }
-                                  }/>:val.type=="date"?<LZDatePicker onChange={onChangeDate} label={val.label||"label"} isRequired={val.required||false}/>:val.type=="number"?<LZInput 
+                                  }/>:val.type=="date"?<LZDatePicker onChange={(name,date)=>{
+                                    onChangeDate(name,date)
+                                  }} label={val.label||"label"} name={val.name} isRequired={val.required||false}/>:val.type=="number"?<LZInput 
                                   onChange={(e)=>{
-                                      if(val.onChange!=undefined)val.onChange(e.target.value);
+                                      if(val.onChange!=undefined) val.onChange(e.target.value);
                                         onChangeInput(e)
                                     }}  
                                     name={val.name}
@@ -183,7 +193,15 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
                       drawInput.filter(v=>v.type=="textarea").map((val,index)=>{
                         return (
                           <>
-                            <LZTextArea isRequired={val.required} label={val.label}/>
+                            <LZTextArea 
+                            name={val.name}
+                            onChange={(e)=>{
+                              console.log(e.target.value)
+                              if(val.onChange!=undefined){
+                                val.onChange(e.target.value);
+                              }
+                              onChangeInput(e)
+                            }}  isRequired={val.required} label={val.label}/>
                           </>
                         )
                       })
