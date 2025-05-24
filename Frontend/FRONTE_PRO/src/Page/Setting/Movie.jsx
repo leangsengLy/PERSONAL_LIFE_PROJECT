@@ -20,6 +20,7 @@ function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
     const [dataMovie,setDataMovie]  = useState([]);
+     const [Id,setId] = useState(false);
     const [isLoading,setIsLoading]  = useState(false);
     const [isShowModalForm,setIsShowModalForm]  = useState(false);
     const [Search,setSearch]  = useState("");
@@ -27,6 +28,8 @@ function Movie() {
     const [Page,setPage]  = useState(1);
     const [Record,setRecord]  = useState(10);
     const [from,setForm]  = useState([]);
+    const [dataEdit,setDataEdit]  = useState({});
+    const [isCreate,setIsCreate]  = useState(true);
     const dispatch = useDispatch()
      const onClosePreviewMore=()=>{
         dispatch(setIsShowModal(false))
@@ -91,7 +94,18 @@ function Movie() {
          dispatch(setIframe({path:dataMovie?.UrlYT}))
     }
       const onClickButtonDelete=()=>{
-        console.log("HOng")
+        dispatch(setModalConfirm({
+            type:"delete",
+            message:"",
+            onOk: ()=>{
+                DeleteMovie();
+                dispatch(SetIsShowConfirm(false))
+            },
+            onClose:()=>{
+                console.log("onClose")
+                dispatch(SetIsShowConfirm(false))
+            }
+        }))
         dispatch(SetIsShowConfirm(true))
     }
 
@@ -150,19 +164,33 @@ function Movie() {
         setIsShowModalForm(true)
     }
     useEffect(()=>{
-        dispatch(setModalConfirm({
-        type:"delete",
-        message:"",
-        onOk:()=>{
-              dispatch(SetIsShowConfirm(false))
-        },
-        onClose:()=>{
-             dispatch(SetIsShowConfirm(false))
-        }
-    }))
        dispatch(setBody(body))
-    },[])
+    },[dataMovie])
+    const DeleteMovie=async ()=>{
+        console.log("dataMovie",dataMovie)
+            await HttpRequest({
+                url:`/api/movie/delete?Id=${dataMovie.Id}`,
+                method:"get",
+                success:(result)=>{
+                    dispatch(setIsShowModal(false))
+                    getMovieList();
+                },
+                error:(err)=>{
+                    ShowSnackbar({message:err.message,type:'error'})
+                }
+            })
+    }
+    const onClickActionImage=(data)=>{
+        setIsCreate(false)
+        setDataEdit(data);
+        setId(data.Id)
+        setIsShowModalForm(true)
+        setTimeout(()=>{
+            setId(0)
+        },100)
+    }
     const onClickMore=(data)=>{
+        console.log(data)
         dispatch(setModal({isPadding:true,w:"w-[440px]"}))
         dispatch(setLabel(""))
         setDataMovie(data);
@@ -275,7 +303,10 @@ function Movie() {
                     movies.length!=0?(<>{
                     movies.map((val)=>{
                         return (<><div className='flex flex-col gap-y-2'>
-                                <div className='w-full h-[150px] overflow-hidden rounded-lg'>
+                                <div className='w-full h-[150px] overflow-hidden relative rounded-lg'>
+                                    <div onClick={()=>{onClickActionImage(val)}} className={`${val.Id==Id?'scale-50':''} transition-all box ease-linear w-[27px] cursor-pointer absolute h-[27px] top-2 right-2 rounded-full flex justify-center items-center bg-[#00000078]`}>
+                                        <i class="ri-pencil-fill text-green-500 text-[13px]"></i>
+                                    </div>
                                     <img src={`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image cursor-pointer object-cover w-full h-full'/>
                                 </div>
                                 <div className='flex flex-col gap-y-[2px'>
@@ -296,7 +327,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
+    <LZModalForm isShowModal={isShowModalForm} isCreate={isCreate} dataEdit={dataEdit} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
     </>
   )
 }

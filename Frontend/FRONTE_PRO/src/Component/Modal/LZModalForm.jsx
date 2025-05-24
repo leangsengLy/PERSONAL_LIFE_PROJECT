@@ -13,7 +13,7 @@ import LZTextArea from '../FormInput/LZTextArea';
 import LZGlobal from '../../Util/LZGlobal';
 import LZIcon from '../Icon/LZIcon';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
-const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploadImage,HideClickSide,drawerInput,onSave}) => {
+const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreated,dataEdit,isUploadImage,HideClickSide,drawerInput,onSave}) => {
   const dispatch = useDispatch()
   const refActionImage = useRef(null);
   const [isShow,setIsShow] = useState(isShowModal);
@@ -22,6 +22,8 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isUploa
   const [IsHideClickSide,setIsHideClickSide] = useState(HideClickSide||false);
   const [UploadImage,setUploadImage] = useState({});
   const [InputForm,setInputForm] = useState({});
+  const [dataUpdate,setDataUpdate] = useState(dataEdit||{});
+  const [isCreate,setIsCreate] = useState(isCreated);
   const [isAnimeButton,setIsAnimeButton] = useState(false);
   const tr = useSelector(state=>state.Language.translate);
   const refFileUpload = useRef(null);
