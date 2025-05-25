@@ -13,7 +13,8 @@ import LZTextArea from '../FormInput/LZTextArea';
 import LZGlobal from '../../Util/LZGlobal';
 import LZIcon from '../Icon/LZIcon';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
-const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreated,dataEdit,isUploadImage,HideClickSide,drawerInput,onSave}) => {
+import { use } from 'react';
+const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCreate,dataEdit,isUploadImage,HideClickSide,drawerInput,onSave}) => {
   const dispatch = useDispatch()
   const refActionImage = useRef(null);
   const [isShow,setIsShow] = useState(isShowModal);
@@ -22,8 +23,6 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
   const [IsHideClickSide,setIsHideClickSide] = useState(HideClickSide||false);
   const [UploadImage,setUploadImage] = useState({});
   const [InputForm,setInputForm] = useState({});
-  const [dataUpdate,setDataUpdate] = useState(dataEdit||{});
-  const [isCreate,setIsCreate] = useState(isCreated);
   const [isAnimeButton,setIsAnimeButton] = useState(false);
   const tr = useSelector(state=>state.Language.translate);
   const refFileUpload = useRef(null);
@@ -32,9 +31,8 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
     setIsShow(false);
     onClose();
   }
+
   useEffect(()=>{
-    console.log("Fuck you bithc")
-    console.log(InputForm)
     setDrawInput(drawerInput)
      if(isShowModal){
           if (refIframe.current) {
@@ -52,9 +50,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
       return {...val,[e.target.name]:e.target.value}
     })
   }
-  useEffect(()=>{
-    console.log(InputForm)
-  },[InputForm])
+  
   const onClickSave=()=>{
     onSave(InputForm)
     onClose();
@@ -100,7 +96,15 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
     })
    
   }
+  useEffect(()=>{
+    console.log("isNewCreate",isNewCreate)
+    console.log("dataEdit",dataEdit)
+    if(!isNewCreate) {
+      setUploadImage("http://localhost:8080"+dataEdit?.ImagePath)
+    }
+  },[isNewCreate])
    useEffect(()=>{
+        
          setIsShow(isShowModal);
          setUploadImage("");
          setDrawInput(drawerInput);
@@ -139,7 +143,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
                       drawInput.map((val,index)=>{
                         return (
                           <>
-                            {val.type=="input"? <LZInput label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
+                            {val.type=="input"? <LZInput value={dataEdit[val.name]} label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
                             name={val.name}
                              onChange={(e)=>{
                               if(val.onChange!=undefined){
@@ -175,10 +179,13 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
                                     label={val.label||"label"} type="number"/>:val.type=="iframe"?<>
                                   <div className='h-[74px] flex gap-x-3 items-center'>
                                     <div  className='w-[170px] overflow-hidden rounded-lg h-full flex justify-center items-center border border-dashed border-black'>
+                                      {console.log("test",dataEdit)}
                                     {
+                                      
                                       val.URL!=""?
                                       <iframe className='w-full h-full' ref={refIframe}  src={LZGlobal.GetURLPreviewIframe(val.URL)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                                    </iframe>:<p className='text-[12px]'>Link URL</p>
+                                    </iframe>:dataEdit?.UrlYT!=""?<iframe className='w-full h-full' ref={refIframe}  src={LZGlobal.GetURLPreviewIframe(dataEdit?.UrlYT)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                    </iframe>: <p className='text-[12px]'>Link URL</p>
                                     }
                                   </div>
                                     {val.URL!=""?<LZIcon bgColor="success"  typeIcon="view" onClickIcon={()=>{onClickPreviewIframe(val.URL)}}/>:<></>}
@@ -197,6 +204,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isCreat
                           <>
                             <LZTextArea 
                             name={val.name}
+                            value={dataEdit[val.name]} 
                             onChange={(e)=>{
                               console.log(e.target.value)
                               if(val.onChange!=undefined){

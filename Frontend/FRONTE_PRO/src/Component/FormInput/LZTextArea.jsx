@@ -1,11 +1,12 @@
 import { Textarea } from '@nextui-org/react'
 import React from 'react'
 
-function LZTextArea({label,onChange,name}) {
+function LZTextArea({label,onChange,name,value}) {
   return (
      <Textarea 
                   disableAnimation
                   name={name}
+                  value={value}
                   onChange={onChange}
                   disableAutosize 
                    classNames={{inputWrapper:'border border-black-150',base:'!max-w-full'}}

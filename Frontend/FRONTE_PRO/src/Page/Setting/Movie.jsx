@@ -29,13 +29,20 @@ function Movie() {
     const [Record,setRecord]  = useState(10);
     const [from,setForm]  = useState([]);
     const [dataEdit,setDataEdit]  = useState({});
-    const [isCreate,setIsCreate]  = useState(true);
+    const [newCreated,setNewCreated]  = useState(false);
     const dispatch = useDispatch()
      const onClosePreviewMore=()=>{
         dispatch(setIsShowModal(false))
     }
     useEffect(()=>{
         setURlYoutube("")
+        setNewCreated("")
+       console.log("isShowModalForm",isShowModalForm)   
+       if(!isShowModalForm){
+        setURlYoutube("")
+        setNewCreated("") 
+        setDataEdit({})
+       }
     },[isShowModalForm])
     useEffect(()=>{
         setForm([
@@ -161,8 +168,13 @@ function Movie() {
     //     </div>
     // </div>
     const onClickCreate=()=>{
+        setNewCreated(true)
         setIsShowModalForm(true)
     }
+    // useEffect(()=>{
+    //     console.log("isCreate MOvie",isCreate)
+    // },[isCreate])
+
     useEffect(()=>{
        dispatch(setBody(body))
     },[dataMovie])
@@ -181,7 +193,7 @@ function Movie() {
             })
     }
     const onClickActionImage=(data)=>{
-        setIsCreate(false)
+        setNewCreated("No")
         setDataEdit(data);
         setId(data.Id)
         setIsShowModalForm(true)
@@ -320,14 +332,15 @@ function Movie() {
         }</div></>):(<></>)
         }
         {
+
             movies.length==0?(<>
                     <LZNoData/>
             </>):(<></>)
         }
         </div>
-        <LZPagination SelectPage={onSelectPage} totalRecord={movies.length}/>
+        <LZPagination SelectPage={onSelectPage} totalRecord={movies[0]?.RecordCount??0} record={Record}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isCreate={isCreate} dataEdit={dataEdit} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
+    <LZModalForm isShowModal={isShowModalForm} isNewCreate={newCreated} dataEdit={dataEdit} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
     </>
   )
 }
