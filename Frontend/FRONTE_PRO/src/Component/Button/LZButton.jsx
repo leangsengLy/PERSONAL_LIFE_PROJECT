@@ -31,7 +31,7 @@ function LZButton({isDisabled,typeButton,click,cl,label,size,Variant,isLoading,i
     else if(Variant=="light") VarianBtn="light";
   return (
     <div>
-        <Button isDisabled={isDisabled} color={color} className={`${isFullWith?'w-full h-[50px]':''} ${typeButton!=="cancel"?`text-white`:`text-[#989898]`}`} onClick={click} Variants={VarianBtn} size={sizeBtn} isLoading={isLoading}>{isIcon?(<><i className={icon}></i></>):(<></>)}<p className={`${isFullWith?'text-[16px]':''}`}>{label??"No Label"}</p> </Button>
+        <Button isDisabled={isDisabled} color={color} className={`${isFullWith?'w-full h-[50px]':''} ${typeButton!=="cancel"?`text-white`:`text-[#989898]`} sound`} onClick={click} Variants={VarianBtn} size={sizeBtn} isLoading={isLoading}>{isIcon?(<><i className={icon}></i></>):(<></>)}<p className={`${isFullWith?'text-[16px]':''}`}>{label??"No Label"}</p> </Button>
     </div>
   )
 }

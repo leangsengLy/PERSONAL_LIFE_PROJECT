@@ -1,7 +1,9 @@
 import { Select, SelectItem } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
+import { SoundAudio } from '../../Util/Sound'
 
 function LZSelectRecord({SelectRecord}) {
+       const click = SoundAudio('click')
     const [Record,SetRecord] =useState("10")
     const Records = [
         {key: "10",label: "10"},
@@ -10,6 +12,7 @@ function LZSelectRecord({SelectRecord}) {
         {key: "100",label: "100"}
     ]
     const SelectRecordItem=(re)=>{
+        click.play()
         SetRecord(re.currentKey)
     }
     useEffect(()=>{

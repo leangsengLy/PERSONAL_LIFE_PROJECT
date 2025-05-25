@@ -8,6 +8,7 @@ import { ShowSnackbar } from './Util/globalUtils.js';
 import PreviewImage from './Component/PreviewImage/PreviewImage.jsx';
 import LZModal from './Component/Modal/LZModal.jsx';
 import LZIframe from './Component/PreviewIframe/LZIframe.jsx';
+import { SoundAudio } from './Util/Sound.js';
 const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
@@ -38,7 +39,12 @@ const App = () => {
             }
         }
     })
-
+    document.addEventListener("click",(e)=>{
+        if(e.target.classList[1]=="sound"){
+            const click = SoundAudio('click')
+            click.play();
+        }
+        })
     return (
         <div className={`transition-all ease-linear  color_primary_${selectedColorSystem} ${isDark? `dark` : ""} ${language.code??'kh'}`}>
             <LZRoutes/>

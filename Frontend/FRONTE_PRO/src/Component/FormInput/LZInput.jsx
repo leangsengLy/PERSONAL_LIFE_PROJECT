@@ -1,15 +1,14 @@
 import { Input } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 
-function LZInput({isDisabled,isRequired,label,type,onChange,value,onFocus,name}) {
+function LZInput({isDisabled,isRequired,isValid,label,type,onChange,value,onFocus,name}) {
     const [isDisabledInput,setIsDisabledInput]=useState(isDisabled || false)
     const [isRequiredInput,setIsRequiredInput]=useState(isRequired || false)
-    const [isInvalid,setIsInvalid]=useState(false)
-    const [messageRequired,setMessageRequired]=useState(isRequired?`Please enter a valid.`:"");
+    const [messageRequired,setMessageRequired]=useState(isRequired?`Please enter ${name}.`:"");
     const onChangeValue=(e)=>{
-        setIsInvalid(e.target.value.length===0 && isRequiredInput);
         onChange(e);
     }
+
    
   return (
     <Input
@@ -26,7 +25,7 @@ function LZInput({isDisabled,isRequired,label,type,onChange,value,onFocus,name})
                         onFocus={onFocus}
                         name={name}
                         value={value}
-                        isInvalid={isInvalid}
+                        isInvalid={isValid}
                         variant="bordered"
                         placeholder={`Enter ${label||'....'}`}
                         classNames={

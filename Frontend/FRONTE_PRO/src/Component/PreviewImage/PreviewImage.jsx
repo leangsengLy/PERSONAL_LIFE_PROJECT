@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {setShowPreview,setImagePath} from '../../Store/PreviewImage/PreviewImage'
 import { useDispatch, useSelector } from 'react-redux';
+import { SoundAudio } from '../../Util/Sound';
 function PreviewImage() {
     const isShowImage = useSelector(state=>state.PreviewImage.isShow);
     const ImagePath = useSelector(state=>state.PreviewImage.imagePath);
     const dispatch = useDispatch();
+       const click = SoundAudio('click')
     const onCloseImage=()=>{
+        click.play()
         dispatch(setShowPreview(false));
     }
     document.addEventListener("click",(e)=>{

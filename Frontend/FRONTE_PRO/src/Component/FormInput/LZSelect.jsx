@@ -8,6 +8,8 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
     const [IsMultiSelect, setIsMultiSelect] = useState(isMulti || false)
     const [isRequiredSelect, setIsRequiredSelect] = useState(isRequired || false)
     const [list, setList] = useState([])
+    const [selectedValue1, setSelectedValue1] = useState(17);
+    const [selectedKeys, setSelectedKeys] = useState(IsMultiSelect ? new Set([]) : "17");
     const onSelect=(key)=>{
         console.log("Selected",key)
       
@@ -34,6 +36,7 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
             localData.map((val)=>({key:val,value:val})));
     },[])
     const onSelectionChange=(item)=>{
+        console.log("Select",item.target.value)
         // console.log("onSelectionChange",item.target.value.split(","))
         if(api?.url!="") {
             if(!isMulti){
@@ -65,13 +68,13 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
                         labelPlacement='outside' 
                         radius='sm' 
                         variant='bordered' 
-                        items={list}
                         name={name}
                         isRequired={isRequiredSelect}
                         classNames={{base:'mb-[10px]'}}
                         size='md' 
-                        // onSelectionChange ={onSelectionChange}
+                        // selectedKeys={isMulti ? selectedKeys : selectedKeys}
                         onChange ={onSelectionChange}
+                        // selectedKeys={[17]}
                         renderValue={(items)=>{
                             if(api?.url=="" || api?.url==undefined){
                                    var keys = items.map((val)=>val.key);
@@ -83,10 +86,11 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
                             }else return renderValue(items,list)
                         }}
                         selectionMode={IsMultiSelect?"multiple":"single"}
-                        onValueChange={onSelect} >
+                        >
                                     {list.map((item,index) => {
+                                        console.log(item)
                                         return (
-                                            <SelectItem key={item.key} className="text-[12px]" startContent={startContent(item)}>
+                                            <SelectItem key={item.key} value={item.key} className="text-[12px]" startContent={startContent(item)}>
                                                 {api?.url=="" || api?.url==undefined ?(<>{item.value}</>):(<>{item[api.value]}</>)}
                                             </SelectItem>
                                         

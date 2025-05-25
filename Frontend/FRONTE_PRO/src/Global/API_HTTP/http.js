@@ -37,6 +37,7 @@ export const HttpRequest = async ({url,method='get',data,success,error,type='dat
                 ShowSnackbar({message:err.response.data.message,type:'error'})
             }
             console.log(err)
+              error(err.response)
             // if(err)error(err.response.data)
         })
     }

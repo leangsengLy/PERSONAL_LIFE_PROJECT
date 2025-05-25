@@ -73,7 +73,7 @@ function WebSectionContent() {
                 </div>  
               
                 <div className='flex flex-col gap-y-[3px] color-default'>
-                <div onClick={ClickHome} className='hover:bg-[#ffffff0d] hover:rounded-md cursor-pointer py-1  flex items-center'>
+                <div onClick={ClickHome} className='hover:bg-[#ffffff0d]  hover:rounded-md cursor-pointer py-1  flex items-center'>
                   <i class="ri-arrow-left-s-fill"></i>
                   <div className='flex gap-x-3 pl-3 h-[50px] items-center whitespace-nowrap'>
                     {
@@ -88,7 +88,7 @@ function WebSectionContent() {
                 Menus.map((val)=>{
                   return (
                     <>
-                      <div onClick={()=>{onSubMenu(val.Code)}} className={`hover:bg-[#ffffff0d] ${SubMenuCode==val.Code?`color-primary`:``} hover:rounded-md cursor-pointer py-1 flex items-center`}>
+                      <div onClick={()=>{onSubMenu(val.Code)}} className={`hover:bg-[#ffffff0d]  ${SubMenuCode==val.Code?`color-primary`:``} hover:rounded-md cursor-pointer py-1 flex items-center`}>
                         <div className='flex gap-x-3 pl-3 items-center whitespace-nowrap'>
                         <i className={`${val.icon} text-[22px]`}></i>
                         {

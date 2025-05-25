@@ -1,9 +1,12 @@
 import { Pagination } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
+import { SoundAudio } from '../../Util/Sound'
 
 function LZPagination({SelectPage,totalRecord=0,record=10}) {
+     const click = SoundAudio('click')
   const [Page,SetPage] = useState(1)
     const ChangePagination=(page)=>{
+      click.play()
       SetPage(page)
     }
     useEffect(()=>{

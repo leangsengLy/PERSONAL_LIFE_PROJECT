@@ -16,6 +16,7 @@ import LZNoData from '../../Component/BlogContent/LZNoData';
 import { use } from 'react';
 import { getLanguage } from '../../Store/Language/Langauge';
 import { ShowSnackbar } from '../../Util/globalUtils';
+import { SoundAudio } from '../../Util/Sound';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
@@ -34,14 +35,18 @@ function Movie() {
      const onClosePreviewMore=()=>{
         dispatch(setIsShowModal(false))
     }
+      const click = SoundAudio('click')
+      const noti = SoundAudio('noti')
+      const fail = SoundAudio('fail')
     useEffect(()=>{
         setURlYoutube("")
         setNewCreated("")
        console.log("isShowModalForm",isShowModalForm)   
        if(!isShowModalForm){
-        setURlYoutube("")
-        setNewCreated("") 
-        setDataEdit({})
+           setURlYoutube("")
+           setNewCreated("") 
+           setDataEdit({})
+           getMovieList();
        }
     },[isShowModalForm])
     useEffect(()=>{
@@ -122,7 +127,7 @@ function Movie() {
                 <div onClick={OnPreviewIframe}  className='absolute displayMiddle cursor-pointer w-[50px] flex justify-center items-center h-[50px] rounded-full bg-red-600' >
                     <i class="ri-play-fill scale-100 text-white"></i>
                 </div>
-                <img src={`http://localhost:8080${dataMovie.ImagePath}`} className='object-cover w-full h-full' alt="" />
+                <img src={dataMovie.ImagePath==null?LZGlobal.ComingSoon: `http://localhost:8080${dataMovie.ImagePath}`} className='object-cover w-full h-full' alt="" />
             </div>
             <div className='p-3 grid gap-y-3 '>
                 <div className=''>
@@ -194,6 +199,7 @@ function Movie() {
     }
     const onClickActionImage=(data)=>{
         setNewCreated("No")
+        click.play();
         setDataEdit(data);
         setId(data.Id)
         setIsShowModalForm(true)
@@ -245,20 +251,26 @@ function Movie() {
         setSearch(search)
     }
     const onCloseForm=()=>{
+          click.play();
         setIsShowModalForm(false)
     }
     const onSelectRecord=(record)=>{
         setRecord(record)
+    }
+    const relaodList=()=>{
+        getMovieList();
     }
     const onSelectPage=(page)=>{
         setPage(page)
     }
     const onSaveForm=async(data)=>{
         console.log("data",data)
+        click.play();
         await HttpRequest({
-                    url:"api/movie/create",
+                    url:newCreated?"api/movie/create":"api/movie/update",
                     method:"Post",
                     data:{
+                        id:newCreated?0:data.Id,
                         movieTypeId:data?.MovieTypeId,
                         name:data?.Name,
                         englishName:data?.EnglishName,
@@ -275,12 +287,14 @@ function Movie() {
                         }
                     },
                     success:(result)=>{
+                        noti.play()
+                        onCloseForm();
                         getMovieList();
                         setIsShowModal(false)
                     },
                     error:(error)=>{
-                        console.log(error)
-                        ShowSnackbar({message:error.message,type:"error"})
+                        fail.play();
+                        ShowSnackbar({message:error.data.detail,type:"error"})
                     }
                 })
     }
@@ -319,7 +333,7 @@ function Movie() {
                                     <div onClick={()=>{onClickActionImage(val)}} className={`${val.Id==Id?'scale-50':''} transition-all box ease-linear w-[27px] cursor-pointer absolute h-[27px] top-2 right-2 rounded-full flex justify-center items-center bg-[#00000078]`}>
                                         <i class="ri-pencil-fill text-green-500 text-[13px]"></i>
                                     </div>
-                                    <img src={`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image cursor-pointer object-cover w-full h-full'/>
+                                    <img src={val.ImagePath==null?LZGlobal.ComingSoon:`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image  cursor-pointer object-cover w-full h-full'/>
                                 </div>
                                 <div className='flex flex-col gap-y-[2px'>
                                     <p className='text-[13px]'>{LZGlobal.translate({en:val.EnglishName,km:val.Name})}</p>
@@ -340,7 +354,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies[0]?.RecordCount??0} record={Record}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isNewCreate={newCreated} dataEdit={dataEdit} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
+    <LZModalForm isShowModal={isShowModalForm} isNewCreate={newCreated} dataEdit={dataEdit} reload={relaodList}isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
     </>
   )
 }

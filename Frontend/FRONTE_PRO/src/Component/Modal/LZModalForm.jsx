@@ -2,8 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal,ModalContent,ModalFooter,ModalHeader,ModalBody, Button, Input, Textarea, DatePicker, SelectItem, Select, DateRangePicker } from '@nextui-org/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { SystemSpeakByText } from '../../Util/SystenSayByText';
-import { setIsShow } from '../../Store/Confirm/Confirm';
+import { setIsShow as SetIsShowConfirm, setModalConfirm } from '../../Store/Confirm/Confirm';
 import LZInput from '../FormInput/LZInput';
 import LZDateRangePicker from '../FormInput/LZDateRangePicker';
 import { setIframe, setIsShow as setIsShowIframe } from '../../Store/PreviewIFrame/PreviewIFrame';
@@ -14,7 +13,9 @@ import LZGlobal from '../../Util/LZGlobal';
 import LZIcon from '../Icon/LZIcon';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 import { use } from 'react';
-const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCreate,dataEdit,isUploadImage,HideClickSide,drawerInput,onSave}) => {
+import { HttpRequest } from '../../Global/API_HTTP/http';
+import { ShowSnackbar } from '../../Util/globalUtils';
+const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,isNewCreate,dataEdit,isUploadImage,HideClickSide,drawerInput,onSave}) => {
   const dispatch = useDispatch()
   const refActionImage = useRef(null);
   const [isShow,setIsShow] = useState(isShowModal);
@@ -22,7 +23,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
   const [drawInput,setDrawInput] = useState(drawerInput||[]);
   const [IsHideClickSide,setIsHideClickSide] = useState(HideClickSide||false);
   const [UploadImage,setUploadImage] = useState({});
-  const [InputForm,setInputForm] = useState({});
+  const [InputForm,setInputForm] = useState(dataEdit||{});
   const [isAnimeButton,setIsAnimeButton] = useState(false);
   const tr = useSelector(state=>state.Language.translate);
   const refFileUpload = useRef(null);
@@ -45,34 +46,68 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
     onClose();
   }
   const onChangeInput=(e)=>{
-    console.log(e.target.value)
-    setInputForm((val)=>{
-      return {...val,[e.target.name]:e.target.value}
-    })
+      setInputForm((val)=>{
+          return {...val,[e.target.name]:e.target.value}
+        })
+  
   }
   
   const onClickSave=()=>{
     onSave(InputForm)
-    onClose();
   }
   const onSelect=(key)=>{
     console.log(key)
   }
   const onSelecting=(name,item)=>{
-    console.log(name,item)
-       setInputForm((val)=>{
-      return {...val,[name]:item.Id}
-    })
+    console.log(name,item.Id!=="")
+    if(item.Id!==""){
+      setInputForm((val)=>{
+        return {...val,[name]:item.Id}
+      })
+    }
+       
   }
   const onClickActionImage=(e)=>{
+     setIsAnimeButton(true);
+      setTimeout(()=>{
+          setIsAnimeButton(false);
+      },100)
     if(UploadImage!=""){
-        setUploadImage("");
+         if(!isNewCreate){
+        dispatch(
+          setModalConfirm({
+                    type:"delete",
+                    message:"Are you sure! do you want to delete this image?",
+                    onOk: ()=>{
+                        DeleteImage();
+                        if(reload )
+                        reload();
+                        setUploadImage("");
+                        dispatch(SetIsShowConfirm(false))
+                    },
+                    onClose:()=>{
+                        dispatch(SetIsShowConfirm(false))
+                    }
+            }))
+        dispatch(SetIsShowConfirm(true))
+      }
+    }else{
+      refFileUpload.current.click();
     }
-    refFileUpload.current.click();
-    setIsAnimeButton(true);
-    setTimeout(()=>{
-        setIsAnimeButton(false);
-    },100)
+    
+  }
+  const DeleteImage=async()=>{
+     await  HttpRequest({
+                url:`api/movie/remove_image?Id=${InputForm.Id}`,
+                method:'get',
+                success:(result)=>{
+                  console.log(result)
+                    // ShowSnackbar({})
+                },
+                error:(error)=>{
+                    console.log(error)
+                }
+            })
   }
   const onChangeImage=async(e)=>{
     var file = e.target.files[0];
@@ -97,14 +132,14 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
    
   }
   useEffect(()=>{
-    console.log("isNewCreate",isNewCreate)
-    console.log("dataEdit",dataEdit)
-    if(!isNewCreate) {
-      setUploadImage("http://localhost:8080"+dataEdit?.ImagePath)
+    setInputForm(dataEdit)
+  },[dataEdit])
+  useEffect(()=>{
+    if(!isNewCreate && InputForm?.ImagePath!=undefined) {
+      setUploadImage("http://localhost:8080"+InputForm?.ImagePath)
     }
   },[isNewCreate])
    useEffect(()=>{
-        
          setIsShow(isShowModal);
          setUploadImage("");
          setDrawInput(drawerInput);
@@ -143,13 +178,12 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
                       drawInput.map((val,index)=>{
                         return (
                           <>
-                            {val.type=="input"? <LZInput value={dataEdit[val.name]} label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
+                            {val.type=="input"? <LZInput isValid={InputForm[val.name]=="" && val.required} value={InputForm[val.name]} label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
                             name={val.name}
                              onChange={(e)=>{
                               if(val.onChange!=undefined){
                                 val.onChange(e.target.value);
-                              }
-                              onChangeInput(e)
+                              }else onChangeInput(e)
                             }
                             } isRequired={val.required||false}/>: val.type=="select"?
                             <LZSelect 
@@ -160,6 +194,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
                                 isRequired={val.required||false}
                                 isMulti={val.options.isMulti}
                                 onSelecting={onSelecting}
+                              
                                 api={
                                   {
                                     url:val.options.api.url,
@@ -168,9 +203,10 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
                                     key:val.options.api.key,
                                     value:val.options.api.value,
                                     }
-                                  }/>:val.type=="date"?<LZDatePicker onChange={(name,date)=>{
+                                  }/>:val.type=="date"?<LZDatePicker valueDate={InputForm[val.name]} onChange={(name,date)=>{
                                     onChangeDate(name,date)
                                   }} label={val.label||"label"} name={val.name} isRequired={val.required||false}/>:val.type=="number"?<LZInput 
+                                  value={InputForm[val.name]}
                                   onChange={(e)=>{
                                       if(val.onChange!=undefined) val.onChange(e.target.value);
                                         onChangeInput(e)
@@ -179,12 +215,12 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
                                     label={val.label||"label"} type="number"/>:val.type=="iframe"?<>
                                   <div className='h-[74px] flex gap-x-3 items-center'>
                                     <div  className='w-[170px] overflow-hidden rounded-lg h-full flex justify-center items-center border border-dashed border-black'>
-                                      {console.log("test",dataEdit)}
+                                      {console.log("test",InputForm)}
                                     {
                                       
                                       val.URL!=""?
                                       <iframe className='w-full h-full' ref={refIframe}  src={LZGlobal.GetURLPreviewIframe(val.URL)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                                    </iframe>:dataEdit?.UrlYT!=""?<iframe className='w-full h-full' ref={refIframe}  src={LZGlobal.GetURLPreviewIframe(dataEdit?.UrlYT)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                    </iframe>:InputForm?.UrlYT!=""?<iframe className='w-full h-full' ref={refIframe}  src={LZGlobal.GetURLPreviewIframe(InputForm?.UrlYT)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                                     </iframe>: <p className='text-[12px]'>Link URL</p>
                                     }
                                   </div>
@@ -204,7 +240,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,label,onClose,columns,isNewCr
                           <>
                             <LZTextArea 
                             name={val.name}
-                            value={dataEdit[val.name]} 
+                            value={InputForm[val.name]} 
                             onChange={(e)=>{
                               console.log(e.target.value)
                               if(val.onChange!=undefined){

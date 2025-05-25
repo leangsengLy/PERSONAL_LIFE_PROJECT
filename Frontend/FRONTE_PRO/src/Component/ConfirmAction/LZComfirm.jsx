@@ -18,7 +18,7 @@ const LZComfirm = () => {
           wrapper:"!z-[1770]",
           header:'pb-0',
           footer:"pt-1",
-          backdrop:"!z-[1400]"
+          backdrop:"!z-[1770]"
           }}>
             <ModalContent>
                 <ModalHeader>
