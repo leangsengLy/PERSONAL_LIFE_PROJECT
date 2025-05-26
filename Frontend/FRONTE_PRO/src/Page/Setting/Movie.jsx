@@ -13,8 +13,6 @@ import LZPagination from '../../Component/LZTableDefault/LZPagination';
 import LZSelectRecord from '../../Component/LZTableDefault/LZSelectRecord';
 import LZModalForm from '../../Component/Modal/LZModalForm';
 import LZNoData from '../../Component/BlogContent/LZNoData';
-import { use } from 'react';
-import { getLanguage } from '../../Store/Language/Langauge';
 import { ShowSnackbar } from '../../Util/globalUtils';
 import { SoundAudio } from '../../Util/Sound';
 function Movie() {
@@ -30,7 +28,7 @@ function Movie() {
     const [Record,setRecord]  = useState(10);
     const [from,setForm]  = useState([]);
     const [dataEdit,setDataEdit]  = useState({});
-    const [newCreated,setNewCreated]  = useState(false);
+    const [newCreated,setNewCreated]  = useState("");
     const dispatch = useDispatch()
      const onClosePreviewMore=()=>{
         dispatch(setIsShowModal(false))
@@ -40,11 +38,9 @@ function Movie() {
       const fail = SoundAudio('fail')
     useEffect(()=>{
         setURlYoutube("")
-        setNewCreated("")
        console.log("isShowModalForm",isShowModalForm)   
+    //    setNewCreated("")
        if(!isShowModalForm){
-           setURlYoutube("")
-           setNewCreated("") 
            setDataEdit({})
            getMovieList();
        }
@@ -100,8 +96,7 @@ function Movie() {
         console.log("value",value)
         setURlYoutube(value)
     }
-    const onClickButton=()=>{}
-       const OnPreviewIframe=(data)=>{
+    const OnPreviewIframe=(data)=>{
          dispatch(setIsShow(true))
          dispatch(setIframe({path:dataMovie?.UrlYT}))
     }
@@ -198,11 +193,11 @@ function Movie() {
             })
     }
     const onClickActionImage=(data)=>{
-        setNewCreated("No")
         click.play();
         setDataEdit(data);
         setId(data.Id)
         setIsShowModalForm(true)
+        setNewCreated(false)
         setTimeout(()=>{
             setId(0)
         },100)
@@ -254,19 +249,37 @@ function Movie() {
           click.play();
         setIsShowModalForm(false)
     }
-    const onSelectRecord=(record)=>{
-        setRecord(record)
-    }
+    // const onSelectRecord=(record)=>{
+    //     setRecord(record)
+    // }
     const relaodList=()=>{
         getMovieList();
     }
     const onSelectPage=(page)=>{
         setPage(page)
     }
-    const onSaveForm=async(data)=>{
+    const onSaveForm=(data)=>{
         console.log("data",data)
+        console.log("newCreated",newCreated)
         click.play();
-        await HttpRequest({
+        if(newCreated) saveUpdate(data);
+        else{
+            dispatch(setModalConfirm({
+                type:"Comfirm",
+                message:"Do you want to update this movie?",
+                onOk: ()=>{
+                    saveUpdate(data);
+                    dispatch(SetIsShowConfirm(false))
+                },
+                onClose:()=>{
+                    dispatch(SetIsShowConfirm(false))
+                }
+            }))
+            dispatch(SetIsShowConfirm(true))
+        }
+    }
+  const saveUpdate=async(data)=>{
+    await HttpRequest({
                     url:newCreated?"api/movie/create":"api/movie/update",
                     method:"Post",
                     data:{
@@ -297,8 +310,7 @@ function Movie() {
                         ShowSnackbar({message:error.data.detail,type:"error"})
                     }
                 })
-    }
-  
+  }
      
   return (
     <>
@@ -307,7 +319,7 @@ function Movie() {
         <LZButton label={tr.add} typeButton="add" click={onClickCreate}/>
     </div>
     <div className='flex mb-4'>
-        <LZSelectRecord SelectRecord={onSelectRecord}/>
+        {/* <LZSelectRecord SelectRecord={onSelectRecord}/> */}
         <LZSearch onSearching={onSearching}/>
     </div>
     <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>

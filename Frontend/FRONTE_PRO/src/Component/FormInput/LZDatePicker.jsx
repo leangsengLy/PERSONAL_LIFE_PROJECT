@@ -1,25 +1,15 @@
-import { DatePicker } from '@nextui-org/react'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import {today, isWeekend, getLocalTimeZone, parseDate, now} from "@internationalized/date";
+import { DatePicker } from '@nextui-org/react';
 
 function LZDatePicker({label,isRequired,isDisabled,valueDate,onChange,name}) {
   const [isDisabledDate,setIsDisabledDate]=useState(isDisabled || false)
   const [isRequiredDate,setisRequiredDate]=useState(isRequired || false)
   const [isInvalid,setIsInvalid]=useState(false)
   const [value,setValue]=useState(parseDate(moment(valueDate).format("YYYY-MM-DD")))
-  const onChangeDate=(date)=>{
-    console.log(date)
-    console.log(parseDate(moment(date).format("YYYY-MM-DD")))
-    setValue(parseDate(moment(date).format("YYYY-MM-DD")))
-    console.log(date.toDate(getLocalTimeZone()))
-    // onChange(name,moment(date).format("YYYY-MM-DD"))
-    // setValue(parseDate(moment(date).format("YYYY-MM-DD")))
-  }
   useEffect(()=>{
-    console.log("Value date",valueDate)
     setValue(parseDate(moment(valueDate).format("YYYY-MM-DD")))
-    console.log("Yes")
   },[valueDate])
   return (
     <DatePicker 
@@ -29,10 +19,13 @@ function LZDatePicker({label,isRequired,isDisabled,valueDate,onChange,name}) {
                 name={name}
                 isRequired={isRequiredDate}
                 isDisabled={isDisabledDate}
-                // value={value}
+                value={value}
                 defaultValue={value}
                 isInvalid={isInvalid}
-                onChange={onChangeDate}
+                onChange={(newValue) => {
+                  setValue(newValue)
+                  onChange(name,moment(newValue.toDate(getLocalTimeZone())).format("YYYY-MM-DD"))
+                }}
                 errorMessage={isInvalid?"Please select a valid date":""}
                 radius='sm' 
                 variant='bordered' 

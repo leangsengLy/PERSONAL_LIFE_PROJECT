@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Modal,ModalContent,ModalFooter,ModalHeader,ModalBody, Button, Input, Textarea, DatePicker, SelectItem, Select, DateRangePicker } from '@nextui-org/react'
+import { Modal,ModalContent,ModalFooter,ModalHeader,ModalBody, Button, Input, Textarea, DatePicker, SelectItem, Select, DateRangePicker, input } from '@nextui-org/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow as SetIsShowConfirm, setModalConfirm } from '../../Store/Confirm/Confirm';
 import LZInput from '../FormInput/LZInput';
@@ -134,11 +134,12 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
   useEffect(()=>{
     setInputForm(dataEdit)
   },[dataEdit])
+
   useEffect(()=>{
-    if(!isNewCreate && InputForm?.ImagePath!=undefined) {
+    if(!isNewCreate && InputForm?.ImagePath!=null) {
       setUploadImage("http://localhost:8080"+InputForm?.ImagePath)
     }
-  },[isNewCreate])
+  },[InputForm])
    useEffect(()=>{
          setIsShow(isShowModal);
          setUploadImage("");
@@ -187,11 +188,12 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
                             }
                             } isRequired={val.required||false}/>: val.type=="select"?
                             <LZSelect 
-                            name={val.name}
+                                  name={val.name}
                                  label={val.label||"label"}
                                 startContent={(item)=>{return val.options.startContent(item)}}
                                 renderValue={(item,list)=>{return val.options.renderValue(item,list)}}
                                 isRequired={val.required||false}
+                                selectItem={InputForm[val.name]}
                                 isMulti={val.options.isMulti}
                                 onSelecting={onSelecting}
                               

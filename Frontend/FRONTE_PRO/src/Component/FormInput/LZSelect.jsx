@@ -3,17 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { use } from 'react';
 import { HttpRequest } from '../../Global/API_HTTP/http';
 
-function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,renderValue,onSelecting,name}) {
-    const [selectedValue, setSelectedValue] = useState([{key:"clear1",value:"---Clear data---"},{key:"clear2",value:"---Clear data---"},{key:"clear3",value:"---Clear data---"}]);
+function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,selectItem,renderValue,onSelecting,name}) {
     const [IsMultiSelect, setIsMultiSelect] = useState(isMulti || false)
     const [isRequiredSelect, setIsRequiredSelect] = useState(isRequired || false)
     const [list, setList] = useState([])
-    const [selectedValue1, setSelectedValue1] = useState(17);
+    const [selectedValue, setSelectedValue] = useState([selectItem]);
     const [selectedKeys, setSelectedKeys] = useState(IsMultiSelect ? new Set([]) : "17");
-    const onSelect=(key)=>{
-        console.log("Selected",key)
-      
-    }
     const getListApi=async()=>{
          await  HttpRequest({
                     url:api?.url,
@@ -29,15 +24,15 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
                 })
     }
     useEffect(()=>{
-        if(api?.url!="" && api?.url!=undefined){
-             getListApi();
-        }
+        if(api?.url!="" && api?.url!=undefined)  getListApi();
         else setList(
-            localData.map((val)=>({key:val,value:val})));
+            localData.map((val)=>({key:val,value:val}))
+        );
     },[])
+    useEffect(()=>{
+        setSelectedValue([`${selectItem}`])
+    },[selectItem])
     const onSelectionChange=(item)=>{
-        console.log("Select",item.target.value)
-        // console.log("onSelectionChange",item.target.value.split(","))
         if(api?.url!="") {
             if(!isMulti){
                 var find = list.find((val)=>val.key==item.target.value);
@@ -56,12 +51,9 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
         }
         
     }
-    useEffect(()=>{
-        console.log("List",list)
-    },[list])
-
   return (
-    <Select  
+    <div>
+        <Select  
                         className="max-w-xs" 
                         label={api?.url=="" || api?.url==undefined ? "Select":label}
                         placeholder='Please select' 
@@ -72,9 +64,8 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
                         isRequired={isRequiredSelect}
                         classNames={{base:'mb-[10px]'}}
                         size='md' 
-                        // selectedKeys={isMulti ? selectedKeys : selectedKeys}
+                        selectedKeys={selectedValue}   	
                         onChange ={onSelectionChange}
-                        // selectedKeys={[17]}
                         renderValue={(items)=>{
                             if(api?.url=="" || api?.url==undefined){
                                    var keys = items.map((val)=>val.key);
@@ -97,6 +88,7 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,ren
                                     )
                                     })}
                             </Select>
+    </div>
   )
 }
 
