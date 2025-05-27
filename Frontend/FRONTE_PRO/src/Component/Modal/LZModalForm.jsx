@@ -21,6 +21,8 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
   const [isShow,setIsShow] = useState(isShowModal);
   const refIframe = useRef(null);
   const [drawInput,setDrawInput] = useState(drawerInput||[]);
+  const [SomeFieldError,setSomeFieldError] = useState([]);
+  const [isSubmit,setIsSubmit] = useState(false);
   const [IsHideClickSide,setIsHideClickSide] = useState(HideClickSide||false);
   const [UploadImage,setUploadImage] = useState({});
   const [InputForm,setInputForm] = useState(dataEdit||{});
@@ -46,14 +48,18 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
     onClose();
   }
   const onChangeInput=(e)=>{
+    setIsSubmit(false)
       setInputForm((val)=>{
           return {...val,[e.target.name]:e.target.value}
         })
   
   }
-  
+ 
   const onClickSave=()=>{
-    onSave(InputForm)
+    setIsSubmit(true)
+     if(SomeFieldError.length>0){
+      console.log("No need to sumbit api")
+    }else onSave(InputForm)
   }
   const onSelect=(key)=>{
     console.log(key)
@@ -61,11 +67,16 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
   const onSelecting=(name,item)=>{
     console.log(name,item.Id!=="")
     if(item.Id!==""){
+      setIsSubmit(false)
       setInputForm((val)=>{
         return {...val,[name]:item.Id}
       })
     }
        
+  }
+  const onCheckError=(error)=>{
+    console.log("onCheckError",error)
+    setSomeFieldError(val=>[...val,error])
   }
   const onClickActionImage=(e)=>{
      setIsAnimeButton(true);
@@ -113,6 +124,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
     var file = e.target.files[0];
     setUploadImage(URL.createObjectURL(file))
     var image = await GetBase64ByImage(file)
+    setIsSubmit(false)
     setInputForm((val)=>{
       return {...val,Files:image}
     })
@@ -126,6 +138,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
     if(typeFocus=="selectAll") e.target.select();
   }
   const onChangeDate=(name,date)=>{
+       setIsSubmit(false)
      setInputForm((val)=>{
       return {...val,[name]:date}
     })
@@ -134,6 +147,9 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
   useEffect(()=>{
     setInputForm(dataEdit)
   },[dataEdit])
+  useEffect(()=>{
+   console.log("isSubmit",isSubmit)
+  },[isSubmit])
 
   useEffect(()=>{
     if(!isNewCreate && InputForm?.ImagePath!=null) {
@@ -141,6 +157,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
     }
   },[InputForm])
    useEffect(()=>{
+        setIsSubmit(false) 
          setIsShow(isShowModal);
          setUploadImage("");
          setDrawInput(drawerInput);
@@ -163,14 +180,13 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
                 <h1 className='justify-center text-[15px]'>{label||""}</h1> 
                 </ModalHeader>
                 <ModalBody>
-                  
                   {isUploadImage?(<><div className='flex gap-x-2 justify-center mb-3'>
                       <div className='w-[100px] h-[130px] rounded-md relative'>
                          <img className={`preview-image w-full h-full  rounded-md  object-cover ${UploadImage==""?'opacity-30':'cursor-pointer'}` } ref={refImage} src={UploadImage==""?LZGlobal.DefaultImage:UploadImage} alt="" />
                          <div ref={refActionImage} onClick={onClickActionImage} className={` ${isAnimeButton?'scale-50':''} transition-all cursor-pointer ease-linear absolute bottom-[-10px] flex justify-center items-center right-[-5px] w-[30px] h-[30px] rounded-full bg-white border border-[#cfcfcf]`}>
                               {UploadImage==""? <i class="ri-camera-line color-primary text-[13px]"></i>:<i class="ri-delete-bin-line text-red-600 text-[13px] "></i>}
                          </div>
-                         <Input type='file' ref={refFileUpload}  onChange={onChangeImage}  classNames={{base:"!hidden"}}/>
+                         <Input type='file'  ref={refFileUpload}  onChange={onChangeImage}  classNames={{base:"!hidden"}}/>
                       </div>
                   </div></>):(<></>)}
                   
@@ -179,9 +195,10 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
                       drawInput.map((val,index)=>{
                         return (
                           <>
-                            {val.type=="input"? <LZInput isValid={InputForm[val.name]=="" && val.required} value={InputForm[val.name]} label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
+                            {val.type=="input"? <LZInput  isSubmit={isSubmit} onCheckError={onCheckError} isValid={InputForm[val.name]=="" && val.required} value={InputForm[val.name]} label={val.label} onFocus={(e)=>{onFocusInput(e,val.focus)}} 
                             name={val.name}
                              onChange={(e)=>{
+                              setIsSubmit(false)
                               if(val.onChange!=undefined){
                                 val.onChange(e.target.value);
                               }else onChangeInput(e)

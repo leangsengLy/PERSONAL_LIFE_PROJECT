@@ -25,7 +25,7 @@ function Movie() {
     const [Search,setSearch]  = useState("");
     const [URLYoutube,setURlYoutube]  = useState("");
     const [Page,setPage]  = useState(1);
-    const [Record,setRecord]  = useState(10);
+    const [Record,setRecord]  = useState(40);
     const [from,setForm]  = useState([]);
     const [dataEdit,setDataEdit]  = useState({});
     const [newCreated,setNewCreated]  = useState("");
@@ -262,6 +262,7 @@ function Movie() {
         console.log("data",data)
         console.log("newCreated",newCreated)
         click.play();
+        setIsSubmit(true);
         if(newCreated) saveUpdate(data);
         else{
             dispatch(setModalConfirm({
