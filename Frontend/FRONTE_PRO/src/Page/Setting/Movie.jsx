@@ -38,7 +38,6 @@ function Movie() {
       const fail = SoundAudio('fail')
     useEffect(()=>{
         setURlYoutube("")
-       console.log("isShowModalForm",isShowModalForm)   
     //    setNewCreated("")
        if(!isShowModalForm){
            setDataEdit({})
@@ -90,7 +89,6 @@ function Movie() {
             {type:"iframe",URL:URLYoutube},
             {type:"textarea",label:tr.description,name:"Description"},
         ]);
-        console.log("from",from)
     },[tr,URLYoutube])
     const onChangeLinkYoutube=(value)=>{
         console.log("value",value)
@@ -109,7 +107,6 @@ function Movie() {
                 dispatch(SetIsShowConfirm(false))
             },
             onClose:()=>{
-                console.log("onClose")
                 dispatch(SetIsShowConfirm(false))
             }
         }))
@@ -262,7 +259,6 @@ function Movie() {
         console.log("data",data)
         console.log("newCreated",newCreated)
         click.play();
-        setIsSubmit(true);
         if(newCreated) saveUpdate(data);
         else{
             dispatch(setModalConfirm({
@@ -367,7 +363,7 @@ function Movie() {
         </div>
         <LZPagination SelectPage={onSelectPage} totalRecord={movies[0]?.RecordCount??0} record={Record}/>
     </div>
-    <LZModalForm isShowModal={isShowModalForm} isNewCreate={newCreated} dataEdit={dataEdit} reload={relaodList}isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
+    <LZModalForm isShowModal={isShowModalForm} isNewCreate={newCreated} dataEdit={dataEdit} reload={relaodList} isUploadImage={true} drawerInput={from} onClose={onCloseForm} onSave={onSaveForm} columns={3} label={tr.add_movie}/>
     </>
   )
 }

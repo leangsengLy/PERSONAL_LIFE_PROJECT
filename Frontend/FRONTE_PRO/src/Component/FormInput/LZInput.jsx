@@ -28,6 +28,7 @@ function LZInput({isDisabled,isRequired,isValid,label,type,isSubmit,onChange,val
         // setMessageRequired(isRequired?`Please enter ${name}.`:"");
         setValue(values);
     },[values])
+  
   return (
     <Input
     onChange={onChangeValue}

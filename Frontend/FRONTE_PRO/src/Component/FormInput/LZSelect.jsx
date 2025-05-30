@@ -16,7 +16,6 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,sel
                     data:api?.data,
                     success:(result)=>{
                         setList(result.map((val)=>({...val,key:val[api?.key],label:val[api?.value]})))
-                        console.log(result)
                     },
                     error:(error)=>{
                         console.log(error)
@@ -79,7 +78,6 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,sel
                         selectionMode={IsMultiSelect?"multiple":"single"}
                         >
                                     {list.map((item,index) => {
-                                        console.log(item)
                                         return (
                                             <SelectItem key={item.key} value={item.key} className="text-[12px]" startContent={startContent(item)}>
                                                 {api?.url=="" || api?.url==undefined ?(<>{item.value}</>):(<>{item[api.value]}</>)}
