@@ -16,6 +16,7 @@ import LZNoData from '../../Component/BlogContent/LZNoData';
 import { ShowSnackbar } from '../../Util/globalUtils';
 import { SoundAudio } from '../../Util/Sound';
 import LZPopover from '../../Component/Popover/LZPopover';
+import LZChip from '../../Component/Chip/LZChip';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
@@ -132,7 +133,42 @@ function Movie() {
         }))
         dispatch(SetIsShowConfirm(true))
     }
-
+    const itemsFilter = [
+        {type:"select",
+                required:true,
+                name:"MovieTypeId",
+                label:tr.movie_type,
+                options:{
+                    isMulti:false,
+                    api:{
+                        url:"/api/movie_type/list",
+                        method:"post",
+                        data:{  
+                                search:"",
+                                pages:1,
+                                records:100
+                        },
+                        key:"Id",
+                        value:LZGlobal.translate({en:"EnglishName",km:"Name"})
+                    },
+                    startContent:(item)=>{
+                        return (<>
+                                </>)
+                    },
+                    renderValue:(items,list)=>{
+                        
+                            var item = list.find((val)=>val.key==items[0].key)
+                            return (
+                                <>
+                                    <div className='flex gap-x-2 items-center' >
+                                        <span className='text-[13px] text-black'>{item[LZGlobal.translate({en:"EnglishName",km:"Name"})]}</span>
+                                    </div>
+                                </>
+                            );
+                        }
+                }
+            },
+    ]
       const body = <div className='w-full h-full'>
             <div className='w-full h-[160px] relative'>
                 <div onClick={onClosePreviewMore} className='absolute opacity-40 hover:opacity-100 transition-all ease-linear flex top-4 right-4 w-[30px] h-[30px]  justify-center items-center rounded-full bg-red-50'><i class="ri-close-line  rounded-full text-[23px]  cursor-pointer" ></i></div>
@@ -341,8 +377,9 @@ function Movie() {
     </div>
     <div className='flex mb-4 gap-x-2'>
         {/* <LZSelectRecord SelectRecord={onSelectRecord}/> */}
-        <LZPopover/>
+        <LZPopover items={itemsFilter}/>
         <LZSearch onSearching={onSearching}/>
+        <LZChip/>
     </div>
     <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>
         <div className='h-full overflow-y-auto lzscroll'>

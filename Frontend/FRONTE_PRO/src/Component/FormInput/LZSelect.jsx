@@ -83,7 +83,9 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,sel
                         >
                                     {list.map((item,index) => {
                                         return (
-                                            <SelectItem key={item.key} value={item.key} className="text-[12px]" startContent={startContent(item)}>
+                                            <SelectItem key={item.key} value={item.key} className="text-[12px]" startContent={()=>{
+                                                if(startContent){startContent(item)}
+                                            }}>
                                                 {api?.url=="" || api?.url==undefined ?(<>{item.value}</>):(<>{item[api.value]}</>)}
                                             </SelectItem>
                                         
