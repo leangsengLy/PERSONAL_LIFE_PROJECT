@@ -74,6 +74,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
     console.log(key)
   }
   const onSelecting=(name,item)=>{
+    console.log("onSelecting",name,item)
     if(item.Id!==""){
       setIsSubmit(false)
       setInputForm((val)=>{

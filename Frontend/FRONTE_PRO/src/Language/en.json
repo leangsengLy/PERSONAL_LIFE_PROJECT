@@ -40,7 +40,19 @@
         "setting":"Setting",
         "logout":"Logout",
         "add_movie":"Add Movie",
-        "add_drink":"Add Drink"
+        "add_drink":"Add Drink",
+        "photo":"Photo",
+        "qty":"Qty",
+        "price":"Price",
+        "action":"Action",
+        "created_by":"Created By",
+        "created_date":"Created Date",
+        "updated_by":"Updated By",
+        "updated_date":"Updated Date",
+        "edit_drink":"Edit Drink",
+        "create":"Create",
+        "code":"Code",
+        "search":"Search"
 
 
 }

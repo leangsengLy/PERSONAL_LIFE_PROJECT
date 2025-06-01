@@ -66,7 +66,7 @@ function Drink() {
     }
     const columnData=[
          {
-            title:"Picture",
+            title:t.photo,
             data:"Label",
             width: "50px" ,
             className:"all",
@@ -82,7 +82,7 @@ function Drink() {
             }
         },
         {
-            title:"Name",
+            title:t.name,
             data:"Label",
             width: "100px" ,
             className:"all max-w-[200px]",
@@ -96,7 +96,7 @@ function Drink() {
             }
         },
         {
-            title:"EnglishName",
+            title:t.english_name,
             data:"Detail",
             className:"all max-w-[200px]",
             isDraw:true,
@@ -109,7 +109,7 @@ function Drink() {
             }
         },
          {
-            title:"Price",
+            title:t.price,
             data:"Detail",
             className:"all max-w-[200px]",
             isDraw:true,
@@ -122,7 +122,7 @@ function Drink() {
             }
         },
          {
-            title:"Qty",
+            title:t.qty,
             data:"Detail",
             className:"all max-w-[200px]",
             isDraw:true,
@@ -135,7 +135,7 @@ function Drink() {
             }
         },
         {
-            title:"CreateBy",
+            title:t.created_by,
             data:"CreateBy",
             width: "100px" ,
             isDraw:true,
@@ -151,7 +151,7 @@ function Drink() {
             }
         },
         {
-            title:"UpdateBy",
+            title:t.updated_by,
             data:"DateCreated",
             isDateTime:true,
             width: "180px" ,
@@ -169,7 +169,7 @@ function Drink() {
         },
       
         {
-            title:"Action",
+            title:t.action,
             data:null,
             width: "100px" ,
             className:"all",
@@ -263,7 +263,6 @@ function Drink() {
         setIsShowModal(false)
     }
     const UpdateData=async(data)=>{
-          console.log(data.File)
           const dataSend = {
                 id:data.Id,
                 name:data.Name,
@@ -273,10 +272,12 @@ function Drink() {
                 englishName:data.EnglishName,
                 
           }
-          if(data.File!==undefined){
+          console.log("data",data.File)
+          if(data.File!==undefined && data.File!==""){
                  var image = await GetBase64ByImage(data.File)
-                data.uploadFileDataModel={
-                    fileName: "ImageOffer.jpg",
+                 console.log("image",image)
+                dataSend.uploadFileDataModel={
+                    fileName: image.FileName,
                     fileType: image.FileType,
                     base64Data:image.Base64,
                 };
@@ -302,7 +303,7 @@ function Drink() {
     }
     const dataInForm = [
         {
-            label:"Code",
+            label:t.code,
             name:"Code",
             isRequired:true,
             type:"select",
@@ -314,23 +315,23 @@ function Drink() {
 
         },
         {
-            label:"Name",
+            label:t.name,
             name:"Name",
             isRequired:true,
             type:"text",
         },
         {
-            label:"EnglishName",
+            label:t.english_name,
             name:"EnglishName",
             type:"text",
         },
         {
-            label:"Price",
+            label:t.price,
             name:"Price",
             type:"number",
         },
         {
-            label:"Qty",
+            label:t.qty,
             name:"Qty",
             type:"number",
         },
@@ -370,7 +371,7 @@ function Drink() {
             }
         })
     }
-    const btns = [{type:"Create",OnCreate:OnclickAdd}];
+    const btns = [{type:"Create",label:t.create,OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
         <h1 className='text-[17px] font-bold'>{t.drink}</h1>
@@ -383,7 +384,7 @@ function Drink() {
                 data={dataInForm} 
                 reDrawData={DrawData} 
                 isCreate={isCreate} 
-                propDrawer={{open:isShowModal,label:`${isCreate?"Add Drink":"Update Drink"}`}} 
+                propDrawer={{open:isShowModal,label:`${isCreate?t.add_drink:t.edit_drink}`}} 
                 fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}
             />
         

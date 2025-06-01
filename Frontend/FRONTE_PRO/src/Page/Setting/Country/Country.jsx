@@ -249,7 +249,7 @@ function Country() {
                 name:data.Name,
                 englishName:data.EnglishName,
             },
-            success:(result)=>{c
+            success:(result)=>{
                 getList();
                 setIsShowModal(false)
             },

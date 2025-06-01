@@ -5,6 +5,7 @@ import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
+import { set } from 'date-fns'
 
 function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     // console.log(ui)
@@ -16,6 +17,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     const UploadFile = useRef(null);
     const [isCreateNew,isSetCreateNew] = useState(false);
     const [GetData,setGetData]=useState([]);
+    const [selectKey,setSelectKey]=useState([]);
     const [Image,setImage] = useState(null)
     const [SourseImage,setSourseImage] = useState(null)
     const [IsFirstInput,SetIsFirstInput] = useState({})
@@ -32,11 +34,13 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
             setGetData([]);
             setImage(null);
             setSourseImage(null);
+            setSelectKey([`0`]);
         }
         else {
             setGetData(reDrawData);
             setSourseImage(reDrawData);
             setImage(reDrawData);
+            setSelectKey([`${reDrawData.Id}`]);
         }
       
     },[propDrawer.open])
@@ -269,7 +273,13 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                 isInvalid={val.isRequired?true:``} 
                                 errorMessage={val.isRequired?`Error input data!`:``} 
                                 />
-                            </>):val.type=="select"?(<><Select onSelectionChange={(event)=>{val.onSelect(event.currentKey)}} isRequired className="max-w-xs" label={val.label}>
+                            </>):val.type=="select"?(<><Select selectedKeys={selectKey} 
+                            onSelectionChange={
+                                (event)=>{
+                                    val.onSelect(event.currentKey);
+                                    setSelectKey([`${event.currentKey}`]);
+                                }}
+                             isRequired className="max-w-xs" label={val.label}>
                                     {val.data.map((item,index) => {
                                         return (
                                             <SelectItem  value={item} startContent={<div className='w-[40px] h-[40px] bd-primary rounded-full p-[2px] '>

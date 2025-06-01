@@ -2,7 +2,7 @@ import { Button } from '@nextui-org/react'
 import React from 'react'
 
 function LZButton({isDisabled,typeButton,click,cl,label,size,Variant,isLoading,isIcon=false,isFullWith}) {
-    let color="primary";
+    let color="success";
     let VarianBtn = "solid";
     let icon ="";
     let sizeBtn = size??"md";
@@ -23,7 +23,7 @@ function LZButton({isDisabled,typeButton,click,cl,label,size,Variant,isLoading,i
         icon ="ri-close-line !text-[#505050]";
     }
     else if(typeButton=="reset") color='warning';
-    else {
+    else if(cl!==undefined){
         color = cl;
     }
 

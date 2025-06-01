@@ -320,7 +320,7 @@ function Movie() {
         <LZSearch onSearching={onSearching}/>
     </div>
     <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>
-        <div>
+        <div className='h-full overflow-y-auto lzscroll'>
             {
             movies.length!==0?(<><div className='lzscroll grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4'>
             {
@@ -342,7 +342,7 @@ function Movie() {
                                     <div onClick={()=>{onClickActionImage(val)}} className={`${val.Id==Id?'scale-50':''} transition-all box ease-linear w-[27px] cursor-pointer absolute h-[27px] top-2 right-2 rounded-full flex justify-center items-center bg-[#00000078]`}>
                                         <i class="ri-pencil-fill text-green-500 text-[13px]"></i>
                                     </div>
-                                    <img src={val.ImagePath==null?LZGlobal.ComingSoon:`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image  cursor-pointer object-cover w-full h-full'/>
+                                    <img src={val.ImagePath==null || val.ImagePath==""?LZGlobal.ComingSoon:`http://localhost:8080${val.ImagePath}`} alt=""  className='preview-image  cursor-pointer object-cover w-full h-full'/>
                                 </div>
                                 <div className='flex flex-col gap-y-[2px'>
                                     <p className='text-[13px]'>{LZGlobal.translate({en:val.EnglishName,km:val.Name})}</p>

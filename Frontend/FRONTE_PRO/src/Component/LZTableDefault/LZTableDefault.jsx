@@ -6,6 +6,7 @@ import LZPagination from './LZPagination';
 import LZSearch from './LZSearch';
 import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
+import LZButton from '../Button/LZButton';
 // import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,totalRecord}) {
@@ -73,7 +74,7 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,to
                     {
                         Btns.length>0?(Btns.map((val,index)=>{
                             return(
-                                <Button onClick={val.OnCreate} radius='sm' key={index} size='md' color='success'>{val.type}</Button>
+                                <LZButton  key={index} typeButton={val.typeButton} cl={val.color} click={val.OnCreate} label={val.label}/>
                             )
                             })):""
                             

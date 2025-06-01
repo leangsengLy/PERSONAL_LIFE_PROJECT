@@ -36,16 +36,19 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,sel
             if(!isMulti){
                 var find = list.find((val)=>val.key==item.target.value);
                 onSelecting(name||'label',find)
+                setSelectedValue([`${find.key}`])
                 return; 
             }else{
                 var keys = item.target.value.split(",").map((val)=>parseInt(val));
                 var filterList = list.filter((val)=>keys.includes(val.key));
                 onSelecting(name||'label',filterList)
+                  setSelectedValue([`${find.key}`])
                 return; 
             }
         }else{
             var find = list.find((val)=>val.key==item.anchorKey);
              onSelecting(name||'label',find)
+               setSelectedValue([`${find.key}`])
              return ; 
         }
         
