@@ -15,6 +15,7 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,startContent,sel
                     method:api?.method,
                     data:api?.data,
                     success:(result)=>{
+                        
                         setList(result.map((val)=>({...val,key:val[api?.key],label:val[api?.value]})))
                     },
                     error:(error)=>{

@@ -222,7 +222,6 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
                                 selectItem={InputForm[val.name]}
                                 isMulti={val.options.isMulti}
                                 onSelecting={onSelecting}
-                              
                                 api={
                                   {
                                     url:val.options.api.url,

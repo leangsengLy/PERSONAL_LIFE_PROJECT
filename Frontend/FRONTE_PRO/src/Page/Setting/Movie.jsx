@@ -1,5 +1,5 @@
-import React, { lazy, useEffect, useState } from 'react'
 import LZButton from '../../Component/Button/LZButton'
+import React, { lazy, useEffect, useState } from 'react'
 import {setIsShowModal,setBody,setModal,setLabel} from '../../Store/Modal/ModalStore';
 import { useDispatch, useSelector } from 'react-redux'
 import { HttpRequest } from '../../Global/API_HTTP/http';
@@ -15,10 +15,12 @@ import LZModalForm from '../../Component/Modal/LZModalForm';
 import LZNoData from '../../Component/BlogContent/LZNoData';
 import { ShowSnackbar } from '../../Util/globalUtils';
 import { SoundAudio } from '../../Util/Sound';
+import LZPopover from '../../Component/Popover/LZPopover';
 function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
     const [dataMovie,setDataMovie]  = useState([]);
+    const [ListMovieType,setListMovieType]  = useState([]);
      const [Id,setId] = useState(false);
     const [isLoading,setIsLoading]  = useState(false);
     const [isShowModalForm,setIsShowModalForm]  = useState(false);
@@ -44,6 +46,23 @@ function Movie() {
            getMovieList();
        }
     },[isShowModalForm])
+    const getListMovieType = async()=>{
+        await HttpRequest({
+            url:"/api/movie_type/list",
+            method:"post",
+            data:{
+                search:"",
+                pages:1,
+                records:100
+            },
+            success:(result)=>{
+                setListMovieType(result.map((val)=>({...val,key:val.Id,value:LZGlobal.translate({en:val.EnglishName,km:val.Name})})))
+            },
+            error:(error)=>{
+                ShowSnackbar({message:error.message,type:"error"})
+            }
+        })
+    }
     useEffect(()=>{
         setForm([
             {type:"input",label:tr.name,required:true,name:"Name"},
@@ -74,6 +93,7 @@ function Movie() {
                                 </>)
                     },
                     renderValue:(items,list)=>{
+                        
                             var item = list.find((val)=>val.key==items[0].key)
                             return (
                                 <>
@@ -119,18 +139,22 @@ function Movie() {
                 <div onClick={OnPreviewIframe}  className='absolute displayMiddle cursor-pointer w-[50px] flex justify-center items-center h-[50px] rounded-full bg-red-600' >
                     <i class="ri-play-fill scale-100 text-white"></i>
                 </div>
+                <div className='absolute bottom-3 right-3'>
+                      <div className='px-3 bg-[#1d1d1dc5] text-[12px] text-white py-1 rounded-md'>
+                        {console.log("listMovieType",ListMovieType)}
+                            {dataMovie.MovieTypeId!=0?LZGlobal.translate({en:ListMovieType.find((val)=>val.key==dataMovie.MovieTypeId)?.EnglishName,km:ListMovieType.find((val)=>val.key==dataMovie.MovieTypeId)?.Name}):""}
+                        </div>
+                </div>
                 <img src={dataMovie.ImagePath==null?LZGlobal.ComingSoon: `http://localhost:8080${dataMovie.ImagePath}`} className='object-cover w-full h-full' alt="" />
             </div>
             <div className='p-3 grid gap-y-3 '>
                 <div className=''>
                     <div className=' flex justify-between'>
                             <div className='flex gap-x-2 items-center' >
-                                <b className='text-[18px]'>{LZGlobal.translate({en:dataMovie.EnglishName,km:dataMovie.Name})}</b>
+                                <b className='text-[16px]'>{LZGlobal.translate({en:dataMovie.EnglishName,km:dataMovie.Name})}</b>
                                  <span className='text-medium'>• {LZGlobal.convertTime(dataMovie.Duration).hour}h{LZGlobal.convertTime(dataMovie.Duration).minute}mn</span>
                             </div>
-                            <div className='px-3 bg-[#7070702f] text-[12px] py-1 rounded-md'>
-                                Action
-                            </div>
+                          
                     </div>
                     <p className='color-1 text-[13px]' >{moment(dataMovie.FromDate).format("MMM DD,YYYY")} - {moment(dataMovie.ToDate).format("MMM DD,YYYY")}</p>
                 </div>
@@ -152,9 +176,9 @@ function Movie() {
     // const onClickCancel=()=>{
     //         dispatch(setIsShowModal(false))
     // }
-    // useEffect(()=>{
-    //     console.log("dataMovie",dataMovie)
-    // },[dataMovie])
+    useEffect(()=>{
+       getListMovieType()
+    },[])
     // const modalCreate=<div>
     //     <div>
 
@@ -315,8 +339,9 @@ function Movie() {
         <b>{tr.movie}</b>
         <LZButton label={tr.add} typeButton="add" click={onClickCreate}/>
     </div>
-    <div className='flex mb-4'>
+    <div className='flex mb-4 gap-x-2'>
         {/* <LZSelectRecord SelectRecord={onSelectRecord}/> */}
+        <LZPopover/>
         <LZSearch onSearching={onSearching}/>
     </div>
     <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>

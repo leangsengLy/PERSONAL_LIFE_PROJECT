@@ -15,7 +15,7 @@ function Country() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    
+    const tr = useSelector(state=>state.Language.translate)
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
@@ -222,13 +222,13 @@ function Country() {
         //     type:"text",
         // },
         {
-            label:"Name",
+            label:tr.name,
             name:"Name",
             isRequired:true,
             type:"text",
         },
         {
-            label:"EnglishName",
+            label:tr.english_name,
             name:"EnglishName",
             type:"text",
         },
@@ -258,20 +258,20 @@ function Country() {
             }
         })
     }
-    const btns = [{type:"Create",OnCreate:OnclickAdd}];
+    const btns = [{type:"Create",label:tr.add,OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
-        <h1 className='text-[17px] font-bold'>Movie Type</h1>
+        <h1 className='text-[17px] font-bold'>{tr.movie_type}</h1>
             {/* <div className='flex justify-end mb-5'>
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
             </div> */}
-            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount}/>
+            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData}  Btns={btns} totalRecord={data[0]?.RecordCount}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 
                 reDrawData={DrawData} 
                 isCreate={isCreate} 
-                propDrawer={{open:isShowModal,label:"Add Country"}} 
+                propDrawer={{open:isShowModal,label:tr.add}} 
                 fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}
             />
         

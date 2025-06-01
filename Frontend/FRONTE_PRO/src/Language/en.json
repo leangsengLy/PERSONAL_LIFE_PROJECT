@@ -52,7 +52,9 @@
         "edit_drink":"Edit Drink",
         "create":"Create",
         "code":"Code",
-        "search":"Search"
+        "search":"Search",
+        "filter":"Filter",
+        "reset":"Reset"
 
 
 }

@@ -22,6 +22,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     const [SourseImage,setSourseImage] = useState(null)
     const [IsFirstInput,SetIsFirstInput] = useState({})
     const [HasReqired,setHasRequired] = useState([]);
+    const tr = useSelector(state=>state.Language.translate)
     useEffect(()=>{
         setHasRequired(data.filter(v=>v.isRequired))
         let dataObject = data.filter(v=>v.isRequired).map((val)=>({[val.name]:false})).reduce((acc, item) => {
@@ -295,8 +296,8 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                     })}
                 </div>
                 <div className='flex justify-end gap-x-2 mt-4'>
-                    <LZButton label="Save" click={()=>{checkValidatioForm()}} typeButton="save"/>
-                    <LZButton label="Cancel" click={CloseModal} typeButton="cancel"/>
+                    <LZButton label={tr.save} click={()=>{checkValidatioForm()}} typeButton="save"/>
+                    <LZButton label={tr.cancel} click={CloseModal} typeButton="cancel"/>
                 </div>
         </div>
     </Drawer>
