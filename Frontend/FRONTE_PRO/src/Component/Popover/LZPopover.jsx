@@ -6,7 +6,7 @@ import LZInput from '../FormInput/LZInput';
 import LZSelect from '../FormInput/LZSelect';
 import LZGlobal from '../../Util/LZGlobal';
 
-function LZPopover({items}) {
+function LZPopover({items,onApply,isClearChip}) {
     const tr = useSelector((state) => state.Language.translate);
     const [isOpen, setIsOpen] = useState(false);
     const [SelectItem, SetSelectItem] = useState(false);
@@ -14,8 +14,16 @@ function LZPopover({items}) {
     const ClosePopover=()=>{
         setIsOpen(!isOpen);
     }
+    useEffect(() => {
+        if(isClearChip){
+            SetSelectItem([]);
+            SetFilterValue({});
+        }
+    }, [isClearChip]);
     const onSaveFilter=()=>{
-      console.log("save")
+      if(onApply){
+        onApply(FilterValue);
+      }
       console.log(FilterValue)
       setIsOpen(!isOpen);
     }

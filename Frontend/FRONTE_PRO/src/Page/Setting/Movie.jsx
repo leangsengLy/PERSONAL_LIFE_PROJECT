@@ -21,14 +21,17 @@ function Movie() {
     const tr = useSelector(state=>state.Language.translate)
     const [movies,setMovies]  = useState([]);
     const [dataMovie,setDataMovie]  = useState([]);
+    const [Chips,setChips]  = useState([]);
     const [ListMovieType,setListMovieType]  = useState([]);
      const [Id,setId] = useState(false);
     const [isLoading,setIsLoading]  = useState(false);
+    const [isClearChip,setIsClearChip]  = useState(false);
     const [isShowModalForm,setIsShowModalForm]  = useState(false);
     const [Search,setSearch]  = useState("");
     const [URLYoutube,setURlYoutube]  = useState("");
     const [Page,setPage]  = useState(1);
     const [Record,setRecord]  = useState(40);
+    const [MovieTypeId,setMovieTypeId]  = useState(0);
     const [from,setForm]  = useState([]);
     const [dataEdit,setDataEdit]  = useState({});
     const [newCreated,setNewCreated]  = useState("");
@@ -274,7 +277,7 @@ function Movie() {
         getMovieList();
     },[Search,Record,Page])
   
-    const getMovieList = async()=>{
+    const getMovieList = async ()=>{
         setIsLoading(true)
          await HttpRequest({
                      url:"api/movie/list",
@@ -286,6 +289,7 @@ function Movie() {
                             search:"",
                             duration:"",
                             release:"",
+                            movieTypeId:MovieTypeId,
                             Search:Search,
                             Pages:Page,
                             Records:Record,
@@ -368,7 +372,23 @@ function Movie() {
                     }
                 })
   }
-     
+     const onApply=(data)=>{
+        setIsClearChip(false)
+        setMovieTypeId(data.MovieTypeId.Id)
+        setChips(val=>{
+            return [{label:LZGlobal.translate({en:data.MovieTypeId.EnglishName,km:data.MovieTypeId.Name}),value:data.MovieTypeId.Id}]
+        })
+       
+     }
+     useEffect(()=>{
+        console.log("Chips",Chips)
+         getMovieList();
+     },[Chips])
+     const onCloseChip=(item)=>{
+        setIsClearChip(true)
+        setMovieTypeId(0)
+        setChips([])
+     }
   return (
     <>
     <div className='flex justify-between mb-4'>
@@ -377,9 +397,9 @@ function Movie() {
     </div>
     <div className='flex mb-4 gap-x-2'>
         {/* <LZSelectRecord SelectRecord={onSelectRecord}/> */}
-        <LZPopover items={itemsFilter}/>
+        <LZPopover items={itemsFilter} isClearChip={isClearChip} onApply={onApply}/>
         <LZSearch onSearching={onSearching}/>
-        <LZChip/>
+        <LZChip items={Chips}  onClose = {onCloseChip}/>
     </div>
     <div className={`grid grid-rows-[calc(100vh-246px)_1fr]`}>
         <div className='h-full overflow-y-auto lzscroll'>
