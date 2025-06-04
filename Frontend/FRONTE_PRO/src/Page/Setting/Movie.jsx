@@ -47,7 +47,7 @@ function Movie() {
     //    setNewCreated("")
        if(!isShowModalForm){
            setDataEdit({})
-           getMovieList();
+        //    getMovieList();
        }
     },[isShowModalForm])
     const getListMovieType = async()=>{
