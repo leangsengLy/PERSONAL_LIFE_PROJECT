@@ -54,7 +54,11 @@
         "code":"Code",
         "search":"Search",
         "filter":"Filter",
-        "reset":"Reset"
+        "reset":"Reset",
+        "hall":"Hall",
+        "add_hall":"Add Hall",
+        "edit_hall":"Edit Hall",
+        "total_chair":"Total Chair"
 
 
 }

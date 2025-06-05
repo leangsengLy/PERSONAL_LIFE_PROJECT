@@ -214,6 +214,7 @@ const LZModalForm = ({isShowModal,content,forms,ui,reload,label,onClose,columns,
                             }
                             } isRequired={val.required||false}/>: val.type=="select"?
                             <LZSelect 
+                                isSearchable={true}
                                   name={val.name}
                                  label={val.label||"label"}
                                 startContent={(item)=>{return val.options.startContent(item)}}

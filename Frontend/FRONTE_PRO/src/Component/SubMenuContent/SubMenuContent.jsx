@@ -7,6 +7,7 @@ import Drink from '../../Page/Food/Drink';
 import Cinema from '../../Page/Movie/Cinema';
 import Movie from '../../Page/Setting/Movie';
 import Test from '../../Page/Setting/Test';
+import Hall from '../../Page/Setting/Hall';
 
 function SubMenuContent() {
 const param = useParams();
@@ -22,6 +23,7 @@ if(Object.keys(param).includes('subChild')){
   if(renderFile=="cinema") render = <Cinema/>;
   if(renderFile=="movie") render = <Movie/>;
   if(renderFile=="test") render = <Test/>;
+  if(renderFile=="hall") render = <Hall/>;
 }
   return (
     render

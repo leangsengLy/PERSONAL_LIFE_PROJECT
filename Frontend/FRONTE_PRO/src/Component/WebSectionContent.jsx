@@ -15,14 +15,14 @@ function WebSectionContent() {
     const [SubMenuCode,SetSubMenuCode]=useState('')
     const t = useSelector(state=>state.Language.translate);
     useEffect(()=>{
+      console.log("Param",param.subType)
         let data = StoreMenu.filter(val=>val.code==param.type);
         if(data.length>0) {
           SetMenus(data[0].SubMenu)
           if(data[0].SubMenu.length>0){
-            SetSubMenuCode(data[0].SubMenu[0].Code)
+            SetSubMenuCode(param.subType)
           }
         }
-        
     },[])
     // useEffect(()=>{
     //   if(SubMenuCode!==''){

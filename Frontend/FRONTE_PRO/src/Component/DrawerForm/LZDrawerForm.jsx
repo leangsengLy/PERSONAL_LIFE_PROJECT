@@ -179,6 +179,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                     type={val.type}
                                     isRequired={val.isRequired}
                                     value={GetData[val.name]}
+                                    
                                     isDisabled={!isCreate?val.isDisabled:false}
                                     errorMessage={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
                                     isInvalid={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
@@ -271,8 +272,10 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                 type={val.type}
                                 onChange={EventInputForm} 
                                 isRequired={val.isRequired??false}
-                                isInvalid={val.isRequired?true:``} 
-                                errorMessage={val.isRequired?`Error input data!`:``} 
+                                // isInvalid={val.isRequired?true:``} 
+                                errorMessage={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
+                                isInvalid={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
+                                // errorMessage={val.isRequired?`Error input data!`:``} 
                                 />
                             </>):val.type=="select"?(<><Select selectedKeys={selectKey} 
                             onSelectionChange={
