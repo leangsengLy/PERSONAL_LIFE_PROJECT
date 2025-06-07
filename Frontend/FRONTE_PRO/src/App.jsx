@@ -9,15 +9,18 @@ import PreviewImage from './Component/PreviewImage/PreviewImage.jsx';
 import LZModal from './Component/Modal/LZModal.jsx';
 import LZIframe from './Component/PreviewIframe/LZIframe.jsx';
 import { SoundAudio } from './Util/Sound.js';
+import { setColorSystem } from './Store/Profile/ColorSystem/ColorSystem.js';
 const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const selectedColorSystem = useSelector(state=>state.ColorSystem.selectColor);
     useEffect(()=>{
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         if(getUserInfo==null) navigate('/login')
-         
+        var getColor = localStorage.getItem("colorSystem");
+         if(getColor!="") dispatch(setColorSystem({color:getColor,isDark:isDark}));
     },[])
     window.addEventListener('click',()=>{
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -46,7 +49,7 @@ const App = () => {
         }
         })
     return (
-        <div className={`transition-all ease-linear  color_primary_${selectedColorSystem} ${isDark? `dark` : ""} ${language.code??'kh'}`}>
+        <div className={`transition-all ease-linear  color_primary_${selectedColorSystem.color} ${isDark? `dark` : ""} ${language.code??'kh'}`}>
             <LZRoutes/>
             <PreviewImage/>
             <LZModal/>

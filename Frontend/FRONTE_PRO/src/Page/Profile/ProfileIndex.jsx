@@ -31,7 +31,7 @@ function ProfileIndex() {
         <div className='grid grid-cols-[250px_1fr] gap-x-5 h-[600px] w-[900px] rounded-[24px]'>
             <div className='w-full bg-slate rounded-[18px] px-5 py-6 flex flex-col gap-y-2'>
               <div className='font-bold color-1 text-[18px] color-primary'>Setting</div>
-              <div className='grid gap-y-2'>
+              <div className='grid gap-y-[15px]'>
                 {
                   MenuTab.map((val)=>{
                     return (<><div cl onClick={()=>{ClickTab(val)}} className={`${SelectTab==val?`color-primary`:``} cursor-pointer`}>{val}</div></>)
