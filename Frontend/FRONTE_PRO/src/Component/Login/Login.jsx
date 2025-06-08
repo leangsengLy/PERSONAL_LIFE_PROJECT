@@ -152,12 +152,20 @@ const onSignUpUser=()=>{
         },400)
      },
      error:(err)=>{
-      fail.play();
-      SetInShowSpin(false)
-      ShowSnackbar({message:err.message,type:"error"})
-      setTimeout(()=>{
-        // //SystemSpeakByText(err.message,false)
-      },600)
+      console.log("error",err)
+      if(err==undefined || isEmpty(err)){
+        fail.play();
+        SetInShowSpin(false)
+        ShowSnackbar({message:`Did you open your server!`,type:"error"})
+      }else {
+        fail.play();
+        SetInShowSpin(false)
+        ShowSnackbar({message:err.message,type:"error"})
+        setTimeout(()=>{
+          // //SystemSpeakByText(err.message,false)
+        },600)
+      }
+      
       
      }
     })

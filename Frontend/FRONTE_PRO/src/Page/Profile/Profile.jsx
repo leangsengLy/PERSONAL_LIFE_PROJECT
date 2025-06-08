@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ShowSnackbar } from '../../Util/globalUtils'
 import { Input } from '@nextui-org/react';
+import { use } from 'react';
 
 function Profile() {
   const [isEditName,setIsEditName] = useState(false);
@@ -8,8 +9,17 @@ function Profile() {
   const [isEditCareer,setIsEditCareer] = useState(false);
   const [isEditCodeProgram,setIsEditCodeProgram] = useState(false);
   const [isEditAddress,setIsEditAddress] = useState(false);
+  const [isEditPhone,setIsEditPhone] = useState(false);
+  const [profileInfo,setProfileInfo] = useState({
+    Address:"Sleng rolerng khan OrBekOum Sensok Phnom Penh",
+    Career:"IT Web Developer",
+    Username:"John Doe",
+    Description:"I am developer and sale anything you want",
+    Phone:"015 844 712",
+    Program:"HTML , CSS , JAVASCRIPTION, VUE JS, REACT JS EXPRESSJS",
+  });
   const onCopyPhoneNumber=()=>{
-    ShowSnackbar({message:"Copied Phone Number",type:"success"});
+    ShowSnackbar({message:`Copied ${profileInfo?.Phone}`,type:"success"});
   }
   const onActionEditName=(type)=>{
    setIsEditName(type=="edit");
@@ -20,12 +30,39 @@ function Profile() {
   const onActionEditCareer=(type)=>{
    setIsEditCareer(type=="edit");
   }
+  const onActionEditPhone=(type)=>{
+   setIsEditPhone(type=="edit");
+  }
   const onActionEditCodePro=(type)=>{
    setIsEditCodeProgram(type=="edit");
   }
   const onActionEditAddres=(type)=>{
    setIsEditAddress(type=="edit");
   }
+  const onChangeValue=(event)=>{
+    setProfileInfo((prev)=>({
+      ...prev,
+      [event.target.name]: event.target.value
+    }));
+  }
+  const ClearInput=()=>{
+    setIsEditName(false);
+    setIsEditDesc(false);
+    setIsEditCareer(false);
+    setIsEditCodeProgram(false);
+    setIsEditAddress(false);
+    setIsEditPhone(false);
+  }
+  const onKeyEnter=(event)=>{
+    if(event.key=="Enter") ClearInput()
+    
+  }
+  const onBlurChange=()=>{
+    ClearInput()
+  }
+  useEffect(()=>{
+    console.log("Profile Info Updated: ", profileInfo);
+  },[profileInfo]);
   return (
     <div className='w-full h-full '>
       <div className='w-full h-[200px] bg-red-500 relative'>
@@ -44,7 +81,7 @@ function Profile() {
             <div className='flex flex-col pt-4 gap-y-1'>
               <div className='flex items-center gap-x-2'>
                 {
-                  isEditName?<Input classNames={{base:"w-[300px] h-[40px]"}} size='sm' label="Username" type="text" variant="underlined" />:<p className='text-[16px] font-medium color-3'>Ly Leangseng</p>
+                  isEditName?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Username" classNames={{base:"w-[300px] h-[40px]"}} size='sm' label="Username" type="text" variant="underlined" />:<p className='text-[16px] font-medium color-3'>{profileInfo?.Username}</p>
                 }
                 {
                   isEditName?<i onClick={()=>{onActionEditName("check")}} className='ri-check-line text-green-400 text-[16px]  cursor-pointer'></i>:<i onClick={()=>{onActionEditName("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -52,7 +89,7 @@ function Profile() {
               </div>
               <div className='flex items-center gap-x-2'>
                 {
-                  isEditDesc?<Input classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="Description" type="text" variant="underlined" />:<p className='text-[13px]'>I am developer and sale anything you want</p>
+                  isEditDesc?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Description" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="Description" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Description}</p>
                 }
                 {
                   isEditDesc?<i onClick={()=>{onActionEditDesc("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditDesc("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -63,14 +100,24 @@ function Profile() {
             <div className='flex flex-col pt-4 pr-6'>
               <p className='text-[13px] color-3 mb-2'>Phone number</p>
               <div className='w-full h-[50px] flex justify-center items-center relative rounded-lg border mr-[20px]'>
-                <div className='absolute right-4 cursor-pointer text-[12px] hover:text-white' onClick={onCopyPhoneNumber}>Copy</div>
-                015 844712
+                <div className='absolute right-4 cursor-pointer text-[12px] hover:text-white' onClick={()=>{
+                  onCopyPhoneNumber();
+                }}>Copy</div>
+                <div className='flex items-center gap-x-2'>
+                {
+                  isEditPhone?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Phone" classNames={{base:"w-[120px] h-[40px]",inputWrapper:"border-none",input:"text-center"}} size='sm' type="text" variant="underlined" />:<p className='text-[18px] color-3'>{profileInfo?.Phone}</p>
+                }
+                {
+                  isEditPhone?<i onClick={()=>{onActionEditPhone("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditPhone("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
+                }
+              </div>
+               
               </div>
               <div className='flex flex-col pt-4 gap-y-1'>
                 <p className='text-[14px] font-medium color-3'>Career</p>
                 <div className='flex items-center gap-x-2'>
                   {
-                    isEditCareer?<Input classNames={{base:"w-[250px] h-[40px]"}} size='sm' label="Your career" type="text" variant="underlined" />:<p className='text-[13px]'>IT Web Deverloper</p>
+                    isEditCareer?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Career" classNames={{base:"w-[250px] h-[40px]"}} size='sm' label="Your career" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Career}</p>
                   }
                   {
                     isEditCareer?<i onClick={()=>{onActionEditCareer("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditCareer("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -81,8 +128,8 @@ function Profile() {
                 <p className='text-[14px] font-medium color-3'>Code Program</p>
                  <div className='flex items-center gap-x-2'>
                   {
-                    isEditCodeProgram?<Input classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>HTML , CSS , JAVASCRIPTION, VUE JS, REACT JS EXPRESSJS</p>
-                  }
+                    isEditCodeProgram?<Input onBlur={onBlurChange}  onKeyDown={onKeyEnter} onChange={onChangeValue} name="Program" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Program}</p>
+                  } 
                   {
                     isEditCodeProgram?<i onClick={()=>{onActionEditCodePro("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditCodePro("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
                   }
@@ -92,7 +139,7 @@ function Profile() {
                 <p className='text-[14px] font-medium color-3'>Adress</p>
                 <div className='flex items-center gap-x-2'>
                   {
-                    isEditAddress?<Input classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>Sleng rolerng khan OrBekOum Sensok Phnom Penh</p>
+                    isEditAddress?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Address"  classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Address}</p>
                   }
                   {
                     isEditAddress?<i onClick={()=>{onActionEditAddres("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditAddres("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
