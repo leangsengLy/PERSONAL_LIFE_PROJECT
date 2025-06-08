@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { ShowSnackbar } from '../../Util/globalUtils'
 import { Input } from '@nextui-org/react';
 import { use } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { HttpRequest } from '../../Global/API_HTTP/http';
+import { setInforUser } from '../../Store/UserLogin/UserLogin';
 
 function Profile() {
+  const userInfo = useSelector(state=>state.User.dataUser);
+  const dispatch = useDispatch()
   const [isEditName,setIsEditName] = useState(false);
   const [isEditDesc,setIsEditDesc] = useState(false);
   const [isEditCareer,setIsEditCareer] = useState(false);
@@ -18,11 +23,50 @@ function Profile() {
     Phone:"015 844 712",
     Program:"HTML , CSS , JAVASCRIPTION, VUE JS, REACT JS EXPRESSJS",
   });
+  useEffect(()=>{
+    dispatch(setInforUser(JSON.parse(localStorage.getItem("userInfo"))))
+  },[])
+  useEffect(()=>{
+      GetInforUser()
+  },[userInfo])
+  const GetInforUser=async()=>{
+    HttpRequest({
+                url:'api/user_profile/info',
+                data:{
+                  loginId:userInfo.Id
+                },
+                method:"post",
+                success:(success)=>{
+                  console.log("Result",success)
+                    setProfileInfo(val=>(
+                      {
+                        ...val,
+                        Address:success.Address==null?"Address default tek tla.":success?.Address,
+                        Career:success.Major==null?"IT developer or doctor teacher":success?.Major,
+                        Username:success.Name==null?"Your Name":success.Name,
+                        Id: success.Id,
+                        Description:success.Description==null?"Description default I need to make a something to you.":success?.Description,
+                        Phone:success.Phone1==null?"099 855 645":success?.Phone1,
+                        Program:success.ExperienceDescription==null?"language that you have learn or study...":success?.ExperienceDescription,
+                      }))
+                },
+                error:(error)=>{
+                    ShowSnackbar({message:error.message,type:'error'})
+                }
+            })
+  }
   const onCopyPhoneNumber=()=>{
     ShowSnackbar({message:`Copied ${profileInfo?.Phone}`,type:"success"});
   }
-  const onActionEditName=(type)=>{
+  const onActionEditName=(type,typeName)=>{
+    console.log(type)
+    console.log(typeName)
    setIsEditName(type=="edit");
+   if(type=="check") {
+    console.log("YESSSSSSsd")
+    saveData(typeName)
+   }
+   
   }
   const onActionEditDesc=(type)=>{
    setIsEditDesc(type=="edit");
@@ -53,16 +97,32 @@ function Profile() {
     setIsEditAddress(false);
     setIsEditPhone(false);
   }
-  const onKeyEnter=(event)=>{
-    if(event.key=="Enter") ClearInput()
+  const onKeyEnter=(event,type)=>{
+    if(event.key=="Enter") {
+      ClearInput()
+      saveData(type);
+    }
     
+  }
+  const saveData=(type)=>{
+    var URL= "";
+      if(type=="Username") URL=`api/user_profile/update_name?name=${profileInfo?.Username}&Id=${profileInfo.Id}`;
+      if(type=="Description") URL=`api/user_profile/update_description?Description=${profileInfo?.Description}&Id=${profileInfo.Id}`;
+      HttpRequest({
+                url:URL,
+                method:"get",
+                success:(success)=>{
+                  GetInforUser()
+                },
+                error:(error)=>{
+                    ShowSnackbar({message:error.message,type:'error'})
+                }
+            })
   }
   const onBlurChange=()=>{
     ClearInput()
   }
-  useEffect(()=>{
-    console.log("Profile Info Updated: ", profileInfo);
-  },[profileInfo]);
+  
   return (
     <div className='w-full h-full '>
       <div className='w-full h-[200px] bg-red-500 relative'>
@@ -81,15 +141,15 @@ function Profile() {
             <div className='flex flex-col pt-4 gap-y-1'>
               <div className='flex items-center gap-x-2'>
                 {
-                  isEditName?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Username" classNames={{base:"w-[300px] h-[40px]"}} size='sm' label="Username" type="text" variant="underlined" />:<p className='text-[16px] font-medium color-3'>{profileInfo?.Username}</p>
+                  isEditName?<Input onBlur={onBlurChange} onKeyDown={(e)=>{onKeyEnter(e,"Username")}} value={profileInfo?.Username} onChange={onChangeValue} name="Username" classNames={{base:"w-[300px] h-[40px]"}} size='sm' label="Username" type="text" variant="underlined" />:<p className='text-[16px] font-medium color-3'>{profileInfo?.Username}</p>
                 }
                 {
-                  isEditName?<i onClick={()=>{onActionEditName("check")}} className='ri-check-line text-green-400 text-[16px]  cursor-pointer'></i>:<i onClick={()=>{onActionEditName("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
+                  isEditName?<i onClick={()=>{onActionEditName("check","Username")}} className='ri-check-line text-green-400 text-[16px]  cursor-pointer'></i>:<i onClick={()=>{onActionEditName("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
                 }
               </div>
               <div className='flex items-center gap-x-2'>
                 {
-                  isEditDesc?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Description" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="Description" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Description}</p>
+                  isEditDesc?<Input onBlur={onBlurChange} onKeyDown={(e)=>{onKeyEnter(e,"Description")}} value={profileInfo?.Description} onChange={onChangeValue} name="Description" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="Description" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Description}</p>
                 }
                 {
                   isEditDesc?<i onClick={()=>{onActionEditDesc("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditDesc("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -105,7 +165,7 @@ function Profile() {
                 }}>Copy</div>
                 <div className='flex items-center gap-x-2'>
                 {
-                  isEditPhone?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Phone" classNames={{base:"w-[120px] h-[40px]",inputWrapper:"border-none",input:"text-center"}} size='sm' type="text" variant="underlined" />:<p className='text-[18px] color-3'>{profileInfo?.Phone}</p>
+                  isEditPhone?<Input value={profileInfo?.Phone} onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Phone" classNames={{base:"w-[120px] h-[40px]",inputWrapper:"border-none",input:"text-center"}} size='sm' type="text" variant="underlined" />:<p className='text-[18px] color-3'>{profileInfo?.Phone}</p>
                 }
                 {
                   isEditPhone?<i onClick={()=>{onActionEditPhone("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditPhone("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -117,7 +177,7 @@ function Profile() {
                 <p className='text-[14px] font-medium color-3'>Career</p>
                 <div className='flex items-center gap-x-2'>
                   {
-                    isEditCareer?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Career" classNames={{base:"w-[250px] h-[40px]"}} size='sm' label="Your career" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Career}</p>
+                    isEditCareer?<Input value={profileInfo?.Career} onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Career" classNames={{base:"w-[250px] h-[40px]"}} size='sm' label="Your career" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Career}</p>
                   }
                   {
                     isEditCareer?<i onClick={()=>{onActionEditCareer("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditCareer("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -128,7 +188,7 @@ function Profile() {
                 <p className='text-[14px] font-medium color-3'>Code Program</p>
                  <div className='flex items-center gap-x-2'>
                   {
-                    isEditCodeProgram?<Input onBlur={onBlurChange}  onKeyDown={onKeyEnter} onChange={onChangeValue} name="Program" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Program}</p>
+                    isEditCodeProgram?<Input value={profileInfo?.Program} onBlur={onBlurChange}  onKeyDown={onKeyEnter} onChange={onChangeValue} name="Program" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Program}</p>
                   } 
                   {
                     isEditCodeProgram?<i onClick={()=>{onActionEditCodePro("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditCodePro("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>
@@ -139,7 +199,7 @@ function Profile() {
                 <p className='text-[14px] font-medium color-3'>Adress</p>
                 <div className='flex items-center gap-x-2'>
                   {
-                    isEditAddress?<Input onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Address"  classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Address}</p>
+                    isEditAddress?<Input value={profileInfo?.Address} onBlur={onBlurChange} onKeyDown={onKeyEnter} onChange={onChangeValue} name="Address"  classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Address}</p>
                   }
                   {
                     isEditAddress?<i onClick={()=>{onActionEditAddres("check")}} className='ri-check-line text-[16px] text-green-400 cursor-pointer'></i>:<i onClick={()=>{onActionEditAddres("edit")}} className='ri-pencil-fill   text-[13px]  cursor-pointer'></i>

@@ -10,6 +10,7 @@ import LZModal from './Component/Modal/LZModal.jsx';
 import LZIframe from './Component/PreviewIframe/LZIframe.jsx';
 import { SoundAudio } from './Util/Sound.js';
 import { setColorSystem } from './Store/Profile/ColorSystem/ColorSystem.js';
+import { setInforUser } from './Store/UserLogin/UserLogin.js';
 const App = () => {
     const isDark = useSelector(state=>state.Theme.isDark)
     const language = useSelector(state=>state.Language.language)
@@ -20,6 +21,8 @@ const App = () => {
         let getUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         if(getUserInfo==null) navigate('/login')
         var getColor = localStorage.getItem("colorSystem");
+        var UserInfo = localStorage.getItem("userInfo");
+        dispatch(setInforUser(JSON.parse(UserInfo)))
          if(getColor!="") dispatch(setColorSystem({color:getColor,isDark:isDark}));
     },[])
     window.addEventListener('click',()=>{

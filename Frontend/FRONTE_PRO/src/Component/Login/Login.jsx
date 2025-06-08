@@ -140,9 +140,11 @@ const onSignUpUser=()=>{
         email:inputData.Username,
       },
       success:(result)=>{
+        console.log(result)
+        localStorage.setItem("userInfo",JSON.stringify(result))
         const getToken = DecodeToken(result.token);
         setCockieOnWeb(getToken,result.token)
-        dispatch(setInforUser(getToken))
+        dispatch(setInforUser(result))
         noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
