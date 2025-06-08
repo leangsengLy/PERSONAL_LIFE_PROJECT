@@ -64,7 +64,8 @@ function WebSectionContent() {
                   <div className={`flex gap-x-2 items-center   mb-2 font-bold  `}>
                     <div onClick={onSwitchCollapse} className='w-[9px] h-[45px] animate-pulse absolute top-1/2 right-[10px] cursor-pointer -translate-y-1/2 -translate-x-1/2  rounded-full bg-primary'></div>
                     <div className=' flex gap-x-2'>
-                        <img src={img} alt="" className='max-w-[40px] max-h-[40px]' />
+                        {/* <img src={img} alt="" className='max-w-[40px] max-h-[40px]' /> */}
+                        <i className='ri-building-2-line text-[30px] color-primary'></i>
                     </div>
                     {
                       !duration?(<><div className='flex w-[80%] justify-between items-center whitespace-nowrap'><h4>V/are System</h4></div></>):(<></>)

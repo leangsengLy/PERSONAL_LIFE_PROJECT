@@ -23,7 +23,7 @@ export const StoreMenu = [
         code:'cinema',
         Name:"ខ្សែរភាគយន្ត",
         EnglishName:"Legend Cinema",
-        iconImage:store,
+        iconImage:"ri-home-office-line",
         SubMenu:[
             {   
                 Code:"cinema",
@@ -89,40 +89,7 @@ export const StoreMenu = [
     //     iconImage:QR,
     //     SubMenu:[]
     // },
-    {
-        Id:6,
-        Name:"ប្រព័ន្ទកែប្រែ",
-        code:'setting',
-        EnglishName:"Setting",
-        iconImage:Setting,
-        SubMenu:[
-            {   
-                Code:"movie",
-                Name:"ភាគយន្ត",
-                EnglishName:"Movie",
-                icon :"ri-movie-2-ai-line"
-            },
-            {   
-                Code:"movie_type",
-                Name:"ប្រភេទរឿង",
-                EnglishName:"Movie Type",
-                icon :"ri-film-line"
-            },
-            {   
-                Code:"hall",
-                Name:"បន្ទប់ចាក់ភាពយន្ត",
-                EnglishName:"Hall",
-                icon :"ri-gallery-view"
-            },
-             {   
-                Code:"test",
-                Name:"សាក",
-                EnglishName:"Test",
-                icon :"ri-film-line"
-            },
-            
-        ]
-    },
+   
     
     // {
     //     Id:7,
@@ -175,11 +142,26 @@ export const StoreMenu = [
     //     ]
     // },
     {
+        Id:10,
+        code:'media',
+        Name:"Media",
+        EnglishName:"Media",
+        iconImage:"ri-megaphone-line",
+         SubMenu:[
+            {   
+                Code:"offer",
+                Name:"ផ្តល់ដំណឹង",
+                EnglishName:"Offers",
+                icon :"ri-pages-line"
+            },
+        ]
+    },
+    {
         Id:8,
         Name:"គ្រឿបរិភោគ",
         code:'food',
         EnglishName:"អាហារ",
-        iconImage:food,
+        iconImage:"ri-drinks-line",
         SubMenu:[
             {   
                  Code:"drink",
@@ -196,6 +178,40 @@ export const StoreMenu = [
            
         ]
     },
+     {
+        Id:6,
+        Name:"ប្រព័ន្ទកែប្រែ",
+        code:'setting',
+        EnglishName:"Setting",
+        iconImage:"ri-settings-5-line",
+        SubMenu:[
+            {   
+                Code:"movie",
+                Name:"ភាគយន្ត",
+                EnglishName:"Movie",
+                icon :"ri-movie-2-ai-line"
+            },
+            {   
+                Code:"movie_type",
+                Name:"ប្រភេទរឿង",
+                EnglishName:"Movie Type",
+                icon :"ri-film-line"
+            },
+            {   
+                Code:"hall",
+                Name:"បន្ទប់ចាក់ភាពយន្ត",
+                EnglishName:"Hall",
+                icon :"ri-gallery-view"
+            },
+             {   
+                Code:"test",
+                Name:"សាក",
+                EnglishName:"Test",
+                icon :"ri-film-line"
+            },
+            
+        ]
+    },
     
     // {  Id:9,
     //     Name:"ស្ថិតិ",
@@ -204,20 +220,6 @@ export const StoreMenu = [
     //     iconImage:chart,
     //     SubMenu:[]
     // },
-    {
-        Id:10,
-        code:'media',
-        Name:"Media",
-        EnglishName:"Media",
-        iconImage:media,
-         SubMenu:[
-            {   
-                Code:"offer",
-                Name:"ផ្តល់ដំណឹង",
-                EnglishName:"Offers",
-                icon :"ri-pages-line"
-            },
-        ]
-    },
+    
   
 ]

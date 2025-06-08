@@ -39,7 +39,7 @@ function ProfileIndex() {
                 }
               </div>
             </div>
-            <div className='w-full bg-slate rounded-[18px] px-5 py-6'>
+            <div className={`${SelectTab=="Profile"?``:`px-5 py-6`} overflow-hidden w-full bg-slate rounded-[18px] `}>
               {renderHtml}
             </div>
         </div>

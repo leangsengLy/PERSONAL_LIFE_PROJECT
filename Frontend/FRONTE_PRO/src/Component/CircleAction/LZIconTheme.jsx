@@ -16,8 +16,9 @@ const LZIconTheme = ({isLoginOrisHomePage}) => {
   }
   return (
     <Tooltip content="Light" showArrow={true} >
-                <div className={`${isLoginOrisHomePage?`w-[40px] h-[40px]`:`w-[30px] h-[30px]`} cursor-pointer p-2 rounded-full border-primary`} onClick={onChangeTheme}>
-                  <img src={isDark?bright:night} alt="" className='w-full h-full rounded-full'/>
+                <div className={`${isLoginOrisHomePage?`w-[33px] h-[33px]`:`w-[30px] h-[30px]`}  flex justify-center items-center cursor-pointer p-2 rounded-full border-primary`} onClick={onChangeTheme}>
+                  {/* <img src={isDark?bright:night} alt="" className='w-full h-full rounded-full'/> */}
+                  <i className={`${isDark?"ri-sun-line":"ri-moon-line"} text-[20px] color-primary`} />
                 </div>
         </Tooltip>
   )

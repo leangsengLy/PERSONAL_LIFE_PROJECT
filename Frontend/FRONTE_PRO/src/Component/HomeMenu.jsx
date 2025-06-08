@@ -43,8 +43,8 @@ const HomeMenu = () => {
                   return (
                     <>
                     <Tooltip placement='top' showArrow={true} onClick={()=>{onClickMenu(val.code)}} content={translateBy({en:val.EnglishName,km:val.Name})}>
-                        <div  onClick={()=>{onClickMenu(val.code)}} className='w-[100px] h-[100px] rounded-3xl border-primary flex justify-center items-center'>
-                            <img src={val.iconImage} alt="" className='w-[66px] h-[66px] cursor-pointer'/>
+                        <div  onClick={()=>{onClickMenu(val.code)}} className='w-[100px] cursor-pointer h-[100px] rounded-3xl border-primary flex justify-center items-center'>
+                          <i className={`${val.iconImage} text-[45px] color-primary`} />
                       </div>
                     </Tooltip>
                   </>
