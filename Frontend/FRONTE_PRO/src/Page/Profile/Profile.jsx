@@ -7,6 +7,7 @@ import { HttpRequest } from '../../Global/API_HTTP/http';
 import { setInforUser, setUserInfoDetail } from '../../Store/UserLogin/UserLogin';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 import LZGlobal from '../../Util/LZGlobal';
+import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm';
 
 function Profile() {
   const userInfo = useSelector(state=>state.User.dataUser);
@@ -19,8 +20,8 @@ function Profile() {
   const [isEditAddress,setIsEditAddress] = useState(false);
   const [isEditPhone,setIsEditPhone] = useState(false);
     const [isAnimeButton,setIsAnimeButton] = useState(false);
-    const [uploadImage,setUploadImage] = useState("");
     const refFileUpload = useRef(null);
+    const [uploadImage,setUploadImage] = useState("");
   const [profileInfo,setProfileInfo] = useState({
     Address:"",
     Career:"",
@@ -31,6 +32,7 @@ function Profile() {
   });
   useEffect(()=>{
     dispatch(setInforUser(JSON.parse(localStorage.getItem("userInfo"))))
+    
   },[])
   useEffect(()=>{
       GetInforUser()
@@ -45,6 +47,7 @@ function Profile() {
                 success:(success)=>{
                   console.log("Result",success)
                   dispatch(setUserInfoDetail(success))
+                  setUploadImage(success?.ProfileImagePath||"")
                     setProfileInfo(val=>(
                       {
                         ...val,
@@ -136,7 +139,31 @@ function Profile() {
     if(uploadImage==""){
       refFileUpload.current.click();  
     }else {
-         setUploadImage("")
+      dispatch(setIsShow(true))
+      dispatch(setModalConfirm({
+                  type:"delete",
+                  message:"Do you want to delete this image?",
+                  onClose:()=>{
+                      dispatch(setIsShow(false))
+                  },
+                  onOk:async()=>{
+                       dispatch(setIsShow(false))
+                      console.log("Yes")
+                      HttpRequest({
+                          url:`api/user_profile/delete_image?Id=${useInfoDetail?.Id}`,
+                          method:"get",
+                          success:(success)=>{
+                            GetInforUser()
+                            setUploadImage("")
+                          },
+                          error:(error)=>{
+                            console.log(error)
+                              ShowSnackbar({message:error.detail,type:'error'})
+                          }
+                      })
+                  }
+              }))
+         
     }
    
     
@@ -175,7 +202,7 @@ function Profile() {
            {uploadImage==""? <i class="ri-camera-line color-primary text-[13px]"></i>:<i class="ri-delete-bin-line text-[#fa3d3d] text-[13px] "></i>}
         </div>
         <div  className={` w-[100px] h-[100px]  rounded-full bg-box-wrapper absolute left-9 bottom-[-60px] p-[6px]`}>
-          <img src={`http://localhost:8080${useInfoDetail?.ProfileImagePath}`} className='preview-image w-full h-full object-cover rounded-full' alt="" />
+          <img src={uploadImage==""?LZGlobal.UserDefaultImage2: `http://localhost:8080${uploadImage}`} className='preview-image w-full h-full object-cover rounded-full' alt="" />
         </div>
         <Input type='file'  ref={refFileUpload}  onChange={onChangeImage}  classNames={{base:"!hidden"}}/>
       </div>

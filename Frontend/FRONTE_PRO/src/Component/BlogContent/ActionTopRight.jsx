@@ -48,7 +48,7 @@ function ActionTopRight({isLoginOrisHomePage}) {
   const DropDownSetting=<div style={{zIndex:`${isClickSetting?``:`-1`}`}} className={`min-w-[210px] pb-7 flex flex-col  gap-y-2 opacity-0  lz-animation  rounded-3xl  ${isClickSetting?`opacity-100 z-10  -translate-x-2 translate-y-1`:``}  absolute right-2 top-12 bg-popup`}>
     <div className='w-full h-[150px]  flex flex-col justify-center items-center bg-primary rounded-t-3xl'>
           <div className='w-[60px] h-[60px]  rounded-full p-1 bg-white  border border-white'>
-              <img src={userInfo?.ProfileImagePath==""?LZGlobal.UserDefaultImage2:`http://localhost:8080${userInfo?.ProfileImagePath}`} alt="" className='w-full h-full object-cover rounded-full' />
+              <img src={userInfo?.ProfileImagePath==null ?LZGlobal.UserDefaultImage2:`http://localhost:8080${userInfo?.ProfileImagePath}`} alt="" className='w-full h-full object-cover rounded-full' />
           </div>     
           <h5 className='mt-2 text-white'>{userInfo?.Name}</h5>
           <div className='text-[14px]  text-white '>My Account</div>
