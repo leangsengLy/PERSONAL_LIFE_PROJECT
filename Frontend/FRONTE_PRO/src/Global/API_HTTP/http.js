@@ -21,7 +21,7 @@ export const HttpRequest = async ({url,method='get',data,success,error,type='dat
             else if(err.status == 200){
                 console.log(err)
                 error(err.response.data)
-            }
+            }else error(err.response.data)
         })
     }
     else if(method.toLowerCase()=="post"){
