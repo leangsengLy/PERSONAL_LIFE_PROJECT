@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ShowSnackbar } from '../../Util/globalUtils'
 import { Input } from '@nextui-org/react';
 import { use } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HttpRequest } from '../../Global/API_HTTP/http';
-import { setInforUser } from '../../Store/UserLogin/UserLogin';
+import { setInforUser, setUserInfoDetail } from '../../Store/UserLogin/UserLogin';
+import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
+import LZGlobal from '../../Util/LZGlobal';
 
 function Profile() {
   const userInfo = useSelector(state=>state.User.dataUser);
+  const useInfoDetail = useSelector(state=>state.User.useInfoDetail);
   const dispatch = useDispatch()
   const [isEditName,setIsEditName] = useState(false);
   const [isEditDesc,setIsEditDesc] = useState(false);
@@ -15,6 +18,9 @@ function Profile() {
   const [isEditCodeProgram,setIsEditCodeProgram] = useState(false);
   const [isEditAddress,setIsEditAddress] = useState(false);
   const [isEditPhone,setIsEditPhone] = useState(false);
+    const [isAnimeButton,setIsAnimeButton] = useState(false);
+    const [uploadImage,setUploadImage] = useState("");
+    const refFileUpload = useRef(null);
   const [profileInfo,setProfileInfo] = useState({
     Address:"",
     Career:"",
@@ -38,6 +44,7 @@ function Profile() {
                 method:"post",
                 success:(success)=>{
                   console.log("Result",success)
+                  dispatch(setUserInfoDetail(success))
                     setProfileInfo(val=>(
                       {
                         ...val,
@@ -121,18 +128,56 @@ function Profile() {
     saveData(type)
     ClearInput()
   }
-  
+  const OnclickActionImage=()=>{
+     setIsAnimeButton(true);
+      setTimeout(()=>{
+          setIsAnimeButton(false);
+      },100)
+    if(uploadImage==""){
+      refFileUpload.current.click();  
+    }else {
+         setUploadImage("")
+    }
+   
+    
+  }
+  const onChangeImage=async(e)=>{
+      var file = e.target.files[0];
+      setUploadImage(URL.createObjectURL(file))
+      var image = await GetBase64ByImage(file)
+      console.log(image)
+      HttpRequest({
+                url:"api/user_profile/upload_image",
+                method:"post",
+                data:{
+                  id:profileInfo.Id,
+                  uploadFileDataModel:{
+                    fileName: image.FileName,
+                    fileType: image.FileType,
+                    base64Data:image.Base64,
+                  }
+                },
+                success:(success)=>{
+                  GetInforUser()
+                },
+                error:(error)=>{
+                  console.log(error)
+                    ShowSnackbar({message:error.detail,type:'error'})
+                }
+            })
+    }
   return (
     <div className='w-full h-full '>
       <div className='w-full h-[200px] bg-red-500 relative'>
-        <img src="http://localhost:8080/Image/offer/20250525083217_ImageOffer.jpg" className='w-full h-full object-cover' alt="" />
+        <img src="http://localhost:8080/Image/offer/20250525083217_ImageOffer.jpg" className='preview-image w-full h-full object-cover' alt="" />
         <div className='absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-[#0202026e] text-white text-[12px] cursor-pointer'>Add Cover</div>
-        <div className='w-[30px] h-[30px] flex justify-center items-center rounded-full absolute bg-white cursor-pointer left-[100px] top-[234px] z-10'>
-          <i class="ri-camera-line"></i>
+        <div onClick={OnclickActionImage} className={`${isAnimeButton?'scale-50':''} transition-all ease-linear w-[30px] h-[30px] flex justify-center items-center rounded-full absolute bg-box-wrapper cursor-pointer left-[100px] top-[234px] z-10`}>
+           {uploadImage==""? <i class="ri-camera-line color-primary text-[13px]"></i>:<i class="ri-delete-bin-line text-[#fa3d3d] text-[13px] "></i>}
         </div>
-        <div className='w-[100px] h-[100px]  rounded-full bg-white absolute left-9 bottom-[-60px] border-4 border-white'>
-          <img src="http://localhost:8080/Image/offer/20250525083217_ImageOffer.jpg" className='w-full h-full object-cover rounded-full' alt="" />
+        <div  className={` w-[100px] h-[100px]  rounded-full bg-box-wrapper absolute left-9 bottom-[-60px] p-[6px]`}>
+          <img src={`http://localhost:8080${useInfoDetail?.ProfileImagePath}`} className='preview-image w-full h-full object-cover rounded-full' alt="" />
         </div>
+        <Input type='file'  ref={refFileUpload}  onChange={onChangeImage}  classNames={{base:"!hidden"}}/>
       </div>
       <div className='grid grid-flow-col grid-cols-[170px_1fr]'>
         <div></div>
@@ -158,7 +203,7 @@ function Profile() {
             </div>
             <div className='flex flex-col pt-4 pr-6'>
               <p className='text-[13px] color-3 mb-2'>Phone number</p>
-              <div className='w-full h-[50px] flex justify-center items-center relative rounded-lg border mr-[20px]'>
+              <div className='w-full h-[50px] flex justify-center items-center relative rounded-lg border-slate mr-[20px]'>
                 <div className='absolute right-4 cursor-pointer text-[12px] hover:text-white' onClick={()=>{
                   onCopyPhoneNumber();
                 }}>Copy</div>

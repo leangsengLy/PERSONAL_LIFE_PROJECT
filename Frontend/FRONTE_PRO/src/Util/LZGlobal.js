@@ -4,6 +4,8 @@ import {translateBy,ShowSnackbar,ConvertMnToHour,GetURLPreviewIframe} from '../U
 import NoData from '../../public/Icon/no-data.svg';
 import DefaultImage from '../../public/Image/DefaultImage/default.jpg';
 import ComingSoon from '../../public/Image/DefaultImage/comming.jpg';
+import defaultUserImage from '../../public/Image/DefaultImage/User.jpg';
+import defaultUserImage2 from '../../public/Image/DefaultImage/user2.png';
 export default  {
     DecodeToken : DecodeToken,
     GetBase64ByImage : GetBase64ByImage,
@@ -13,5 +15,7 @@ export default  {
     NodataImage :NoData,
     DefaultImage:DefaultImage,
     ComingSoon : ComingSoon,
+    UserDefaultImage : defaultUserImage,
+    UserDefaultImage2 : defaultUserImage2,
     GetURLPreviewIframe:GetURLPreviewIframe,
 }

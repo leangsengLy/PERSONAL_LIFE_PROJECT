@@ -9,9 +9,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
 import { SoundAudio } from '../../Util/Sound'
 import { useNavigate } from 'react-router-dom';
+import LZGlobal from '../../Util/LZGlobal';
 function ActionTopRight({isLoginOrisHomePage}) {
   const [isClickSetting,setIsClickSetting] = useState(false)
   const tr= useSelector(state=>state.Language.translate);
+  const userInfo= useSelector(state=>state.User.useInfoDetail);
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const click = SoundAudio("click")
@@ -46,10 +48,10 @@ function ActionTopRight({isLoginOrisHomePage}) {
   const DropDownSetting=<div style={{zIndex:`${isClickSetting?``:`-1`}`}} className={`min-w-[210px] pb-7 flex flex-col  gap-y-2 opacity-0  lz-animation  rounded-3xl  ${isClickSetting?`opacity-100 z-10  -translate-x-2 translate-y-1`:``}  absolute right-2 top-12 bg-popup`}>
     <div className='w-full h-[150px]  flex flex-col justify-center items-center bg-primary rounded-t-3xl'>
           <div className='w-[60px] h-[60px]  rounded-full p-1 bg-white  border border-white'>
-              <img src={Lyzee} alt="" className='w-full h-full rounded-full' />
+              <img src={userInfo?.ProfileImagePath==""?LZGlobal.UserDefaultImage2:`http://localhost:8080${userInfo?.ProfileImagePath}`} alt="" className='w-full h-full object-cover rounded-full' />
           </div>     
-          <h5 className='mt-2 text-white'>Ly Zee vlogger</h5>
-          <div className='text-[14px]  text-white '>Admin</div>
+          <h5 className='mt-2 text-white'>{userInfo?.Name}</h5>
+          <div className='text-[14px]  text-white '>My Account</div>
     </div>
     <div className='w-full px-4 flex flex-col mt-[9px] gap-y-2'>
       <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={clickOnHomePage} >

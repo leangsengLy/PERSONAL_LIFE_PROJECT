@@ -12,8 +12,12 @@ function PreviewImage() {
         dispatch(setShowPreview(false));
     }
     document.addEventListener("click",(e)=>{
-        dispatch(setShowPreview(e.target.classList[0]=="preview-image"));
-        dispatch(setImagePath(e.target.src));
+        console.log(e.target.localName)
+        if(e.target.classList[0]!=="" && e.target.localName == 'img'){
+            dispatch(setShowPreview(e.target.classList[0]=="preview-image"));
+            dispatch(setImagePath(e.target.src));
+        }
+       
     })
     // useEffect(()=>{
     //     SetIsShowImage(false)

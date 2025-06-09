@@ -14,11 +14,12 @@ import { SystemSpeakByText } from '../../Util/SystenSayByText.js'
 import CountryLanguage from '../CircleAction/LZIconLanguage.jsx'
 import LZIconTheme from '../CircleAction/LZIconTheme.jsx'
 import { DecodeToken } from '../../Util/DecodeToken.js'
-import { setInforUser } from '../../Store/UserLogin/UserLogin.js'
+import { setInforUser, setUserInfoDetail } from '../../Store/UserLogin/UserLogin.js'
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
   const [isVisible,SetInVisal] = useState(false)
   const navigate= useNavigate();
+    const userInfo = useSelector(state=>state.User.dataUser);
   const [isVisibleHintPassword,SetisVisibleHintPassword] = useState(false)
   const [isCreateAccount,SetIsCreateAccount]=useState(false);
   const [isShowSpin,SetInShowSpin]=useState(false)
@@ -84,11 +85,11 @@ const onSignUpUser=()=>{
     else{
       SetInShowSpin(true)
       HttpRequest({
-        url:'/api/user/create',
+        url:'/api/login/create',
         method:"post",
         data:{
-          PASSWORD:inputDataCreate.Password,
-          USERNAME:inputDataCreate.Username,
+          password:inputDataCreate.Password,
+          email:inputDataCreate.Username,
           HINT_PW:inputDataCreate.HintPassword,
         },
         success:(result)=>{
@@ -173,6 +174,36 @@ const onSignUpUser=()=>{
     })
     }
   }
+  useEffect(()=>{
+    GetInforUser();
+  },[userInfo])
+  const GetInforUser=async()=>{
+      HttpRequest({
+                  url:'api/user_profile/info',
+                  data:{
+                    loginId:userInfo.Id
+                  },
+                  method:"post",
+                  success:(success)=>{
+                    dispatch(setUserInfoDetail(success))
+                    console.log("Result",success)
+                      // setProfileInfo(val=>(
+                      //   {
+                      //     ...val,
+                      //     Address:success.Address==null?"Address default tek tla.":success?.Address,
+                      //     Career:success.Major==null?"IT developer or doctor teacher":success?.Major,
+                      //     Username:success.Name==null?"Your Name":success.Name,
+                      //     Id: success.Id,
+                      //     Description:success.Description==null?"Description default I need to make a something to you.":success?.Description,
+                      //     Phone:success.Phone1==null?"099 855 645":success?.Phone1,
+                      //     Program:success.ExperienceDescription==null?"language that you have learn or study...":success?.ExperienceDescription,
+                      //   }))
+                  },
+                  error:(error)=>{
+                      ShowSnackbar({message:error.message,type:'error'})
+                  }
+              })
+    }
   const KeyEnter=(e)=>{
     if(e.key=="Enter"){
       if(!isCreateAccount) onSaveLogin();
