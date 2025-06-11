@@ -12,6 +12,7 @@ import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm';
 function Profile() {
   const userInfo = useSelector(state=>state.User.dataUser);
   const useInfoDetail = useSelector(state=>state.User.useInfoDetail);
+  const tr = useSelector(state=>state.Language.translate)
   const dispatch = useDispatch()
   const [isEditName,setIsEditName] = useState(false);
   const [typeImageAction,setTypeImageAction] = useState("");
@@ -136,24 +137,25 @@ function Profile() {
     ClearInput()
   }
   useEffect(()=>{
-     if(uploadImage=="" && typeImageAction=="Profile"){
+    
+    
+  },[typeImageAction])
+  const OnclickActionImage=(typeImage)=>{
+    setTypeImageAction(typeImage);
+     if(uploadImage=="" && typeImage=="Profile"){
       refFileUpload.current.click();  
        setIsAnimeButton(true);
       setTimeout(()=>{
           setIsAnimeButton(false);
       },100)
      }
-    else if(uploadImageCover=="" && typeImageAction=="Cover") {
+    else if(uploadImageCover=="" && typeImage=="Cover") {
       refFileUpload.current.click();
       setIsAnimeButtonCover(true);
       setTimeout(()=>{
           setIsAnimeButtonCover(false);
       },100) 
     }
-    
-  },[typeImageAction])
-  const OnclickActionImage=(typeImage)=>{
-    setTypeImageAction(typeImage);
     var API = "";
       if(uploadImage!="" && typeImage=="Profile"){
         dispatch(setIsShow(true))
@@ -215,16 +217,15 @@ function Profile() {
                   GetInforUser()
                 },
                 error:(error)=>{
-                  console.log(error)
                     ShowSnackbar({message:error.detail,type:'error'})
                 }
             })
     }
   return (
     <div className='w-full h-full '>
-      <div className='w-full h-[200px] bg-red-500 relative'>  
+      <div className='w-full h-[200px]  relative'>  
         <img src={uploadImageCover==""?LZGlobal.NoBackground2:`http://localhost:8080${uploadImageCover}`} className={`  preview-image w-full h-full object-cover`} alt="" />
-        <div  onClick={()=>{OnclickActionImage("Cover")}} className={`${isAnimeButtonCover?'scale-50':''} transition-all ease-linear absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-[#0202026e] text-white text-[12px] cursor-pointer`}>{uploadImageCover==""?"Add Cover":"Remove Cover"}</div>
+        <div  onClick={()=>{OnclickActionImage("Cover")}} className={`${isAnimeButtonCover?'scale-50':''} transition-all ease-linear absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-[#0202026e] text-white text-[12px] cursor-pointer`}>{uploadImageCover==""?tr.add_cover:tr.remove_cover}</div>
         <div onClick={()=>{OnclickActionImage("Profile")}} className={`${isAnimeButton?'scale-50':''} transition-all ease-linear w-[30px] h-[30px] flex justify-center items-center rounded-full absolute bg-box-wrapper cursor-pointer left-[100px] top-[234px] z-10`}>
            {uploadImage==""? <i class="ri-camera-line color-primary text-[13px]"></i>:<i class="ri-delete-bin-line text-[#fa3d3d] text-[13px] "></i>}
         </div>
@@ -256,11 +257,11 @@ function Profile() {
                
             </div>
             <div className='flex flex-col pt-4 pr-6'>
-              <p className='text-[13px] color-3 mb-2'>Phone number</p>
+              <p className='text-[13px] color-3 mb-2'>{tr.phone_number}</p>
               <div className='w-full h-[50px] flex justify-center items-center relative rounded-lg border-slate mr-[20px]'>
                 <div className='absolute right-4 cursor-pointer text-[12px] hover:text-white' onClick={()=>{
                   onCopyPhoneNumber();
-                }}>Copy</div>
+                }}>{tr.copy}</div>
                 <div className='flex items-center gap-x-2'>
                 {
                   isEditPhone?<Input value={profileInfo?.Phone} onBlur={()=>{onBlurChange("Phone")}} onKeyDown={(e)=>{onKeyEnter(e,"Phone")}} onChange={onChangeValue} name="Phone" classNames={{base:"w-[120px] h-[40px]",inputWrapper:"border-none",input:"text-center"}} size='sm' type="text" variant="underlined" />:<p className='text-[18px] color-3'>{profileInfo?.Phone}</p>
@@ -272,7 +273,7 @@ function Profile() {
                
               </div>
               <div className='flex flex-col pt-4 gap-y-1'>
-                <p className='text-[14px] font-medium color-3'>Career</p>
+                <p className='text-[14px] font-medium color-3'>{tr.major}</p>
                 <div className='flex items-center gap-x-2'>
                   {
                     isEditCareer?<Input value={profileInfo?.Career} onBlur={()=>{onBlurChange("Career")}} onKeyDown={(e)=>{onKeyEnter(e,"Career")}} onChange={onChangeValue} name="Career" classNames={{base:"w-[250px] h-[40px]"}} size='sm' label="Your career" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Career}</p>
@@ -283,7 +284,7 @@ function Profile() {
                 </div>
               </div>
               <div className='flex flex-col pt-4 gap-y-1'>
-                <p className='text-[14px] font-medium color-3'>Code Program</p>
+                <p className='text-[14px] font-medium color-3'>{tr.program}</p>
                  <div className='flex items-center gap-x-2'>
                   {
                     isEditCodeProgram?<Input value={profileInfo?.Program} onBlur={()=>{onBlurChange("Program")}}  onKeyDown={(e)=>{onKeyEnter(e,"Program")}} onChange={onChangeValue} name="Program" classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Program}</p>
@@ -294,7 +295,7 @@ function Profile() {
                 </div>
               </div>
               <div className='flex flex-col pt-4 gap-y-1'>
-                <p className='text-[14px] font-medium color-3'>Adress</p>
+                <p className='text-[14px] font-medium color-3'>{tr.address}</p>
                 <div className='flex items-center gap-x-2'>
                   {
                     isEditAddress?<Input value={profileInfo?.Address} onBlur={()=>{onBlurChange("Address")}} onKeyDown={(e)=>{onKeyEnter(e,"Address")}} onChange={onChangeValue} name="Address"  classNames={{base:"w-[400px] h-[40px]"}} size='sm' label="language program" type="text" variant="underlined" />:<p className='text-[13px]'>{profileInfo?.Address}</p>

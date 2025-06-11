@@ -4,17 +4,17 @@ import { getLanguage } from '../../Store/Language/Langauge';
 
 function Language() {
   const languages = useSelector(state=>state.Language.Languages);
+    const tr = useSelector(state=>state.Language.translate)
   const Selectlanguages = useSelector(state=>state.Language.language);
 
   const dispatch = useDispatch()
   const OnSelectLanguage =(code)=>{
     dispatch(getLanguage(code))
   }
-  console.log(languages)
   return (
     <div className='w-full'>
-        <h2>Language</h2>
-        <p>In the below you can choose your language in our system </p>
+        <h2>{tr.language}</h2>
+        <p className="text-[13px]">{tr.select_your_country_for_easy_to_use_our_system}</p>
         <div className='wrapper-color flex gap-2 flex-wrap mt-3'>
           {
             languages.map((val)=>{

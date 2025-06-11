@@ -7,6 +7,7 @@ function Theme() {
     const click = SoundAudio('click')
   const dispatch = useDispatch();
    const isDark = useSelector(state=>state.Theme.isDark);
+     const tr = useSelector(state=>state.Language.translate)
   const onClickTheme=()=>{
     click.play();
     localStorage.setItem("isDark",!isDark)
@@ -14,8 +15,7 @@ function Theme() {
   }
   return (
     <div className='w-full'>
-        <h2>Theme</h2>
-        <p>In the below for switch the theme between mode white and dark</p>
+        <h2>{tr.theme}</h2>
         <div className='wrapper-color flex gap-2 flex-wrap mt-3 w-full justify-center items-center h=[300px]'>
                 {!isDark ?<i class="ri-sun-fill text-[200px] color-1"></i>: <i class="ri-moon-fill text-[200px] color-1"></i>}
         </div>

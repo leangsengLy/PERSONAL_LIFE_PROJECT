@@ -51,7 +51,7 @@ function ActionTopRight({isLoginOrisHomePage}) {
               <img src={userInfo?.ProfileImagePath==null ?LZGlobal.UserDefaultImage2:`http://localhost:8080${userInfo?.ProfileImagePath}`} alt="" className='w-full h-full object-cover rounded-full' />
           </div>     
           <h5 className='mt-2 text-white'>{userInfo?.Name}</h5>
-          <div className='text-[14px]  text-white '>My Account</div>
+          <div className='text-[14px]  text-white '>{tr.my_account}</div>
     </div>
     <div className='w-full px-4 flex flex-col mt-[9px] gap-y-2'>
       <div className='flex gap-x-2 color-1 hover-text lz-animation' onClick={clickOnHomePage} >
