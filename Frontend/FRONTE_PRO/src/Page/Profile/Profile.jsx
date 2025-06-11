@@ -14,14 +14,17 @@ function Profile() {
   const useInfoDetail = useSelector(state=>state.User.useInfoDetail);
   const dispatch = useDispatch()
   const [isEditName,setIsEditName] = useState(false);
+  const [typeImageAction,setTypeImageAction] = useState("");
   const [isEditDesc,setIsEditDesc] = useState(false);
   const [isEditCareer,setIsEditCareer] = useState(false);
   const [isEditCodeProgram,setIsEditCodeProgram] = useState(false);
   const [isEditAddress,setIsEditAddress] = useState(false);
   const [isEditPhone,setIsEditPhone] = useState(false);
     const [isAnimeButton,setIsAnimeButton] = useState(false);
+    const [isAnimeButtonCover,setIsAnimeButtonCover] = useState(false);
     const refFileUpload = useRef(null);
     const [uploadImage,setUploadImage] = useState("");
+    const [uploadImageCover,setUploadImageCover] = useState("");
   const [profileInfo,setProfileInfo] = useState({
     Address:"",
     Career:"",
@@ -48,6 +51,7 @@ function Profile() {
                   console.log("Result",success)
                   dispatch(setUserInfoDetail(success))
                   setUploadImage(success?.ProfileImagePath||"")
+                  setUploadImageCover(success?.CoverImagePath||"")
                     setProfileInfo(val=>(
                       {
                         ...val,
@@ -131,15 +135,34 @@ function Profile() {
     saveData(type)
     ClearInput()
   }
-  const OnclickActionImage=()=>{
-     setIsAnimeButton(true);
+  useEffect(()=>{
+     if(uploadImage=="" && typeImageAction=="Profile"){
+      refFileUpload.current.click();  
+       setIsAnimeButton(true);
       setTimeout(()=>{
           setIsAnimeButton(false);
       },100)
-    if(uploadImage==""){
-      refFileUpload.current.click();  
-    }else {
-      dispatch(setIsShow(true))
+     }
+    else if(uploadImageCover=="" && typeImageAction=="Cover") {
+      refFileUpload.current.click();
+      setIsAnimeButtonCover(true);
+      setTimeout(()=>{
+          setIsAnimeButtonCover(false);
+      },100) 
+    }
+    
+  },[typeImageAction])
+  const OnclickActionImage=(typeImage)=>{
+    setTypeImageAction(typeImage);
+    var API = "";
+      if(uploadImage!="" && typeImage=="Profile"){
+        dispatch(setIsShow(true))
+         API = `api/user_profile/delete_image?Id=${useInfoDetail?.Id}`;
+      }else if(uploadImageCover!="" && typeImage=="Cover") {
+        dispatch(setIsShow(true))
+        API = `api/user_profile/delete_image_cover?Id=${useInfoDetail?.Id}`;
+      }
+      
       dispatch(setModalConfirm({
                   type:"delete",
                   message:"Do you want to delete this image?",
@@ -148,13 +171,13 @@ function Profile() {
                   },
                   onOk:async()=>{
                        dispatch(setIsShow(false))
-                      console.log("Yes")
                       HttpRequest({
-                          url:`api/user_profile/delete_image?Id=${useInfoDetail?.Id}`,
+                          url:API,
                           method:"get",
                           success:(success)=>{
                             GetInforUser()
-                            setUploadImage("")
+                            if(typeImageAction=="Profile") setUploadImage("")
+                            else setUploadImageCover("")
                           },
                           error:(error)=>{
                             console.log(error)
@@ -163,18 +186,22 @@ function Profile() {
                       })
                   }
               }))
-         
-    }
-   
-    
+     
   }
   const onChangeImage=async(e)=>{
+    var UrlAPi = "";
       var file = e.target.files[0];
-      setUploadImage(URL.createObjectURL(file))
+      if(typeImageAction !=="Profile") {
+        setUploadImageCover(URL.createObjectURL(file));
+         UrlAPi = 'api/user_profile/upload_image_cover';
+      }
+      else{
+         setUploadImage(URL.createObjectURL(file));
+          UrlAPi = "api/user_profile/upload_image";
+      }
       var image = await GetBase64ByImage(file)
-      console.log(image)
       HttpRequest({
-                url:"api/user_profile/upload_image",
+                url:UrlAPi,
                 method:"post",
                 data:{
                   id:profileInfo.Id,
@@ -195,10 +222,10 @@ function Profile() {
     }
   return (
     <div className='w-full h-full '>
-      <div className='w-full h-[200px] bg-red-500 relative'>
-        <img src="http://localhost:8080/Image/offer/20250525083217_ImageOffer.jpg" className='preview-image w-full h-full object-cover' alt="" />
-        <div className='absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-[#0202026e] text-white text-[12px] cursor-pointer'>Add Cover</div>
-        <div onClick={OnclickActionImage} className={`${isAnimeButton?'scale-50':''} transition-all ease-linear w-[30px] h-[30px] flex justify-center items-center rounded-full absolute bg-box-wrapper cursor-pointer left-[100px] top-[234px] z-10`}>
+      <div className='w-full h-[200px] bg-red-500 relative'>  
+        <img src={uploadImageCover==""?LZGlobal.NoBackground2:`http://localhost:8080${uploadImageCover}`} className={`  preview-image w-full h-full object-cover`} alt="" />
+        <div  onClick={()=>{OnclickActionImage("Cover")}} className={`${isAnimeButtonCover?'scale-50':''} transition-all ease-linear absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-[#0202026e] text-white text-[12px] cursor-pointer`}>{uploadImageCover==""?"Add Cover":"Remove Cover"}</div>
+        <div onClick={()=>{OnclickActionImage("Profile")}} className={`${isAnimeButton?'scale-50':''} transition-all ease-linear w-[30px] h-[30px] flex justify-center items-center rounded-full absolute bg-box-wrapper cursor-pointer left-[100px] top-[234px] z-10`}>
            {uploadImage==""? <i class="ri-camera-line color-primary text-[13px]"></i>:<i class="ri-delete-bin-line text-[#fa3d3d] text-[13px] "></i>}
         </div>
         <div  className={` w-[100px] h-[100px]  rounded-full bg-box-wrapper absolute left-9 bottom-[-60px] p-[6px]`}>

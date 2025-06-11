@@ -6,6 +6,8 @@ import DefaultImage from '../../public/Image/DefaultImage/default.jpg';
 import ComingSoon from '../../public/Image/DefaultImage/comming.jpg';
 import defaultUserImage from '../../public/Image/DefaultImage/User.jpg';
 import defaultUserImage2 from '../../public/Image/DefaultImage/user2.png';
+import defaultNoBackground1 from '../../public/Image/DefaultImage/no-bg.png';
+import defaultNoBackground2 from '../../public/Image/DefaultImage/noBackground.jpg';
 export default  {
     DecodeToken : DecodeToken,
     GetBase64ByImage : GetBase64ByImage,
@@ -17,5 +19,7 @@ export default  {
     ComingSoon : ComingSoon,
     UserDefaultImage : defaultUserImage,
     UserDefaultImage2 : defaultUserImage2,
+    NoBackground1 : defaultNoBackground1,
+    NoBackground2 : defaultNoBackground2,
     GetURLPreviewIframe:GetURLPreviewIframe,
 }
