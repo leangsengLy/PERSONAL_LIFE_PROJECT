@@ -70,5 +70,7 @@
         "add_cover":"ដាក់រូបថ្ងៃខាងក្រោយ",
          "select_color_that_you_want_to_input_your_system":"សូមជ្រើសរើសព័ណ៏ដែលអ្នកចូលចិត្តដើម្បីដាក់ទៅក្នុងប្រព័ន្ទរបស់អ្នក",
          "select_your_country_for_easy_to_use_our_system":"សូមជ្រើសរើសភាសារបស់អ្នកដើម្បីមានភាពងាយស្រួលក្នុងការប្រើប្រាស់",
-         "my_account":"គណនីរបស់ខ្ញំុ"
+         "my_account":"គណនីរបស់ខ្ញំុ",
+         "branch":"សាខា",
+         "add_branch":"បង្កើតសាខា"
 }

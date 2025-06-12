@@ -27,10 +27,10 @@ export const StoreMenu = [
         SubMenu:[
             {   
                 Code:"cinema",
-                Name:"រោងកុន",
-                EnglishName:"Cinema",
+                Name:"សាខា",
+                EnglishName:"Branch",
                 iconImage:inventory,
-                icon :"ri-box-3-fill"
+                icon :"ri-database-line"
             },
             {   
                 Code:"Employee",

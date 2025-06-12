@@ -34,7 +34,8 @@ const HomeMenu = () => {
   }
   
   return (
-    <div className='w-screen h-screen px-10 lz-animation bg-box-wrapper flex justify-center items-center flex-wrap color-2'>
+    <div className='w-screen h-screen relative px-10 lz-animation bg-box-wrapper flex justify-center items-center flex-wrap color-2'>
+        <div className='absolute top-[160px] text-[30px] font-bold color-primary'>V/Are-System</div>
         <ActionTopRight isLoginOrisHomePage={true} />
         <div className='max-w-[705px] lzscroll   max-h-[550px] flex flex-col justify-center items-center'>
           <div className='wrapper-menu select-none  w-full h-full flex justify-center items-center flex-wrap gap-[21px]'>

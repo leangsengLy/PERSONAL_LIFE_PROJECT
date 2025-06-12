@@ -70,7 +70,9 @@
         "add_cover":"Add Cover",
         "select_color_that_you_want_to_input_your_system":"Select color that you want to input your system",
         "select_your_country_for_easy_to_use_our_system":"Select your country for easy to use in our system",
-        "my_account":"My Account"
+        "my_account":"My Account",
+        "branch":"Branch",
+        "add_branch":"Add Branch"
 
 
 }

@@ -16,7 +16,7 @@ function Cinema() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    
+     const tr = useSelector(state=>state.Language.translate)
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
@@ -401,10 +401,10 @@ function Cinema() {
             }
         })
     }
-    const btns = [{type:"Create",OnCreate:OnclickAdd}];
+    const btns = [{type:"Create",label:tr.add_branch,OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
-        <h1 className='text-[17px] font-bold'>Drink</h1>
+        <h1 className='text-[17px] font-bold'>{tr.branch}</h1>
             {/* <div className='flex justify-end mb-5'>
                 <LZButton typeButton="add" click={OnclickAdd} isIcon={true} label="Add Country"/>
             </div> */}

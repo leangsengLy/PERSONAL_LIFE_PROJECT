@@ -149,7 +149,7 @@ const onSignUpUser=()=>{
         noti.play();
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
-        navigate('/')
+        navigate('/branch')
         setTimeout(()=>{
           // //SystemSpeakByText(result.message,false)
         },400)

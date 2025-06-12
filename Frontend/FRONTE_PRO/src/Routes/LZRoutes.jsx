@@ -10,6 +10,7 @@ import ProfileIndex from '../Page/Profile/ProfileIndex.jsx'
 import {changeTheme} from '../Store/ThemeBackground/Theme.js'
 import { useDispatch } from 'react-redux'
 import { getLanguage } from '../Store/Language/Langauge.js'
+import LegendBranches from '../Component/ChooseBranch/LegendBranches.jsx'
 function LZRoutes() {
    const dispatch = useDispatch()
   useEffect(()=>{
@@ -22,6 +23,7 @@ function LZRoutes() {
   return (
     <>
         <Routes>
+            <Route path='/branch' Component={LegendBranches}/>
             <Route path='/' Component={HomeMenu}/>
             <Route path='/login' Component={Login}/>
             <Route path='/logout' Component={Login}/>
