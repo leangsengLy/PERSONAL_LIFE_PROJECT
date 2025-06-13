@@ -9,6 +9,7 @@ import ColorSystemStore from '../Store/Profile/ColorSystem/ColorSystem.js'
 import PreviewImageStore from '../Store/PreviewImage/PreviewImage.js'
 import ModalStore from '../Store/Modal/ModalStore.js'
 import PreviewIframeStore from '../Store/PreviewIFrame/PreviewIFrame.js'
+import ChooseBranchStore from '../Store/ChooseBranch/ChooseBranch.js'
 export const store = configureStore({
     reducer:{
         counterTest:SliceStore,
@@ -19,6 +20,7 @@ export const store = configureStore({
         User:UserLoginStore,
         ColorSystem:ColorSystemStore,
         PreviewImage: PreviewImageStore,
+        branch: ChooseBranchStore,
         Modal: ModalStore,
         Iframe: PreviewIframeStore,
     }

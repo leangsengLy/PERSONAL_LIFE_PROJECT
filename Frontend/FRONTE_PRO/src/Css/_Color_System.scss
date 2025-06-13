@@ -1,4 +1,4 @@
-@import url('_Color_Primary.scss');
+
 :root{
     --white-dark:#ffffff;
     --slate:#a7a7a72e;
@@ -229,4 +229,10 @@
 
 .bg-loading{
     background: var(--bg-loading) !important;
+}
+
+.hover-bd-primary{
+    &:hover{
+        border:1px solid var(--main-primary) !important;
+    }
 }

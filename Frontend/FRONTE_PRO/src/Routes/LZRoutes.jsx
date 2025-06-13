@@ -11,13 +11,16 @@ import {changeTheme} from '../Store/ThemeBackground/Theme.js'
 import { useDispatch } from 'react-redux'
 import { getLanguage } from '../Store/Language/Langauge.js'
 import LegendBranches from '../Component/ChooseBranch/LegendBranches.jsx'
+import { setBranch } from '../Store/ChooseBranch/ChooseBranch.js'
 function LZRoutes() {
    const dispatch = useDispatch()
   useEffect(()=>{
     console.log("yes")
     var isDark = localStorage.getItem("isDark");
     var language = localStorage.getItem("language");
+    var branch = localStorage.getItem("branch");
     dispatch(getLanguage(language))
+    dispatch(setBranch(JSON.parse(branch)))
     dispatch(changeTheme(isDark=="true"))
   },[])
   return (

@@ -14,8 +14,8 @@ function WebSectionContent() {
     const [duration,setDuration]=useState(false)
     const [SubMenuCode,SetSubMenuCode]=useState('')
     const t = useSelector(state=>state.Language.translate);
+    const branch = useSelector(state=>state.branch.branch);
     useEffect(()=>{
-      console.log("Param",param.subType)
         let data = StoreMenu.filter(val=>val.code==param.type);
         if(data.length>0) {
           SetMenus(data[0].SubMenu)
@@ -61,14 +61,17 @@ function WebSectionContent() {
   return (
     <div className={`wrapper-all-section lz-animation !max-w-[2200px] !mx-auto !my-0 bg-box-wrapper w-screen h-screen color-default grid ${collapse?`grid-cols-[80px_1fr]`:`grid-cols-[240px_1fr]`}`}>
             <div className={`left relative bg-navleft lz-animation px-4 py-6 flex flex-col gap-y-[10px] ${collapse?`overflow-hidden`:``}`}>
-                  <div className={`flex gap-x-2 items-center   mb-2 font-bold  `}>
+                  <div className={`flex gap-x-2 items-center   mb-2  `}>
                     <div onClick={onSwitchCollapse} className='w-[9px] h-[45px] animate-pulse absolute top-1/2 right-[10px] cursor-pointer -translate-y-1/2 -translate-x-1/2  rounded-full bg-primary'></div>
                     <div className=' flex gap-x-2'>
                         {/* <img src={img} alt="" className='max-w-[40px] max-h-[40px]' /> */}
                         <i className='ri-building-2-line text-[30px] color-primary'></i>
                     </div>
                     {
-                      !duration?(<><div className='flex w-[80%] justify-between items-center whitespace-nowrap'><h4>V/are System</h4></div></>):(<></>)
+                      !duration?(<><div className='flex w-[80%]  flex-col justify-between whitespace-nowrap'>
+                        <h4 className='font-bold '>V/are System</h4>
+                        <p className='text-[12px]'>{branch?.EnglishName}</p>
+                        </div></>):(<></>)
                     }
                     
                 </div>  

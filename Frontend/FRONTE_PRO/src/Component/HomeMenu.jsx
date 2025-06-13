@@ -5,11 +5,13 @@ import { Tooltip } from '@nextui-org/react'
 import { translateBy } from '../Util/globalUtils'
 import { SoundAudio } from '../Util/Sound'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 const HomeMenu = () => {
   const navigate = useNavigate()
  
   const submenu = useRef([]);
   const [drawSubMenu,setDrawSubMenu]  = useState(StoreMenu);
+  const currentBranch = useSelector(s=>s.branch.branch);
   const click = SoundAudio("click")
   const SelectMenu=(Id)=>{
     let find = StoreMenu.filter((val)=>val.Id==Id);
@@ -32,10 +34,16 @@ const HomeMenu = () => {
         navigate(`/web/${TitleName}/${list[0].SubMenu[0].Code}`);
       }else navigate(`/web/${TitleName}`)
   }
-  
+  const BackToBranch=()=>{
+    navigate('/branch')
+  }
   return (
     <div className='w-screen h-screen relative px-10 lz-animation bg-box-wrapper flex justify-center items-center flex-wrap color-2'>
-        <div className='absolute top-[160px] text-[30px] font-bold color-primary'>V/Are-System</div>
+        <div onClick={BackToBranch} className='absolute  flex   flex-col justify-center gap-y-5 items-center top-[160px] text-[30px] font-bold color-primary cursor-pointer'>
+            <div>V/Are-System </div>
+           <div className='px-4 py-2 border-slate opacity-70 transition-all ease-linear text-[15px] hover:opacity-100 rounded-xl'>
+            <i class="ri-database-2-fill color-primary text-[18px]"></i> {currentBranch?.EnglishName} </div>
+           </div>
         <ActionTopRight isLoginOrisHomePage={true} />
         <div className='max-w-[705px] lzscroll   max-h-[550px] flex flex-col justify-center items-center'>
           <div className='wrapper-menu select-none  w-full h-full flex justify-center items-center flex-wrap gap-[21px]'>
