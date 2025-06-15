@@ -150,6 +150,7 @@ const onSignUpUser=()=>{
         SetInShowSpin(false)
         ShowSnackbar({message:result.message,type:"success"})
         navigate('/branch')
+        GetInforUser()
         setTimeout(()=>{
           // //SystemSpeakByText(result.message,false)
         },400)
@@ -174,9 +175,7 @@ const onSignUpUser=()=>{
     })
     }
   }
-  useEffect(()=>{
-    GetInforUser();
-  },[userInfo])
+ 
   const GetInforUser=async()=>{
       HttpRequest({
                   url:'api/user_profile/info',

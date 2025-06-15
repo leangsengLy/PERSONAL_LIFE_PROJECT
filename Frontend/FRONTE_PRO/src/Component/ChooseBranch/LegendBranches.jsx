@@ -54,7 +54,7 @@ function LegendBranches() {
        
   return (
       <div className='w-screen h-screen relative px-10 lz-animation bg-box-wrapper flex justify-center items-center flex-wrap color-2'>
-        <ActionTopRight isLoginOrisHomePage={true} />
+        <ActionTopRight isLoginOrisHomePage={true} isChooseBranch={true}/>
         <div className='absolute top-[160px]  gap-y-1 flex flex-col items-center'>
             <p className='text-[25px]'>Branch of Legend</p>
             <p>Please select your current branch.</p>

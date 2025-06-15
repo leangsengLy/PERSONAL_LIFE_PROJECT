@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LZIconTheme from '../CircleAction/LZIconTheme'
 import LZIconLanguage from '../CircleAction/LZIconLanguage'
 import LZCircleAction from '../CircleAction/LZCircleAction'
@@ -8,9 +8,9 @@ import Lyzee from '../../../public/Image/Lyzee/lyzee.jpg';
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
 import { SoundAudio } from '../../Util/Sound'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LZGlobal from '../../Util/LZGlobal';
-function ActionTopRight({isLoginOrisHomePage}) {
+function ActionTopRight({isLoginOrisHomePage,isChooseBranch=false}) {
   const [isClickSetting,setIsClickSetting] = useState(false)
   const tr= useSelector(state=>state.Language.translate);
   const userInfo= useSelector(state=>state.User.useInfoDetail);
@@ -21,6 +21,7 @@ function ActionTopRight({isLoginOrisHomePage}) {
     dispatch(setIsShow(false))
     window.speechSynthesis.cancel();
   }
+ 
   const onOk=()=>{
     dispatch(setIsShow(false))
     sessionStorage.clear();
@@ -79,7 +80,8 @@ function ActionTopRight({isLoginOrisHomePage}) {
     <div className={`flex absolute  gap-x-3  ${isLoginOrisHomePage?`right-10 top-7`:`right-5 top-2`}`}>
         <LZIconLanguage isLoginOrisHomePage={isLoginOrisHomePage}/>
         <LZIconTheme  isLoginOrisHomePage={isLoginOrisHomePage}/>
-        <LZCircleAction isLoginOrisHomePage={isLoginOrisHomePage} img={user} onClick={onClickSetting} IsClickOnSetting={checkIsClickOnSetting} content={DropDownSetting}/>
+        {!isChooseBranch?  <LZCircleAction isLoginOrisHomePage={isLoginOrisHomePage} img={user} onClick={onClickSetting} IsClickOnSetting={checkIsClickOnSetting} content={DropDownSetting}/>:''}
+      
         
     </div>
   )

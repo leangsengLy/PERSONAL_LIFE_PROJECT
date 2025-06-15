@@ -32,28 +32,6 @@ export const StoreMenu = [
                 iconImage:inventory,
                 icon :"ri-database-line"
             },
-            {   
-                Code:"Employee",
-                Name:"បុគ្គលិក",
-                EnglishName:"Employee",
-                iconImage:user,
-                icon :"ri-group-fill"
-            },
-            {   
-                Code:"Salary",
-                Name:"ប្រាក់ខែ",
-                EnglishName:"Salary",
-                iconImage:office,
-                icon :"ri-money-dollar-box-fill"
-            },
-            {   
-                Name:"ទិន្នន័យ",
-                Code:"Data_a_month",
-                EnglishName:"Data a month",
-                iconImage:horizontal,
-                icon :"ri-line-chart-fill"
-            },
-            
           
         ]
     },
@@ -169,12 +147,12 @@ export const StoreMenu = [
                 EnglishName:"Drink",
                  icon :"ri-drinks-2-line"
             },
-             {   
-                Code:"bread",
-                Name:"នំប៏ុង",
-                EnglishName:"Bread",
-                 icon :"ri-bread-line"
-            },
+            //  {   
+            //     Code:"bread",
+            //     Name:"នំប៏ុង",
+            //     EnglishName:"Bread",
+            //      icon :"ri-bread-line"
+            // },
            
         ]
     },
@@ -210,6 +188,55 @@ export const StoreMenu = [
                 icon :"ri-film-line"
             },
             
+        ]
+    },
+     {
+        Id:6,
+        Name:"ធនធានមនុស្ស",
+        code:'HR',
+        EnglishName:"Human Resource",
+        iconImage:"ri-account-box-line",
+        SubMenu:[
+            {   
+                Code:"employee",
+                Name:"បុគ្កលិក",
+                EnglishName:"Employee",
+                icon :"ri-team-line"
+            },
+            {   
+                Code:"user_login",
+                Name:"អ្នកប្រើប្រាស់គណនី",
+                EnglishName:"User Account",
+                icon :"ri-admin-line"
+            },
+        ]
+    },
+     {
+        Id:6,
+        Name:"អាស្រ័យដ្ឋាន",
+        code:'address',
+        EnglishName:"Address",
+        iconImage:"ri-global-line",
+        SubMenu:[
+            {   
+                Code:"nation",
+                Name:"សញ្ខាតិ",
+                EnglishName:"Nationality",
+                icon :"ri-team-line"
+            },
+            {   
+                Code:"country",
+                Name:"ប្រទេស",
+                EnglishName:"Country",
+                icon :"ri-flag-line"
+            },
+            {   
+                Code:"province",
+                Name:"ខេត្ត",
+                EnglishName:"Province",
+                icon :"ri-road-map-line"
+            },
+           
         ]
     },
     

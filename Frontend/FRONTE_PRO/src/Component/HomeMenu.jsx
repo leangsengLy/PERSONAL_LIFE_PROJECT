@@ -42,7 +42,7 @@ const HomeMenu = () => {
         <div onClick={BackToBranch} className='absolute  flex   flex-col justify-center gap-y-5 items-center top-[160px] text-[30px] font-bold color-primary cursor-pointer'>
             <div>V/Are-System </div>
            <div className='px-4 py-2 border-slate opacity-70 transition-all ease-linear text-[15px] hover:opacity-100 rounded-xl'>
-            <i class="ri-database-2-fill color-primary text-[18px]"></i> {currentBranch?.EnglishName} </div>
+            <i class="ri-database-2-fill color-primary text-[18px]"></i> {translateBy({en:currentBranch?.EnglishName,km:currentBranch?.Name})} </div>
            </div>
         <ActionTopRight isLoginOrisHomePage={true} />
         <div className='max-w-[705px] lzscroll   max-h-[550px] flex flex-col justify-center items-center'>
