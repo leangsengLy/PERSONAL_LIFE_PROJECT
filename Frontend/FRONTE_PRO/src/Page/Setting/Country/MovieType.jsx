@@ -11,7 +11,7 @@ import LZIcon from '../../../Component/Icon/LZIcon';
 import {useNavigate} from 'react-router-dom';
 import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-function Country() {
+function MovieType() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -279,4 +279,4 @@ function Country() {
   )
 }
 
-export default Country
+export default MovieType

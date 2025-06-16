@@ -219,12 +219,6 @@ export const StoreMenu = [
         iconImage:"ri-global-line",
         SubMenu:[
             {   
-                Code:"nation",
-                Name:"សញ្ខាតិ",
-                EnglishName:"Nationality",
-                icon :"ri-team-line"
-            },
-            {   
                 Code:"country",
                 Name:"ប្រទេស",
                 EnglishName:"Country",
@@ -235,6 +229,12 @@ export const StoreMenu = [
                 Name:"ខេត្ត",
                 EnglishName:"Province",
                 icon :"ri-road-map-line"
+            },
+             {   
+                Code:"nation",
+                Name:"សញ្ខាតិ",
+                EnglishName:"Nationality",
+                icon :"ri-team-line"
             },
            
         ]
