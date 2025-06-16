@@ -355,7 +355,7 @@ function Country() {
                 data={dataInForm} 
                 reDrawData={{...DrawData,PathImage:DrawData.ImagePath}} 
                 isCreate={isCreate} 
-                propDrawer={{open:isShowModal,label:`${isCreate?t.add_drink:t.edit_drink}`}} 
+                propDrawer={{open:isShowModal,label:`${isCreate?t.add_country:t.edit_country}`}} 
                 fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}
             />
         

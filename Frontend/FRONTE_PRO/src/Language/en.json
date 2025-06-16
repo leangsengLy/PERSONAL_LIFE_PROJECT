@@ -72,7 +72,9 @@
         "select_your_country_for_easy_to_use_our_system":"Select your country for easy to use in our system",
         "my_account":"My Account",
         "branch":"Branch",
-        "add_branch":"Add Branch"
+        "add_branch":"Add Branch",
+        "add_country":"Add Country",
+        "edit_country":"Edit Country"
 
 
 }

@@ -72,5 +72,7 @@
          "select_your_country_for_easy_to_use_our_system":"សូមជ្រើសរើសភាសារបស់អ្នកដើម្បីមានភាពងាយស្រួលក្នុងការប្រើប្រាស់",
          "my_account":"គណនីរបស់ខ្ញំុ",
          "branch":"សាខា",
-         "add_branch":"បង្កើតសាខា"
+         "add_branch":"បង្កើតសាខា",
+         "add_country":"បង្កើតប្រទេស",
+        "edit_country":"កែប្រែប្រទេស"
 }
