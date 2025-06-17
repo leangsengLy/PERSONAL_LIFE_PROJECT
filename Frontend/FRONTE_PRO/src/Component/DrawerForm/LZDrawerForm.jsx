@@ -10,11 +10,6 @@ import { HttpRequest } from '../../Global/API_HTTP/http'
 import { ShowSnackbar } from '../../Util/globalUtils'
 
 function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
-    // console.log(ui)
-    // console.log(fn)
-    // console.log(data)
-    // console.log(propDrawer)
-    
     const dispatch = useDispatch()
     const UploadFile = useRef(null);
     const [isCreateNew,isSetCreateNew] = useState(false);
@@ -184,6 +179,10 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         }
         
     }
+    useEffect(()=>{
+        console.log("=> ",propDrawer.open)
+        if(propDrawer.open)setIsExistedCode(false)
+    },[propDrawer.open])
   return (
     <Drawer  anchor={ui?.placement??'right'}  open={propDrawer.open??false}>
         <div className={`${ui.width??`w-[370px]`} px-4 py-3`}>
@@ -201,7 +200,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                     value={GetData[val.name]}
                                     
                                     isDisabled={!isCreate?val.isDisabled:false}
-                                    errorMessage={(isExistedCode && val.isCheckCode) || val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
+                                    errorMessage={(isExistedCode && val.isCheckCode) || val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`${isExistedCode?`Code already existed!`:`Error input ${val.name}!`}`:``} 
                                     isInvalid={(isExistedCode && val.isCheckCode ) ||  val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
                                     onChange={(e)=>{
                                         EventInputForm(e)

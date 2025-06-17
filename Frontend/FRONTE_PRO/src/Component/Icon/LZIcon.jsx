@@ -21,7 +21,7 @@ function LZIcon({typeIcon,onClickIcon,isRounded,bgColor}) {
     }
     else if(typeIcon=="view") {
         icon=<i className=" pi pi-eye text-white"></i>;
-        color=bgColor==undefined?"warning":bgColor;
+        color=bgColor==undefined?"primary":bgColor;
     }
     else if(typeIcon=="cancel") {
         icon=<i className=" pi pi-times text-[#616161]"></i>;
@@ -29,7 +29,7 @@ function LZIcon({typeIcon,onClickIcon,isRounded,bgColor}) {
         color=bgColor==undefined?"default":bgColor;
     }
   return (
-    <Button isIconOnly={true}  color={color} className={`${isRounded?`rounded-full transition-all ease-linear`:``}`} size="sm"  onClick={onClickIcon}  variant={isRounded?`light`:`solid`}>{icon}</Button>
+    <Button isIconOnly={true}  color={color}   className={`${isRounded?`rounded-full transition-all ease-linear`:``}  `} size="sm"  onClick={onClickIcon}   variant={isRounded?`light`:`solid`}>{icon}</Button>
   )
 }
 

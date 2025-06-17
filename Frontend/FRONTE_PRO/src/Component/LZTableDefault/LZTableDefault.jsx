@@ -7,12 +7,17 @@ import LZSearch from './LZSearch';
 import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
 import LZButton from '../Button/LZButton';
+import LZPopover from '../Popover/LZPopover';
+import { useSelector } from 'react-redux';
+import LZGlobal from '../../Util/LZGlobal';
 // import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,totalRecord}) {
     const tableRef = useRef(null);
     const param = useParams();
     const blogFilterTop = useRef();
+    const [isClearChip,setIsClearChip]  = useState(false);
+    const tr = useSelector(state=>state.Language.translate)
     const TableDefault = useRef();
     const [FilterData,SetFilterdata] = useState({
         Record:10,
@@ -29,6 +34,14 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,to
         console.log(key)
        
     }
+     const onApply=(data)=>{
+            setIsClearChip(false)
+            // setMovieTypeId(data.MovieTypeId.Id)
+            // setChips(val=>{
+            //     return [{label:LZGlobal.translate({en:data.MovieTypeId.EnglishName,km:data.MovieTypeId.Name}),value:data.MovieTypeId.Id}]
+            // })
+           
+         }
     const onSearching=(text)=>{
         SetFilterdata(val=>{
             return {...val,Search:text}
@@ -44,6 +57,42 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,to
             return {...val,Page:page}
         })
     }
+    const itemsFilter = [
+        {type:"select",
+                required:true,
+                name:"MovieTypeId",
+                label:tr.movie_type,
+                options:{
+                    isMulti:false,
+                    api:{
+                        url:"/api/movie_type/list",
+                        method:"post",
+                        data:{  
+                                search:"",
+                                pages:1,
+                                records:100
+                        },
+                        key:"Id",
+                        value:LZGlobal.translate({en:"EnglishName",km:"Name"})
+                    },
+                    startContent:(item)=>{
+                        return (<>
+                                </>)
+                    },
+                    renderValue:(items,list)=>{
+                        
+                            var item = list.find((val)=>val.key==items[0].key)
+                            return (
+                                <>
+                                    <div className='flex gap-x-2 items-center' >
+                                        <span className='text-[13px] text-black'>{item[LZGlobal.translate({en:"EnglishName",km:"Name"})]}</span>
+                                    </div>
+                                </>
+                            );
+                        }
+                }
+            },
+    ]
     // useEffect(() => {
     //     // Example: Initialize plugin after rendering
     //     console.log(tableRef.current)
@@ -67,8 +116,9 @@ function LZTableDefault({column=[],data=[],OnChangeFilter,ChipperContent,Btns,to
         <div className='grid gap-y-3 mb-4 test-offset'>
             <div className='flex w-full mt-[15px]'>
                 <div ref={blogFilterTop} className='w-full flex items-center'>
-                <LZSelectRecord SelectRecord ={onSelectRecord}/>
-                <LZSearch onSearching={onSearching}/>
+                    <div className='mr-2'><LZPopover  items={itemsFilter} isClearChip={isClearChip} onApply={onApply}/></div>
+                    <LZSelectRecord SelectRecord ={onSelectRecord}/>
+                    <LZSearch onSearching={onSearching}/>
                 </div>
                 <div className='flex gap-x-2'>
                     {

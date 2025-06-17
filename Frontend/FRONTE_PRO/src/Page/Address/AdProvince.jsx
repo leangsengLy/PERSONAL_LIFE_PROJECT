@@ -16,13 +16,15 @@ function AdProvince() {
     const t = useSelector(state=>state.Language.translate)
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    
+      const [isClearChip,setIsClearChip]  = useState(false);
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
     const [Filter,setFilter]=useState({})
     const [DrawData,setDrawData]=useState({})
     const [data,SetData] = useState([])
+    const [Country,setCountry] = useState([])
+    const [CountryId,setCountryId] = useState([])
     const [Cinemas,SetCinema] = useState([])
     const [CinemaId,setCinemaId] = useState(0)
     const EditCountry=(data)=>{
@@ -31,8 +33,9 @@ function AdProvince() {
         setIsShowModal(true)
     }
     const ViewDetail=(data)=>{
-        navigate(`/web/setting/country/province?Country=${btoa(EncriptObject(data))}`)
+        console.log(data)
     }
+   
     const DeleteCountry=(data)=>{
         dispatch(setIsShow(true))
         dispatch(setModalConfirm({
@@ -65,6 +68,22 @@ function AdProvince() {
         e.target.src= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500";
     }
     const columnData=[
+        {
+            title:t.photo,
+            data:"Label",
+            width: "50px" ,
+            className:"all",
+                 isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='w-[35px] h-[35px] rounded-full bg-black overflow-hidden border p-[2px]'>
+                            <img src={`http://localhost:8080`+Country.find(s=>s.Id==data.CountryId)?.ImagePath} alt="" onError={OnerrorImage}  className='preview-image rounded-full w-full h-full object-cover'/>
+                        </div>
+                    </>
+                )
+            }
+        },
         {
             title:t.name,
             data:"Label",
@@ -136,6 +155,7 @@ function AdProvince() {
                 return (
                     <>
                         <div className='text-red-400 flex gap-x-2'>
+                            <LZIcon  typeIcon="view" onClickIcon={()=>{ViewDetail(data)}}/>
                             <LZIcon  typeIcon="edit" onClickIcon={()=>{EditCountry(data)}}/>
                             <LZIcon  typeIcon="delete" onClickIcon={()=>{DeleteCountry(data)}}/>
                         </div>
@@ -182,6 +202,7 @@ function AdProvince() {
     useEffect(()=>{
         getListCinema();
          getList();
+         GetCountry();
     },[])
     const getListCinema = async ()=>{
         await  HttpRequest({
@@ -211,6 +232,25 @@ function AdProvince() {
             },
             success:(result)=>{
                 SetData(result)
+            },
+            error:(error)=>{
+                console.log(error)
+            }
+        })
+    }
+    const GetCountry=async()=>{
+        console.log("call list country")
+       await  HttpRequest({
+            url:"/api/country/list",
+            method:'post',
+            data:{
+                search:"",
+                pages:0,
+                records:0,
+            },
+            success:(result)=>{
+                console.log("list country",result)
+                setCountry(result)
             },
             error:(error)=>{
                 console.log(error)
@@ -249,13 +289,17 @@ function AdProvince() {
         setIsCreate(true)   
         setIsShowModal(true)
     }
+
     const dataInForm = [
-        {
-            label:t.code,
-            name:"Code",
+         {
+            label:t.country,
+            name:"CountryId",
             isRequired:true,
-            isDisabled:true,
-            type:"text",
+            type:"select",
+            data:  Country.map((val)=>({...val,PathImage:val.ImagePath,key:val.EnglishName,label:val.EnglishName})),
+            onSelect:(data)=>{
+                setCountryId(data);
+            }
         },
         {
             label:t.name,
@@ -280,7 +324,7 @@ function AdProvince() {
             method:"Post",
             data:{
                 name:data.Name,
-                code:data.Code,
+                countryId:CountryId,
                 englishName:data.EnglishName,
                 createBy:"Lyzee",
                 database:"LZ",  

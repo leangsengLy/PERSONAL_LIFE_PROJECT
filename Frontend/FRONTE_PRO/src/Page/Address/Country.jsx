@@ -148,10 +148,12 @@ function Country() {
             renderTag:(data)=>{
                 return (
                     <>
-                        <div>
+                        {
+                            data.UpdateBy!=null?<div>
                             <p className='text-[14px]'>{data.UpdateBy}</p>
                             <p className='text-[13px]'>{format(new Date(data.UpdateDate), 'MMMM dd,yyyy')}</p>
-                        </div>
+                        </div>:<></>
+                        }
                     </>
                 )
             }
@@ -327,8 +329,18 @@ function Country() {
     }
     
     const SaveData=async (data)=>{
-        console.log(data)
-        var image = await GetBase64ByImage(data.File)
+        console.log(data.File)
+        var fileUpload = {};
+        if(data.File!==undefined){
+            var image = await GetBase64ByImage(data.File)
+            fileUpload ={
+                    fileName: image.FileName,
+                    fileType: image.FileType,
+                    base64Data:image.Base64,
+                }
+        }
+        // if(data.File)
+        
        await HttpRequest({
             url:"api/country/create",
             method:"Post",
@@ -338,18 +350,14 @@ function Country() {
                 englishName:data.EnglishName,
                 createBy:"Lyzee",
                 database:"LZ",  
-                uploadFileDataModel:{
-                    fileName: image.FileName,
-                    fileType: image.FileType,
-                    base64Data:image.Base64,
-                }
+                uploadFileDataModel:fileUpload
             },
             success:(result)=>{
                 getList();
                 setIsShowModal(false)
             },
             error:(error)=>{
-                ShowSnackbar({message:error.message,type:"error"})
+                ShowSnackbar({message:error.data.detail,type:"error"})
             }
         })
     }
