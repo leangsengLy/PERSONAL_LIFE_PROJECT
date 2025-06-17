@@ -296,6 +296,14 @@ function Country() {
             isRequired:true,
             isDisabled:true,
             type:"text",
+            isCheckCode:true,
+            checkCode:{
+                url:"api/country/check_code",
+                param:{
+                    field:"id",
+                    db:"LZ",
+                }
+            }
         },
         {
             label:t.name,

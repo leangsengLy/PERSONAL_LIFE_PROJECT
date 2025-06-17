@@ -5,7 +5,9 @@ import LZIcon from '../Icon/LZIcon'
 import LZButton from '../Button/LZButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm'
-import { set } from 'date-fns'
+import { isExists, set } from 'date-fns'
+import { HttpRequest } from '../../Global/API_HTTP/http'
+import { ShowSnackbar } from '../../Util/globalUtils'
 
 function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     // console.log(ui)
@@ -16,6 +18,7 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
     const dispatch = useDispatch()
     const UploadFile = useRef(null);
     const [isCreateNew,isSetCreateNew] = useState(false);
+    const [isExistedCode,setIsExistedCode] = useState(false);
     const [GetData,setGetData]=useState([]);
     const [selectKey,setSelectKey]=useState([]);
     const [Image,setImage] = useState(null)
@@ -164,6 +167,23 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
             fn.onClose();
         }
     }
+    const checkExistedCode=async(value,url,param)=>{
+        console.log(url)
+        console.log(param)
+        if(value!=""){
+            await HttpRequest({
+                    url:`${url}?code=${value}&id=0&database=LZ`,
+                    method:"get",
+                    success:(result)=>{
+                        setIsExistedCode(result)
+                    },
+                    error:(error)=>{
+                        ShowSnackbar({message:error.message,type:"error"})
+                    }
+                })
+        }
+        
+    }
   return (
     <Drawer  anchor={ui?.placement??'right'}  open={propDrawer.open??false}>
         <div className={`${ui.width??`w-[370px]`} px-4 py-3`}>
@@ -181,9 +201,14 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
                                     value={GetData[val.name]}
                                     
                                     isDisabled={!isCreate?val.isDisabled:false}
-                                    errorMessage={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
-                                    isInvalid={val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
-                                    onChange={EventInputForm} 
+                                    errorMessage={(isExistedCode && val.isCheckCode) || val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)?`Error input ${val.name}!`:``} 
+                                    isInvalid={(isExistedCode && val.isCheckCode ) ||  val.isRequired && IsFirstInput[val.name] && (GetData[val.name]=='' || GetData[val.name] == undefined)} 
+                                    onChange={(e)=>{
+                                        EventInputForm(e)
+                                        if(val.checkCode.url!==""){
+                                            checkExistedCode(e.target.value,val.checkCode.url,val.checkCode.param)
+                                        }
+                                    }} 
                                     labelPlacement="inside" 
                                     className='!rounded-full' 
                                     name={val.name}  
