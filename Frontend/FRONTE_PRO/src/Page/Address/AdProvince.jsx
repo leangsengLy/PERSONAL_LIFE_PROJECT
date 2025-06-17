@@ -16,7 +16,7 @@ function AdProvince() {
     const t = useSelector(state=>state.Language.translate)
     const dispatch = useDispatch();
     const navigate = useNavigate()
-      const [isClearChip,setIsClearChip]  = useState(false);
+
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
