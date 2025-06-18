@@ -25,6 +25,7 @@ function AdProvince() {
     const [data,SetData] = useState([])
     const [Country,setCountry] = useState([])
     const [CountryId,setCountryId] = useState([])
+    const [FilterCountry,setFilterCountry] = useState([])
     const [Cinemas,SetCinema] = useState([])
     const [CinemaId,setCinemaId] = useState(0)
     const EditCountry=(data)=>{
@@ -64,6 +65,10 @@ function AdProvince() {
         }))
         
     }
+
+    useEffect(()=>{
+        getList()
+    },[FilterCountry])
     const OnerrorImage=(e)=>{
         e.target.src= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500";
     }
@@ -222,12 +227,14 @@ function AdProvince() {
         })
     }
      const getList=async()=>{
+        console.log("get list with filter",FilterCountry)
        await  HttpRequest({
             url:"/api/province/list",
             method:'post',
             data:{
                 search:Filter.Search,
                 pages:Filter.Page,
+                countryId:FilterCountry?.Country?.Id||0,
                 records:Filter.Record,
             },
             success:(result)=>{
@@ -289,6 +296,10 @@ function AdProvince() {
         setIsCreate(true)   
         setIsShowModal(true)
     }
+    const onFilter=(filter)=>{
+        if(filter==0) setFilterCountry({Country:{Id:0}});
+        else setFilterCountry(filter)
+    }
 
     const dataInForm = [
          {
@@ -342,7 +353,7 @@ function AdProvince() {
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
         <h1 className='text-[17px] font-bold'>{t.country}</h1>
-            <LZTableDefault column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
+            <LZTableDefault onFilter={onFilter} isHasFilter={true}  column={columnData} filter={{url:"api/country/list",}} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 
