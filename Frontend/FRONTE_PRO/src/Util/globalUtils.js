@@ -81,3 +81,11 @@ export const decryptObject = (encryptedText) => {
       return null;
     }
   };
+
+  export const convertDataURL =(data)=>{
+    return btoa(JSON.stringify(data));
+  }
+  export const DecodeConvertDataURL =(data)=>{
+    
+    return btoa(JSON.stringify(data));
+  }

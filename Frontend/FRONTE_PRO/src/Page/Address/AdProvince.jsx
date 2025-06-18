@@ -7,7 +7,7 @@ import { decryptObject, EncriptObject, ShowSnackbar } from '../../Util/globalUti
 import { setIsShow, setModalConfirm } from '../../Store/Confirm/Confirm';
 import LZTableDefault from '../../Component/LZTableDefault/LZTableDefault';
 import LZIcon from '../../Component/Icon/LZIcon';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate,createSearchParams } from 'react-router-dom';
 import {format} from 'date-fns';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 
@@ -33,8 +33,20 @@ function AdProvince() {
         setDrawData(data)
         setIsShowModal(true)
     }
+    function safeBase64Encode(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+    const safeBase64Decode=(base64) =>{
+        return decodeURIComponent(escape(atob(base64)));
+    }
     const ViewDetail=(data)=>{
         console.log(data)
+        const json = JSON.stringify(data);
+        const encoded = safeBase64Encode(json);
+        console.log("Encoded:", encoded);
+        const decoded = JSON.parse(safeBase64Decode(encoded));
+        console.log(decoded)
+        navigate(`/web/address/province/district?Info=${btoa(decoded)}`)
     }
    
     const DeleteCountry=(data)=>{

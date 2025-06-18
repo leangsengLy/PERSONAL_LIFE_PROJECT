@@ -10,6 +10,7 @@ import Test from '../../Page/Setting/Test';
 import Hall from '../../Page/Setting/Hall';
 import AdProvince from '../../Page/Address/ADProvince';
 import Country from '../../Page/Address/Country';
+import District from '../../Page/Address/Province/District';
 
 function SubMenuContent() {
 const param = useParams();
@@ -17,7 +18,9 @@ const renderFile = param.subType;
 const subChild = param.subChild;
 let render = "";
 if(Object.keys(param).includes('subChild')){
+  console.log("subChild",subChild)
   if(subChild=="province") render = <Province/>;
+  else if(subChild=="district") render = <District/>;
 }else{
   if(renderFile=="movie_type") render = <MovieType/>;
   if(renderFile=="offer") render = <Offers/>;

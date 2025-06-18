@@ -191,7 +191,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,ChipperConten
                     
             </TableBody>
         </Table>
-        <LZPagination SelectPage={onSelectPage} totalRecord={totalRecord}/>
+        <LZPagination SelectPage={onSelectPage} totalRecord={totalRecord} record={FilterData.Record}/>
         </div>
     </div>
   )
