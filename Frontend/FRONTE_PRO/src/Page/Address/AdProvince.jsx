@@ -33,20 +33,16 @@ function AdProvince() {
         setDrawData(data)
         setIsShowModal(true)
     }
-    function safeBase64Encode(str) {
-        return btoa(unescape(encodeURIComponent(str)));
-    }
-    const safeBase64Decode=(base64) =>{
-        return decodeURIComponent(escape(atob(base64)));
+    function b64EncodeUnicode(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+            String.fromCharCode('0x' + p1)
+        ))
+        .replace(/\+/g, '-') // Make URL-safe
+        .replace(/\//g, '_')
+        .replace(/=+$/, ''); // Remove trailing '='
     }
     const ViewDetail=(data)=>{
-        console.log(data)
-        const json = JSON.stringify(data);
-        const encoded = safeBase64Encode(json);
-        console.log("Encoded:", encoded);
-        const decoded = JSON.parse(safeBase64Decode(encoded));
-        console.log(decoded)
-        navigate(`/web/address/province/district?Info=${btoa(decoded)}`)
+        navigate(`/web/address/province/district?Info=${b64EncodeUnicode(JSON.stringify(data))}`);
     }
    
     const DeleteCountry=(data)=>{
