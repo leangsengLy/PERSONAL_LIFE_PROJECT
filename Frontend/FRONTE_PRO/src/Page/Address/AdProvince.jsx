@@ -33,16 +33,39 @@ function AdProvince() {
         setDrawData(data)
         setIsShowModal(true)
     }
-    function b64EncodeUnicode(str) {
-        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
-            String.fromCharCode('0x' + p1)
-        ))
-        .replace(/\+/g, '-') // Make URL-safe
-        .replace(/\//g, '_')
-        .replace(/=+$/, ''); // Remove trailing '='
+  function b64EncodeUnicode(str) {
+    console.log(btoa(
+        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+            String.fromCharCode(parseInt(p1, 16))
+        )
+    )
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, ''));
+    return btoa(
+        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+            String.fromCharCode(parseInt(p1, 16))
+        )
+    )
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+function b64DecodeUnicode(str) {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (str.length % 4) {
+        str += '=';
     }
+    const decoded = atob(str);
+    return decodeURIComponent(
+        decoded.split('').map(c =>
+            '%' + c.charCodeAt(0).toString(16).padStart(2, '0')
+        ).join('')
+    );
+}
     const ViewDetail=(data)=>{
-        navigate(`/web/address/province/district?Info=${b64EncodeUnicode(JSON.stringify(data))}`);
+         const encoded = b64EncodeUnicode(JSON.stringify(data));
+        navigate(`/web/address/province/district?Info=${encoded}`);
     }
    
     const DeleteCountry=(data)=>{
