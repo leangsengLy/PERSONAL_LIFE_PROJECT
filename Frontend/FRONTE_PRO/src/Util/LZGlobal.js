@@ -8,6 +8,7 @@ import defaultUserImage from '../../public/Image/DefaultImage/User.jpg';
 import defaultUserImage2 from '../../public/Image/DefaultImage/user2.png';
 import defaultNoBackground1 from '../../public/Image/DefaultImage/no-bg.png';
 import defaultNoBackground2 from '../../public/Image/DefaultImage/noBackground.jpg';
+import {QueryParam} from './QueryParam';
 export default  {
     DecodeToken : DecodeToken,
     GetBase64ByImage : GetBase64ByImage,
@@ -16,6 +17,7 @@ export default  {
     convertTime : ConvertMnToHour,
     NodataImage :NoData,
     DefaultImage:DefaultImage,
+    QueryParam:QueryParam,
     ComingSoon : ComingSoon,
     UserDefaultImage : defaultUserImage,
     UserDefaultImage2 : defaultUserImage2,

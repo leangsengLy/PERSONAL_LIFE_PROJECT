@@ -10,6 +10,7 @@ import LZIcon from '../../Component/Icon/LZIcon';
 import {useNavigate,createSearchParams } from 'react-router-dom';
 import {format} from 'date-fns';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
+import LZGlobal from '../../Util/LZGlobal';
 
 function AdProvince() {
     const dataList = useSelector((state)=>state.Country.dataList)
@@ -34,18 +35,10 @@ function AdProvince() {
         setIsShowModal(true)
     }
   function b64EncodeUnicode(str) {
-    console.log(btoa(
-        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
-            String.fromCharCode(parseInt(p1, 16))
-        )
-    )
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, ''));
     return btoa(
-        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+        unescape(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
             String.fromCharCode(parseInt(p1, 16))
-        )
+        ))
     )
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
@@ -64,8 +57,9 @@ function b64DecodeUnicode(str) {
     );
 }
     const ViewDetail=(data)=>{
-         const encoded = b64EncodeUnicode(JSON.stringify(data));
-        navigate(`/web/address/province/district?Info=${encoded}`);
+      const base64String = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+      const urlSafeBase64String = encodeURIComponent(base64String);
+    navigate(`/web/address/province/district?Info=${urlSafeBase64String}`);
     }
    
     const DeleteCountry=(data)=>{

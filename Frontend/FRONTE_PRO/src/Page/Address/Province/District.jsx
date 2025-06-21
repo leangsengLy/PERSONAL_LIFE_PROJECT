@@ -6,10 +6,12 @@ import { useSelector } from 'react-redux';
 function District() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-const tr = useSelector(state=>state.Language.translate);
-  const decode = JSON.parse(atob(params.get('Info')))
+  const tr = useSelector(state=>state.Language.translate);
   useEffect(()=>{
-    console.log('encode data =>',decode)
+    //Decode by queryString
+      const jsonStringDecoded = decodeURIComponent(escape(atob(params.get('Info'))));
+    const jsonObjectDecoded = JSON.parse(jsonStringDecoded);
+    console.log('encode data =>',jsonObjectDecoded)
   },[])
   return (
     <div className='h-full'>
