@@ -180,7 +180,6 @@ function LZDrawerForm({ui,fn,propDrawer,data,reDrawData,isCreate}) {
         
     }
     useEffect(()=>{
-        console.log("=> ",propDrawer.open)
         if(propDrawer.open)setIsExistedCode(false)
     },[propDrawer.open])
   return (

@@ -6,7 +6,6 @@ import 'datatables.net-select-dt';
 import $ from 'jquery';
 DataTable.use(DT);
 function LzDataTable({columns,data}) {
-    console.log(data)
     useEffect(()=>{
         $(".dt-input").attr("placeholder","Searching...")
         $("div.dt-container div.dt-layout-full").addClass("lzscroll")

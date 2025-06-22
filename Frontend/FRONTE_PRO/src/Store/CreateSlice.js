@@ -6,7 +6,6 @@ export const SliceStore = createSlice({
     },
     reducers:{
         Sumcount:(state,action)=>{
-            console.log(action)
             state.value = state.value + action.payload;
         }
     },

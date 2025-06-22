@@ -23,7 +23,6 @@ const LZIconLanguage = ({isLoginOrisHomePage}) => {
         dispatch(getLanguage(lang))
       },[])
     const OnclickCountry=(code)=>{
-        console.log(code)
         click.play();
         dispatch(getLanguage(code))
       }

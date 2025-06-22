@@ -42,7 +42,6 @@ const ColorSystemStore = createSlice({
     },
     reducers:{
         setColorSystem:(state,action)=>{
-            console.log("ColorSystem => ",action.payload);
             state.selectColor = action.payload;
         }
     }
