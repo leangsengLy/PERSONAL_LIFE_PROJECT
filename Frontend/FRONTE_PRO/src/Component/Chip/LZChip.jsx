@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 function LZChip({items,onClose}) {
   const onCloseChip = (item) => {
     if(onClose) onClose(item)
-    console.log("onCloseChip", item);
   }
   return (
     <div className="flex gap-4">

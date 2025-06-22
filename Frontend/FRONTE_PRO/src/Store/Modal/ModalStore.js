@@ -14,7 +14,6 @@ const ModalStore = createSlice({
     },
     reducers:{
         setModal:(state,action)=>{
-            console.log(action)
             state.modal = action.payload;
         },
         setIsShowModal:(state,action)=>{

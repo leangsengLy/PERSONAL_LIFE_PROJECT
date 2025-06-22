@@ -10,18 +10,21 @@ import PreviewImageStore from '../Store/PreviewImage/PreviewImage.js'
 import ModalStore from '../Store/Modal/ModalStore.js'
 import PreviewIframeStore from '../Store/PreviewIFrame/PreviewIFrame.js'
 import ChooseBranchStore from '../Store/ChooseBranch/ChooseBranch.js'
+import ProvinceStore from '../Store/Page/Address/Province/Province.js'
 export const store = configureStore({
     reducer:{
         counterTest:SliceStore,
         Theme:StoreTheme,
         Language:StoreLanguage,
         Confirm:ConfirmStore,
-        Country:CountryStore,
         User:UserLoginStore,
         ColorSystem:ColorSystemStore,
         PreviewImage: PreviewImageStore,
         branch: ChooseBranchStore,
         Modal: ModalStore,
         Iframe: PreviewIframeStore,
+        //Page
+        Country:CountryStore,
+        province:ProvinceStore,
     }
 })

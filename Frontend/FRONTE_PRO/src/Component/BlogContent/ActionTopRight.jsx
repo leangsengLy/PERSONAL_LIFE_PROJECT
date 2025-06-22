@@ -29,7 +29,6 @@ function ActionTopRight({isLoginOrisHomePage,isChooseBranch=false}) {
     window.location.href="/logout"
   }
   const ClickOnProfile=()=>{
-    console.log("viewing the profile");
     navigate('/profile')
   }
   const clickOnHomePage=()=>{

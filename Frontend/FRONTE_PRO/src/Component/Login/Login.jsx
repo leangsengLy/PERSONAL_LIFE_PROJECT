@@ -49,7 +49,6 @@ const Login = () => {
   
   const onClickCreateAccount=()=>{
     SetIsCreateAccount(!isCreateAccount)
-    console.log(isCreateAccount)
     if(!isCreateAccount){
       setInpuDataCreate(val=>{
         return {...val,HintPassword:'',Password:'',Username:''}
@@ -141,7 +140,6 @@ const onSignUpUser=()=>{
         email:inputData.Username,
       },
       success:(result)=>{
-        console.log(result)
         localStorage.setItem("userInfo",JSON.stringify(result))
         const getToken = DecodeToken(result.token);
         setCockieOnWeb(getToken,result.token)
@@ -156,7 +154,6 @@ const onSignUpUser=()=>{
         },400)
      },
      error:(err)=>{
-      console.log("error",err)
       if(err==undefined || isEmpty(err)){
         fail.play();
         SetInShowSpin(false)
@@ -185,7 +182,6 @@ const onSignUpUser=()=>{
                   method:"post",
                   success:(success)=>{
                     dispatch(setUserInfoDetail(success))
-                    console.log("Result",success)
                       // setProfileInfo(val=>(
                       //   {
                       //     ...val,
@@ -216,7 +212,6 @@ const onSignUpUser=()=>{
 
   }
   const inputValueCreateAccount=(e)=>{
-    console.log(e)
     if(e.target.name=="Username" && e.target.value=="") isFirstCreateUser.current=false;
     if(e.target.name=="Password" && e.target.value=="") isFirstCreatePw.current=false;
     if(e.target.name=="HintPassword" && e.target.value=="") isFirstCreateHint.current=false;

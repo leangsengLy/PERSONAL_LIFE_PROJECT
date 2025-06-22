@@ -19,7 +19,6 @@ function LZInput({isDisabled,isRequired,isValid,label,type,isSubmit,onChange,val
             setIsValidData(true)
             if(onCheckError) onCheckError("error");
         }else{
-            console.log("")
         }
     },[isSubmit])
     useEffect(()=>{

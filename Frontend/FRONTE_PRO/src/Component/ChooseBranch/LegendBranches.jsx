@@ -27,11 +27,9 @@ function LegendBranches() {
                     records:Filter.Record,
                 },
                 success:(result)=>{
-                    console.log(result)
                     setData(result)
                 },
                 error:(error)=>{
-                    console.log(error)
                 }
             })
         }

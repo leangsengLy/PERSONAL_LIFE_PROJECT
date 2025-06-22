@@ -52,11 +52,9 @@ export const IsValidUserName=(text)=>{
 }
 
 export const GetURLPreviewIframe =(path)=>{
-    console.log(path);
         if(path !==undefined){
             const videoId = path.split('v=')[1]?.split('&')[0]; // Extracts 'lhzd3gwnVP4'
                 const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                console.log(embedUrl);
                 return embedUrl;
         }
 }
@@ -77,7 +75,6 @@ export const decryptObject = (encryptedText) => {
       // Parse the JSON string back to an object
       return JSON.parse(decryptedJson);
     } catch (error) {
-      console.error('Error decrypting:', error);
       return null;
     }
   };

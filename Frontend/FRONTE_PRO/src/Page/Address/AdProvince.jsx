@@ -11,10 +11,12 @@ import {useNavigate,createSearchParams } from 'react-router-dom';
 import {format} from 'date-fns';
 import { GetBase64ByImage } from '../../Util/GetBase64ByImage';
 import LZGlobal from '../../Util/LZGlobal';
+import { SetFilterProvince } from '../../Store/Page/Address/Province/Province';
 
 function AdProvince() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const t = useSelector(state=>state.Language.translate)
+    const filter = useSelector(state=>state.province.filter)
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -34,29 +36,15 @@ function AdProvince() {
         setDrawData(data)
         setIsShowModal(true)
     }
-  function b64EncodeUnicode(str) {
-    return btoa(
-        unescape(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
-            String.fromCharCode(parseInt(p1, 16))
-        ))
-    )
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-}
-function b64DecodeUnicode(str) {
-    str = str.replace(/-/g, '+').replace(/_/g, '/');
-    while (str.length % 4) {
-        str += '=';
-    }
-    const decoded = atob(str);
-    return decodeURIComponent(
-        decoded.split('').map(c =>
-            '%' + c.charCodeAt(0).toString(16).padStart(2, '0')
-        ).join('')
-    );
-}
+  
+
     const ViewDetail=(data)=>{
+        dispatch(SetFilterProvince({
+            search:Filter.Search,
+            pages:Filter.Page,
+            countryId:FilterCountry?.Country?.Id||0,
+            records:Filter.Record,
+        }))
       const base64String = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
       const urlSafeBase64String = encodeURIComponent(base64String);
     navigate(`/web/address/province/district?Info=${urlSafeBase64String}`);
@@ -166,10 +154,12 @@ function b64DecodeUnicode(str) {
             renderTag:(data)=>{
                 return (
                     <>
-                        <div>
+                        {
+                            data.UpdateBy!=null?<div>
                             <p className='text-[14px]'>{data.UpdateBy}</p>
                             <p className='text-[13px]'>{format(new Date(data.UpdateDate), 'MMMM dd,yyyy')}</p>
-                        </div>
+                        </div>:<></>
+                        }
                     </>
                 )
             }
@@ -201,10 +191,18 @@ function b64DecodeUnicode(str) {
         e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
     }
     const FilterData=(filter)=>{
-        setFilter(filter);
+        console.log("sfilter => ",filter)
+        setFilter((val)=>{
+            return{
+                ...val,
+                ...filter,
+            }
+        });
        
     }
+
     useEffect(()=>{
+        console.log("Got Filter",Filter)
          getList();
     },[Filter])
 
@@ -230,9 +228,14 @@ function b64DecodeUnicode(str) {
         })
     },[])
     useEffect(()=>{
+        setFilter({
+            Search:filter.search,
+            Page:filter.pages,
+            Record:filter.records
+        })
         getListCinema();
-         getList();
-         GetCountry();
+        getList();
+        GetCountry();
     },[])
     const getListCinema = async ()=>{
         await  HttpRequest({
@@ -252,7 +255,9 @@ function b64DecodeUnicode(str) {
         })
     }
      const getList=async()=>{
-        console.log("get list with filter",FilterCountry)
+        // console.log("get list with filter",FilterCountry)
+        console.log("get list with filter",Filter)
+        console.log("------------------------------------")
        await  HttpRequest({
             url:"/api/province/list",
             method:'post',
@@ -323,7 +328,15 @@ function b64DecodeUnicode(str) {
     }
     const onFilter=(filter)=>{
         if(filter==0) setFilterCountry({Country:{Id:0}});
-        else setFilterCountry(filter)
+        else {
+            setFilter(val=>{
+                return {
+                    ...val,
+                    Page:1
+                }
+            })
+            setFilterCountry(filter)
+        }
     }
 
     const dataInForm = [

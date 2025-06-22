@@ -26,11 +26,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,ChipperConten
         Search:'',
         Page:1,
     })
-    useEffect(()=>{
-        console.log(blogFilterTop.current.getBoundingClientRect().top+12)
-        console.log(TableDefault.current.offsetHeight)
-        console.log(data)
-    })
+    
     console.log(param)
     const handleRowClick=(key)=>{
         console.log(key)
@@ -114,7 +110,6 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,ChipperConten
     //   }, []);
     useEffect(()=>{
         setTimeout(()=>{
-            console.log(FilterData)
              OnChangeFilter(FilterData)
         },100)
     },[FilterData.Search,FilterData.Page,FilterData.Record])
