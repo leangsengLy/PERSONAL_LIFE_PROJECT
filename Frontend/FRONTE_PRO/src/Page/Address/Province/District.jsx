@@ -111,6 +111,20 @@ function District() {
         e.target.src= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500";
     }
     const columnData=[
+          {
+            title:t.code,
+            data:"Label",
+            width: "100px" ,
+            className:"all max-w-[100px]",
+            isDraw:true,
+            renderTag:(data)=>{
+                return (
+                    <>
+                        <div className='w-[70px] text-ellipsis overflow-hidden'>{data.Code}</div>
+                    </>
+                )
+            }
+        },
         {
             title:t.name,
             data:"Label",
@@ -339,6 +353,15 @@ function District() {
             label:t.code,
             name:"Code",
             isRequired:true,
+            isDisabled:true,
+            isCheckCode:true,
+            checkCode:{
+                url:"api/district/check_code",
+                param:{
+                    field:"id",
+                    db:"LZ",
+                }
+            },
             type:"text",
         },
         {
@@ -358,7 +381,6 @@ function District() {
     }
     
     const SaveData=async (data)=>{
-        console.log(data)
        await HttpRequest({
             url:"api/district/create",
             method:"Post",
@@ -376,7 +398,7 @@ function District() {
                 setIsShowModal(false)
             },
             error:(error)=>{
-                ShowSnackbar({message:error.message,type:"error"})
+                ShowSnackbar({message:error.data.detail,type:"error"})
             }
         })
     }

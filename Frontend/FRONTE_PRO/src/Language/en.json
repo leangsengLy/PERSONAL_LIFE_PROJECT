@@ -75,7 +75,8 @@
         "add_branch":"Add Branch",
         "add_country":"Add Country",
         "edit_country":"Edit Country",
-        "district":"District"
+        "district":"District",
+        "province":"Province"
 
 
 }

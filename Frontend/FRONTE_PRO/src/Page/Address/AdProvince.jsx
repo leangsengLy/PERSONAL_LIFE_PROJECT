@@ -191,14 +191,13 @@ function AdProvince() {
         e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
     }
     const FilterData=(filter)=>{
-        console.log("sfilter => ",filter)
+        console.log("Fuck you ")
         setFilter((val)=>{
             return{
                 ...val,
                 ...filter,
             }
         });
-       
     }
 
     useEffect(()=>{
@@ -390,8 +389,8 @@ function AdProvince() {
     const btns = [{type:"Create",label:t.create,OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
-        <h1 className='text-[17px] font-bold'>{t.country}</h1>
-            <LZTableDefault onFilter={onFilter} isHasFilter={true}  column={columnData} filter={{url:"api/country/list",}} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
+        <h1 className='text-[17px] font-bold'>{t.province}</h1>
+            <LZTableDefault onFilter={onFilter} isHasFilter={true} isSelectDefault={true} column={columnData} filter={{url:"api/country/list",}}  data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 

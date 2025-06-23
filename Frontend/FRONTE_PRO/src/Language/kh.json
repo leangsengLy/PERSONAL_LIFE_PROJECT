@@ -75,5 +75,6 @@
          "add_branch":"បង្កើតសាខា",
          "add_country":"បង្កើតប្រទេស",
         "edit_country":"កែប្រែប្រទេស",
-            "district":"សង្កាត់/ខណ្ឌ"
+            "district":"សង្កាត់/ខណ្ឌ",
+              "province":"ខេត្ត"
 }

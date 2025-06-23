@@ -6,7 +6,7 @@ import LZInput from '../FormInput/LZInput';
 import LZSelect from '../FormInput/LZSelect';
 import LZGlobal from '../../Util/LZGlobal';
 
-function LZPopover({items,onApply,isClearChip}) {
+function LZPopover({items,onApply,isSelectDefault,isClearChip}) {
     const tr = useSelector((state) => state.Language.translate);
     const [isOpen, setIsOpen] = useState(false);
     const [SelectItem, SetSelectItem] = useState(false);
@@ -21,10 +21,7 @@ function LZPopover({items,onApply,isClearChip}) {
         }
     }, [isClearChip]);
     const onSaveFilter=()=>{
-      if(onApply){
-        onApply(FilterValue);
-      }
-      console.log(FilterValue)
+      if(onApply)  onApply(FilterValue);
       setIsOpen(!isOpen);
     }
     const onResetFilter=()=>{
@@ -32,9 +29,8 @@ function LZPopover({items,onApply,isClearChip}) {
         console.log("are saving the filter here")
     }
     const onSelecting=(name,item)=>{ 
-      console.log("onSelecting",name,item)
       SetSelectItem([`${item.Id}`])
-     SetFilterValue((val)=>{return {...val,[name]:item}})
+      SetFilterValue((val)=>{return {...val,[name]:item}})
     }
     useEffect(()=>{
       console.log("FilterValue",FilterValue)
@@ -60,6 +56,7 @@ function LZPopover({items,onApply,isClearChip}) {
                         return <LZSelect 
                                 name={val.name}
                                 label={val.label||"label"}
+                                isSelectDefault={isSelectDefault}
                                 startContent={(item)=>{return val.options.startContent(item)}}
                                 renderValue={(item,list)=>{return val.options.renderValue(item,list)}}
                                 isRequired={val.required||false}

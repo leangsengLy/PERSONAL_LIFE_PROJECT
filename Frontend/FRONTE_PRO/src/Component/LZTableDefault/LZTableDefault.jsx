@@ -13,7 +13,7 @@ import LZGlobal from '../../Util/LZGlobal';
 import LZChip from '../Chip/LZChip';
 // import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
-function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,ChipperContent,Btns,filter,totalRecord,isHasFilter=false}) {
+function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefault,ChipperContent,Btns,filter,totalRecord,isHasFilter=false}) {
     const tableRef = useRef(null);
     const param = useParams();
     const blogFilterTop = useRef();
@@ -83,7 +83,6 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,ChipperConten
                                 </>)
                     },
                     renderValue:(items,list)=>{
-                        
                             var item = list.find((val)=>val.key==items[0].key)
                             return (
                                 <>
@@ -119,7 +118,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,ChipperConten
             <div className='flex w-full mt-[15px]'>
                 <div ref={blogFilterTop} className='w-full flex items-center'>
                     {
-                        isHasFilter? <div className='mr-2'><LZPopover  items={itemsFilter} isClearChip={isClearChip} onApply={onApply}/></div>:""
+                        isHasFilter? <div className='mr-2'><LZPopover  isSelectDefault={isSelectDefault} items={itemsFilter} isClearChip={isClearChip} onApply={onApply}/></div>:""
                     }
                    
                     <LZSelectRecord SelectRecord ={onSelectRecord}/>
