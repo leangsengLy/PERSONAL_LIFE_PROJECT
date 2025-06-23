@@ -42,7 +42,7 @@ function AdProvince() {
         dispatch(SetFilterProvince({
             search:Filter.Search,
             pages:Filter.Page,
-            countryId:FilterCountry?.Country?.Id||0,
+            countryId:FilterCountry?.Country?.Id||CountryId,
             records:Filter.Record,
         }))
       const base64String = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -227,14 +227,9 @@ function AdProvince() {
         })
     },[])
     useEffect(()=>{
-        setFilter({
-            Search:filter.search,
-            Page:filter.pages,
-            Record:filter.records
-        })
+        GetCountry();
         getListCinema();
         getList();
-        GetCountry();
     },[])
     const getListCinema = async ()=>{
         await  HttpRequest({
@@ -263,7 +258,7 @@ function AdProvince() {
             data:{
                 search:Filter.Search,
                 pages:Filter.Page,
-                countryId:FilterCountry?.Country?.Id||0,
+                countryId:FilterCountry?.Country?.Id||CountryId,
                 records:Filter.Record,
             },
             success:(result)=>{
@@ -285,7 +280,7 @@ function AdProvince() {
                 records:0,
             },
             success:(result)=>{
-                console.log("list country",result)
+                if(result.length>0) setCountryId(result.filter(s=>s.Code=="Cambo")[0]?.Id)
                 setCountry(result)
             },
             error:(error)=>{
@@ -390,7 +385,7 @@ function AdProvince() {
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
         <h1 className='text-[17px] font-bold'>{t.province}</h1>
-            <LZTableDefault onFilter={onFilter} isHasFilter={true} isSelectDefault={true} column={columnData} filter={{url:"api/country/list",}}  data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
+            <LZTableDefault onFilter={onFilter} isHasFilter={true}  column={columnData} filter={{url:"api/country/list",}}  data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 

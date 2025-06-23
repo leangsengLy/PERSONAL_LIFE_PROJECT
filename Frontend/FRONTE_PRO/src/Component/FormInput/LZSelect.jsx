@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { use } from 'react';
 import { HttpRequest } from '../../Global/API_HTTP/http';
 
-function LZSelect({items,isMulti,isRequired,api,label,localData,isSelectDefault,startContent,selectItem,renderValue,onSelecting,name}) {
+function LZSelect({items,isMulti,test,isRequired,api,label,localData,isSelectDefault,startContent,selectItem,renderValue,onSelecting,name}) {
     const [IsMultiSelect, setIsMultiSelect] = useState(isMulti || false)
     const [isRequiredSelect, setIsRequiredSelect] = useState(isRequired || false)
     const [list, setList] = useState([])
@@ -22,6 +22,10 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,isSelectDefault,
                 })
     }
     useEffect(()=>{
+        console.log("fadlfksdfasldfjas")
+    },[test])
+    useEffect(()=>{
+        console.log("Tooooo")
         if(api?.url!="" && api?.url!=undefined)  getListApi();
         else setList(
             localData.map((val)=>({key:val,value:val}))
@@ -53,7 +57,7 @@ function LZSelect({items,isMulti,isRequired,api,label,localData,isSelectDefault,
         }else{
             var find = list.find((val)=>val.key==item.anchorKey);
              onSelecting(name||'label',find)
-               setSelectedValue([`${find.key}`])
+            setSelectedValue([`${find.key}`])
              return ; 
         }
         

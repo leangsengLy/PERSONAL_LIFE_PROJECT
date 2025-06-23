@@ -215,7 +215,6 @@ function District() {
     }
     const FilterData=(filter)=>{
         setFilter(filter);
-       
     }
     useEffect(()=>{
         console.log("Got Filter",Filter)
@@ -406,7 +405,7 @@ function District() {
   return (
     <div className='h-full grid grid-rows-[30px_1fr]'>
             <LabelHeader label={t.district}/>
-            <LZTableDefault onFilter={onFilter} isHasFilter={true}  column={columnData} filter={{url:"api/country/list",}} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
+            <LZTableDefault onFilter={onFilter} isHasFilter={false}  column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 

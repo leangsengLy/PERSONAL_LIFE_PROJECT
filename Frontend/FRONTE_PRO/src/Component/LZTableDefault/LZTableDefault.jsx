@@ -65,6 +65,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
                 required:true,
                 name:"Country",
                 label:tr.country,
+                isSelectDefault:isSelectDefault,
                 options:{
                     isMulti:false,
                     api:{
@@ -95,18 +96,6 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
                 }
             },
     ]
-    // useEffect(() => {
-    //     // Example: Initialize plugin after rendering
-    //     console.log(tableRef.current)
-    //     const tableInstance = tableRef.current.DataTable();
-    
-    //     return () => {
-    //       // Cleanup plugin instance to avoid errors
-    //       if (tableInstance && tableInstance.destroy) {
-    //         tableInstance.destroy(true); // Destroy and clean up DOM
-    //       }
-    //     };
-    //   }, []);
     useEffect(()=>{
         setTimeout(()=>{
              OnChangeFilter(FilterData)
@@ -118,7 +107,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
             <div className='flex w-full mt-[15px]'>
                 <div ref={blogFilterTop} className='w-full flex items-center'>
                     {
-                        isHasFilter? <div className='mr-2'><LZPopover  isSelectDefault={isSelectDefault} items={itemsFilter} isClearChip={isClearChip} onApply={onApply}/></div>:""
+                        isHasFilter? <div className='mr-2'><LZPopover test="What are you doing" isSelectDefault={isSelectDefault} items={itemsFilter} isClearChip={isClearChip} onApply={onApply}/></div>:""
                     }
                    
                     <LZSelectRecord SelectRecord ={onSelectRecord}/>
