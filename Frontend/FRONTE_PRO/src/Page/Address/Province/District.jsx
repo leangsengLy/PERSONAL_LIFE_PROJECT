@@ -36,6 +36,7 @@ import LZIcon from '../../../Component/Icon/LZIcon';
 import {useNavigate,createSearchParams } from 'react-router-dom';
 import {format} from 'date-fns';
 import { SetFilterProvince } from '../../../Store/Page/Address/Province/Province';
+import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react';
 
 function District() {
    const params = new URLSearchParams(location.search);
@@ -403,8 +404,9 @@ function District() {
     }
     const btns = [{type:"Create",label:t.create,OnCreate:OnclickAdd}];
   return (
-    <div className='h-full grid grid-rows-[30px_1fr]'>
+    <div className='h-full grid grid-rows-[60px_1fr]'>
             <LabelHeader label={t.district}/>
+            
             <LZTableDefault onFilter={onFilter} isHasFilter={false}  column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
