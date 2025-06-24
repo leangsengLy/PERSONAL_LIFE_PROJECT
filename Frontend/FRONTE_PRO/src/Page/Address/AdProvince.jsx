@@ -190,18 +190,24 @@ function AdProvince() {
     const ErrorImage=(e)=>{
         e.target.src='https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg'
     }
-    const FilterData=(filter)=>{
-        console.log("Fuck you ")
+    const FilterData=(data)=>{
+        // console.log("Change filter")
+        // console.log("filter",filter)
+        // console.log("data",data)
+        // if(filter?.records!=undefined){
+        //     console.log("it work here")
+        //     data = {...data,Page:filter?.pages,Record:filter?.records,Search:filter?.search||data.Search}
+        // }
         setFilter((val)=>{
             return{
                 ...val,
-                ...filter,
+                ...data,
             }
         });
     }
 
     useEffect(()=>{
-        console.log("Got Filter",Filter)
+        console.log("Got Filtesdfsfsdfr",Filter)
          getList();
     },[Filter])
 
@@ -227,9 +233,12 @@ function AdProvince() {
         })
     },[])
     useEffect(()=>{
+        console.log("yesssssssssssssssss")
+        console.log("filter",filter)
+        setFilter({Record:2000,page:10})
         GetCountry();
         getListCinema();
-        getList();
+        // getList();
     },[])
     const getListCinema = async ()=>{
         await  HttpRequest({
