@@ -131,6 +131,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
         </div>
         <div className='h-[90%] !w-[calc(100vw-287px)] !max-h-[calc(100vh-257px)] flex flex-col justify-between '>
         <Table removeWrapper={false} 
+            selectionMode="single"
             ref={TableDefault}
             classNames={{
                 base:[" h-full"],
@@ -174,7 +175,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
                     
             </TableBody>
         </Table>
-        <LZPagination SelectPage={onSelectPage} totalRecord={totalRecord} record={FilterData.Record}/>
+        <LZPagination SelectPage={onSelectPage} totalRecord={totalRecord} page={FilterData.Page} record={FilterData.Record}/>
         </div>
     </div>
   )

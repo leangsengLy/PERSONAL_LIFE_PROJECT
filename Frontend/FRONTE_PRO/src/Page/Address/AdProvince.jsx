@@ -80,7 +80,7 @@ function AdProvince() {
     }
 
     useEffect(()=>{
-        getList()
+        // getList()
     },[FilterCountry])
     const OnerrorImage=(e)=>{
         e.target.src= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500";
@@ -193,11 +193,7 @@ function AdProvince() {
     const FilterData=(data)=>{
         // console.log("Change filter")
         // console.log("filter",filter)
-        // console.log("data",data)
-        // if(filter?.records!=undefined){
-        //     console.log("it work here")
-        //     data = {...data,Page:filter?.pages,Record:filter?.records,Search:filter?.search||data.Search}
-        // }
+        console.log("data",data)
         setFilter((val)=>{
             return{
                 ...val,
@@ -206,13 +202,32 @@ function AdProvince() {
         });
     }
 
+   
     useEffect(()=>{
-        console.log("Got Filtesdfsfsdfr",Filter)
+        console.log("skkkkkkkkkk2222kkkk2kkkkkkk")
+        console.log(Filter)
          getList();
     },[Filter])
 
     useEffect( ()=>{
-        window.addEventListener("click",(e)=>{
+       
+    },[])
+    useEffect(()=>{
+        GetCountry();
+        // console.log(filter)
+        // console.log(Filter)
+        setTimeout(()=>{
+            setFilter((val)=>{
+            return {
+                ...val,
+                Page:filter.pages,
+                Record:filter.records,
+                Search:filter.search,
+            }
+        })
+        },500)
+        getListCinema();
+         window.addEventListener("click",(e)=>{
             if(e.target.className.includes("edit")) console.log("edit")
             else if(e.target.className.includes("view")) console.log("view")
             else if(e.target.className.includes("delete")){
@@ -231,13 +246,6 @@ function AdProvince() {
                 dispatch(setIsShow(true))
             }
         })
-    },[])
-    useEffect(()=>{
-        console.log("yesssssssssssssssss")
-        console.log("filter",filter)
-        setFilter({Record:2000,page:10})
-        GetCountry();
-        getListCinema();
         // getList();
     },[])
     const getListCinema = async ()=>{
@@ -259,14 +267,12 @@ function AdProvince() {
     }
      const getList=async()=>{
         // console.log("get list with filter",FilterCountry)
-        console.log("get list with filter",Filter)
-        console.log("------------------------------------")
        await  HttpRequest({
             url:"/api/province/list",
             method:'post',
             data:{
                 search:Filter.Search,
-                pages:Filter.Page,
+                pages:Filter.Page  ,
                 countryId:FilterCountry?.Country?.Id||CountryId,
                 records:Filter.Record,
             },
@@ -341,7 +347,9 @@ function AdProvince() {
             setFilterCountry(filter)
         }
     }
-
+    useEffect(()=>{
+        getList();
+    },[CountryId])
     const dataInForm = [
          {
             label:t.country,
