@@ -11,6 +11,7 @@ import ModalStore from '../Store/Modal/ModalStore.js'
 import PreviewIframeStore from '../Store/PreviewIFrame/PreviewIFrame.js'
 import ChooseBranchStore from '../Store/ChooseBranch/ChooseBranch.js'
 import ProvinceStore from '../Store/Page/Address/Province/Province.js'
+import TableStore from '../Store/Table/Table.js'
 export const store = configureStore({
     reducer:{
         counterTest:SliceStore,
@@ -23,6 +24,8 @@ export const store = configureStore({
         branch: ChooseBranchStore,
         Modal: ModalStore,
         Iframe: PreviewIframeStore,
+        //table
+        table:TableStore,
         //Page
         Country:CountryStore,
         province:ProvinceStore,

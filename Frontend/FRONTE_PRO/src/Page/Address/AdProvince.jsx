@@ -16,7 +16,8 @@ import { SetFilterProvince } from '../../Store/Page/Address/Province/Province';
 function AdProvince() {
     const dataList = useSelector((state)=>state.Country.dataList)
     const t = useSelector(state=>state.Language.translate)
-    const filter = useSelector(state=>state.province.filter)
+    const filter = useSelector(state=>state.table.filterDef)
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -271,10 +272,10 @@ function AdProvince() {
             url:"/api/province/list",
             method:'post',
             data:{
-                search:Filter.Search,
-                pages:Filter.Page  ,
+                search:filter.search,
+                pages:filter.page  ,
                 countryId:FilterCountry?.Country?.Id||CountryId,
-                records:Filter.Record,
+                records:filter.record,
             },
             success:(result)=>{
                 SetData(result)

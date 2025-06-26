@@ -8,16 +8,19 @@ import LZSelectRecord from './LZSelectRecord';
 import '../../Css/LZTableDefault/index.css'
 import LZButton from '../Button/LZButton';
 import LZPopover from '../Popover/LZPopover';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LZGlobal from '../../Util/LZGlobal';
 import LZChip from '../Chip/LZChip';
+import { setFilterDef } from '../../Store/Table/Table';
 // import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefault,ChipperContent,Btns,filter,totalRecord,isHasFilter=false}) {
     const tableRef = useRef(null);
     const param = useParams();
     const blogFilterTop = useRef();
+    const dispatch = useDispatch();
     const [Chips,setChips]  = useState([]);
+    const filterTable = useSelector(state=>state.table.filterDef);
     const [isClearChip,setIsClearChip]  = useState(false);
     const tr = useSelector(state=>state.Language.translate)
     const TableDefault = useRef();
@@ -55,7 +58,9 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
             return {...val,Record:record}
         })
     }
+    
     const onSelectPage=(page)=>{
+        
         SetFilterdata(val=>{
             return {...val,Page:page}
         })
@@ -98,6 +103,7 @@ function LZTableDefault({column=[],onFilter,data=[],OnChangeFilter,isSelectDefau
     ]
     useEffect(()=>{
         setTimeout(()=>{
+             dispatch(setFilterDef(FilterData))
              OnChangeFilter(FilterData)
         },100)
     },[FilterData.Search,FilterData.Page,FilterData.Record])
