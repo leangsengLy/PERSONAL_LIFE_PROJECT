@@ -8,9 +8,10 @@ import Cinema from '../../Page/Movie/Cinema';
 import Movie from '../../Page/Setting/Movie';
 import Test from '../../Page/Setting/Test';
 import Hall from '../../Page/Setting/Hall';
-import AdProvince from '../../Page/Address/ADProvince';
 import Country from '../../Page/Address/Country';
 import District from '../../Page/Address/Province/District';
+import Commune from '../../Page/Address/Province/Commune';
+import AdProvince from '../../Page/Address/AdProvince';
 
 function SubMenuContent() {
 const param = useParams();
@@ -21,6 +22,7 @@ if(Object.keys(param).includes('subChild')){
   console.log("subChild",subChild)
   if(subChild=="province") render = <Province/>;
   else if(subChild=="district") render = <District/>;
+  else if(subChild=="commune") render = <Commune/>;
 }else{
   if(renderFile=="movie_type") render = <MovieType/>;
   if(renderFile=="offer") render = <Offers/>;

@@ -14,7 +14,7 @@ import { SetFilterProvince } from '../../../Store/Page/Address/Province/Province
 import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react';
 import LZGlobal from '../../../Util/LZGlobal';
 
-function District() {
+function Commune() {
    const params = new URLSearchParams(location.search);
     const dataList = useSelector((state)=>state.Country.dataList)
     const t = useSelector(state=>state.Language.translate)
@@ -25,7 +25,7 @@ function District() {
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
-    const [dataProvince,setDataProvince]=useState({})
+    const [dataDistrict,setDataDistrict]=useState({})
     const [Filter,setFilter]=useState({
         Record:10,
         Page:1,
@@ -52,9 +52,9 @@ function District() {
             countryId:FilterCountry?.Country?.Id||0,
             records:Filter.Record,
         }))
-      const base64String = btoa(unescape(encodeURIComponent(JSON.stringify({...data,prevBreadCrumb:LZGlobal.translate({en:dataProvince.EnglishName,km:dataProvince.Name})}))));
+      const base64String = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
       const urlSafeBase64String = encodeURIComponent(base64String);
-        navigate(`/web/address/province/commune?Info=${urlSafeBase64String}`);
+        navigate(`/web/address/province/district?Info=${urlSafeBase64String}`);
     }
    
     const DeleteData=(data)=>{
@@ -227,7 +227,7 @@ function District() {
          const jsonStringDecoded = decodeURIComponent(escape(atob(params.get('Info'))));
           const jsonObjectDecoded = JSON.parse(jsonStringDecoded);
           console.log('encode data =>',jsonObjectDecoded)
-        setDataProvince(jsonObjectDecoded);
+        setDataDistrict(jsonObjectDecoded);
         getListCinema();
         getList();
         GetCountry();
@@ -255,13 +255,13 @@ function District() {
         console.log("get list with filter",Filter)
         console.log("------------------------------------")
        await  HttpRequest({
-            url:"/api/district/list",
+            url:"/api/commune/list",
             method:'post',
             data:{
                 search:Filter.Search,
                 pages:Filter.Page,
-                countryId:dataProvince.CountryId||0,
-                provinceId:dataProvince.Id||0,
+                countryId:dataDistrict?.CountryId||0,
+                provinceId:dataDistrict?.Id||0,
                 records:Filter.Record,
             },
             success:(result)=>{
@@ -299,15 +299,15 @@ function District() {
               id:data.Id,
                  name:data.Name,
                 code:data.Code,
-                countryId:dataProvince.CountryId,
-                provinceId:dataProvince.Id,
+                countryId:dataDistrict?.CountryId,
+                provinceId:dataDistrict?.Id,
                 englishName:data.EnglishName,
                 createBy:"Lyzee",
                 database:"LZ",  
           }
    
         HttpRequest({
-            url:'api/district/update',
+            url:'api/commune/update',
             data:dataSend,
             method:"post",
             success:(success)=>{
@@ -337,7 +337,7 @@ function District() {
             isDisabled:true,
             isCheckCode:true,
             checkCode:{
-                url:"api/district/check_code",
+                url:"api/commune/check_code",
                 param:{
                     field:"id",
                     db:"LZ",
@@ -363,13 +363,13 @@ function District() {
     
     const SaveData=async (data)=>{
        await HttpRequest({
-            url:"api/district/create",
+            url:"api/commune/create",
             method:"Post",
             data:{
                 name:data.Name,
                 code:data.Code,
-                countryId:dataProvince.CountryId,
-                provinceId:dataProvince.Id,
+                countryId:dataDistrict?.CountryId,
+                provinceId:dataDistrict?.Id,
                 englishName:data.EnglishName,
                 createBy:"Lyzee",
                 database:"LZ",  
@@ -386,14 +386,14 @@ function District() {
     const btns = [{type:"Create",label:t.create,OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[60px_1fr]'>
-            {dataProvince.Name!=""?<LabelHeader label={t.district} BreadcrumbItems={[LZGlobal.translate({en:dataProvince.EnglishName,km:dataProvince.Name})]}/>:<></>}
+            {dataDistrict?.prevBreadCrumb!=""?<LabelHeader label={t.commune} BreadcrumbItems={[LZGlobal.translate({en:dataDistrict.prevBreadCrumb,km:dataDistrict.prevBreadCrumb}),LZGlobal.translate({en:dataDistrict.EnglishName,km:dataDistrict.Name})]}/>:<></>}
             <LZTableDefault onFilter={onFilter} isHasFilter={false}  column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 
                 data={dataInForm} 
                 reDrawData={{...DrawData,PathImage:DrawData.ImagePath}} 
                 isCreate={isCreate} 
-                propDrawer={{open:isShowModal,label:`${isCreate?"បង្កើតសង្កាត់":"កែប្រែសង្កាត់"}`}} 
+                propDrawer={{open:isShowModal,label:`${isCreate?"បង្កើតឃំុ":"កែប្រែឃំុ"}`}} 
                 fn={{onClose:CloseModal,onSave:SaveData,onSaveEdit:UpdateData,onCancel:CanceModal}}
             />
         
@@ -401,4 +401,4 @@ function District() {
   )
 }
 
-export default District
+export default Commune

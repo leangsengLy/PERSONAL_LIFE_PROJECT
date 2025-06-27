@@ -76,7 +76,8 @@
         "add_country":"Add Country",
         "edit_country":"Edit Country",
         "district":"District",
-        "province":"Province"
+        "province":"Province",
+        "commune":"Commune"
 
 
 }
