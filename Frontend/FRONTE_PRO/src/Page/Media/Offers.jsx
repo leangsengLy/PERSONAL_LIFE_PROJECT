@@ -289,7 +289,9 @@ function Offers() {
                 }
             },
             success:(result)=>{
-                getList();
+                setTimeout(() => {
+                    getList();
+                }, 500);
                 setIsShowModal(false)
             },
             error:(error)=>{

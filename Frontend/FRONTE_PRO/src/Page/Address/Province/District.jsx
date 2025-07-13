@@ -52,7 +52,7 @@ function District() {
             countryId:FilterCountry?.Country?.Id||0,
             records:Filter.Record,
         }))
-      const base64String = btoa(unescape(encodeURIComponent(JSON.stringify({...data,prevBreadCrumb:LZGlobal.translate({en:dataProvince.EnglishName,km:dataProvince.Name})}))));
+      const base64String = btoa(unescape(encodeURIComponent(JSON.stringify({...data,province:dataProvince,prevBreadCrumb:LZGlobal.translate({en:dataProvince.EnglishName,km:dataProvince.Name})}))));
       const urlSafeBase64String = encodeURIComponent(base64String);
         navigate(`/web/address/province/commune?Info=${urlSafeBase64String}`);
     }

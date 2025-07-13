@@ -363,7 +363,9 @@ function Drink() {
                 }
             },
             success:(result)=>{
-                getList();
+                setTimeout(() => {
+                    getList();
+                }, 500);
                 setIsShowModal(false)
             },
             error:(error)=>{

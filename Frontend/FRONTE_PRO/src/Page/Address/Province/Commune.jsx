@@ -25,7 +25,7 @@ function Commune() {
     const [isShowModal,setIsShowModal]=useState(false)
     const [isCreate,setIsCreate]=useState(false)
     const [DataCountry,setDataCountry]=useState([])
-    const [dataDistrict,setDataDistrict]=useState({})
+    const [dataCommune,setDataCommune]=useState({})
     const [Filter,setFilter]=useState({
         Record:10,
         Page:1,
@@ -92,20 +92,6 @@ function Commune() {
         e.target.src= "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500";
     }
     const columnData=[
-          {
-            title:t.code,
-            data:"Label",
-            width: "100px" ,
-            className:"all max-w-[100px]",
-            isDraw:true,
-            renderTag:(data)=>{
-                return (
-                    <>
-                        <div className='w-[70px] text-ellipsis overflow-hidden'>{data.Code}</div>
-                    </>
-                )
-            }
-        },
         {
             title:t.name,
             data:"Label",
@@ -179,7 +165,6 @@ function Commune() {
                 return (
                     <>
                         <div className='text-red-400 flex gap-x-2'>
-                            <LZIcon  typeIcon="view" onClickIcon={()=>{ViewDetail(data)}}/>
                             <LZIcon  typeIcon="edit" onClickIcon={()=>{OnEditData(data)}}/>
                             <LZIcon  typeIcon="delete" onClickIcon={()=>{DeleteData(data)}}/>
                         </div>
@@ -226,8 +211,8 @@ function Commune() {
     useEffect(()=>{
          const jsonStringDecoded = decodeURIComponent(escape(atob(params.get('Info'))));
           const jsonObjectDecoded = JSON.parse(jsonStringDecoded);
-          console.log('encode data =>',jsonObjectDecoded)
-        setDataDistrict(jsonObjectDecoded);
+          console.log('encode data11 =>',jsonObjectDecoded)
+        setDataCommune(jsonObjectDecoded);
         getListCinema();
         getList();
         GetCountry();
@@ -260,8 +245,8 @@ function Commune() {
             data:{
                 search:Filter.Search,
                 pages:Filter.Page,
-                countryId:dataDistrict?.CountryId||0,
-                provinceId:dataDistrict?.Id||0,
+                countryId:dataCommune?.CountryId||0,
+                provinceId:dataCommune?.Id||0,
                 records:Filter.Record,
             },
             success:(result)=>{
@@ -299,8 +284,8 @@ function Commune() {
               id:data.Id,
                  name:data.Name,
                 code:data.Code,
-                countryId:dataDistrict?.CountryId,
-                provinceId:dataDistrict?.Id,
+                countryId:dataCommune?.CountryId,
+                provinceId:dataCommune?.Id,
                 englishName:data.EnglishName,
                 createBy:"Lyzee",
                 database:"LZ",  
@@ -330,21 +315,21 @@ function Commune() {
     }
 
     const dataInForm = [
-        {
-            label:t.code,
-            name:"Code",
-            isRequired:true,
-            isDisabled:true,
-            isCheckCode:true,
-            checkCode:{
-                url:"api/commune/check_code",
-                param:{
-                    field:"id",
-                    db:"LZ",
-                }
-            },
-            type:"text",
-        },
+        // {
+        //     label:t.code,
+        //     name:"Code",
+        //     isRequired:true,
+        //     isDisabled:true,
+        //     isCheckCode:true,
+        //     checkCode:{
+        //         url:"api/commune/check_code",
+        //         param:{
+        //             field:"id",
+        //             db:"LZ",
+        //         }
+        //     },
+        //     type:"text",
+        // },
         {
             label:t.name,
             name:"Name",
@@ -367,9 +352,8 @@ function Commune() {
             method:"Post",
             data:{
                 name:data.Name,
-                code:data.Code,
-                countryId:dataDistrict?.CountryId,
-                provinceId:dataDistrict?.Id,
+                countryId:dataCommune?.CountryId,
+                districtId:dataCommune?.Id,
                 englishName:data.EnglishName,
                 createBy:"Lyzee",
                 database:"LZ",  
@@ -386,7 +370,7 @@ function Commune() {
     const btns = [{type:"Create",label:t.create,OnCreate:OnclickAdd}];
   return (
     <div className='h-full grid grid-rows-[60px_1fr]'>
-            {dataDistrict?.prevBreadCrumb!=""?<LabelHeader label={t.commune} BreadcrumbItems={[LZGlobal.translate({en:dataDistrict.prevBreadCrumb,km:dataDistrict.prevBreadCrumb}),LZGlobal.translate({en:dataDistrict.EnglishName,km:dataDistrict.Name})]}/>:<></>}
+            {dataCommune?.prevBreadCrumb!=""?<LabelHeader label={t.commune} BreadcrumbItems={[LZGlobal.translate({en:dataCommune.prevBreadCrumb,km:dataCommune.prevBreadCrumb}),LZGlobal.translate({en:dataCommune.EnglishName,km:dataCommune.Name})]}/>:<></>}
             <LZTableDefault onFilter={onFilter} isHasFilter={false}  column={columnData} data={data} OnChangeFilter={FilterData} Btns={btns} totalRecord={data[0]?.RecordCount||0}/>
             <LZDrawerForm 
                 ui={{}} 

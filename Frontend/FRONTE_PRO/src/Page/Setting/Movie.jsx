@@ -363,7 +363,9 @@ function Movie() {
                     success:(result)=>{
                         noti.play()
                         onCloseForm();
-                        getMovieList();
+                        setTimeout(() => {
+                            getMovieList();
+                        }, 500);
                         setIsShowModal(false)
                     },
                     error:(error)=>{

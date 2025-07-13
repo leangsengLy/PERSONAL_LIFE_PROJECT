@@ -353,7 +353,9 @@ function Country() {
                 uploadFileDataModel:fileUpload
             },
             success:(result)=>{
-                getList();
+                setTimeout(() => {
+                    getList();
+                }, 500);
                 setIsShowModal(false)
             },
             error:(error)=>{
